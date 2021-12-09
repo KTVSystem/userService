@@ -16,8 +16,8 @@ const schema = new Schema<User>({
 
 export const UserModel = model<User>('User', schema);
 
-export const findByNickname = async (nickname: string) => {
-    const user = (await UserModel.find({ nickname: nickname }).limit(1))[0];
+export const findByEmail = async (email: string) => {
+    const user = (await UserModel.find({ email: email }).limit(1))[0];
     if (typeof user !== 'undefined') {
         return user;
     }
