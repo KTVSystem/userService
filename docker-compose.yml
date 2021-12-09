@@ -1,0 +1,29 @@
+version: "3.3"
+services:
+  server:
+    build:
+      context: ./
+      dockerfile: ${PWD}/server/docker/development/Dockerfile
+    ports:
+      - "9999:8080"
+    volumes:
+      - ./server:/usr/src/app
+    external_links:
+      - mongo
+    container_name: server
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    container_name: mongo
+  client:
+      build:
+        context: ./
+        dockerfile: ${PWD}/client/docker/development/Dockerfile
+      volumes:
+        - ./client:/usr/src/app
+      ports:
+        - '4200:4200'
+      container_name: client
