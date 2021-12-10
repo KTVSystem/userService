@@ -3,5 +3,5 @@ export interface Token {
   email: string;
   exp: string;
   iat: string;
-  roles: string;
+  role: string;
 }

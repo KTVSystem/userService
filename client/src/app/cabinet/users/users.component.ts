@@ -28,6 +28,7 @@ export class UsersComponent implements OnInit {
   private getUsers(): void {
     this.userService.getUsers(this.filterQueryString).subscribe((response) => {
       this.users = response.users;
+      console.log(this.users);
       this.paginationService.initializaPagination.next(response.totalUsers);
     });
   }

@@ -15,10 +15,11 @@ import { Status } from '../enums/status';
     }
 
     const seedData = async (): Promise<void> => {
-        const hash = 'sdadiwe9399uadj9jj3d9237nz27n29zn923n9nznz';
+        const hash1 = 'sdadiwe9399uadj9jj3d9237nz27n29zn923n9nznz';
+        const hash2 = 'sdadiwe9399uadj9jj3d9237nz27n29zn923n9nz99';
 
-        const token1: Token = await TokenModel.create({hash: hash, status: Status.ACTIVE});
-        const token2: Token = await TokenModel.create({hash: hash, status: Status.ACTIVE});
+        const token1: Token = await TokenModel.create({hash: hash1, status: Status.ACTIVE});
+        const token2: Token = await TokenModel.create({hash: hash2, status: Status.ACTIVE});
 
         const permission1: Permission = await PermissionModel.create({
             name: 'Permission 1',
@@ -47,21 +48,21 @@ import { Status } from '../enums/status';
         });
 
         const role1: Role = await RoleModel.create({
-            name: 'Role 1',
+            name: 'User',
             status: Status.ACTIVE,
             permissions: [permission1, permission2],
             created: new Date(),
             updated: new Date(),
         });
         const role2: Role = await RoleModel.create({
-            name: 'Role 2',
+            name: 'Moderator',
             status: Status.ACTIVE,
             permissions: [permission3, permission4],
             created: new Date(),
             updated: new Date(),
         });
         const role3: Role = await RoleModel.create({
-            name: 'Role 3',
+            name: 'Admin',
             status: Status.ACTIVE,
             permissions: [permission1, permission3],
             created: new Date(),
@@ -71,17 +72,15 @@ import { Status } from '../enums/status';
         const passwordHash = await PasswordService.hashPassword('123');
         await UserModel.create({
             email: 'user1@gmail.com',
-            nickname: 'user1',
             password: passwordHash,
-            status: Status.NEW,
-            role: role1,
+            status: Status.ACTIVE,
+            role: role3,
             token: token1,
             created: new Date(),
             updated: new Date(),
         });
         await UserModel.create({
             email: 'user2@gmail.com',
-            nickname: 'user2',
             password: passwordHash,
             status: Status.ACTIVE,
             role: role2,
@@ -91,19 +90,17 @@ import { Status } from '../enums/status';
         });
         await UserModel.create({
             email: 'user3@gmail.com',
-            nickname: 'user3',
             password: passwordHash,
             status: Status.ACTIVE,
-            role: role3,
+            role: role1,
             token: token2,
             created: new Date(),
             updated: new Date(),
         });
         await UserModel.create({
             email: 'user4@gmail.com',
-            nickname: 'user4',
             password: passwordHash,
-            status: Status.ACTIVE,
+            status: Status.NEW,
             role: role1,
             token: token1,
             created: new Date(),

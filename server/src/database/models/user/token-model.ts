@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { Token } from '../../interfaces/user/token';
 
 const schema = new Schema<Token>({
-    hash: { type: String, required: true, max: 255},
+    hash: { type: String, required: true, unique: true, max: 255},
     status: { type: String, required: true, max: 20 },
     expired: { type: Date, required: false },
 }, {

@@ -8,7 +8,6 @@ describe('Test mongoose User model', () => {
         const _doc = {
             _id: '507f191e810c19729de860ea',
             email: 'name@email.com',
-            nickname: 'name-nik',
             password: '123'
         };
         mockingoose(UserModel).toReturn(_doc, 'findOne');
@@ -21,7 +20,6 @@ describe('Test mongoose User model', () => {
         const _doc = {
             _id: '507f191e810c19729de860ea',
             email: 'name@email.com',
-            nickname: 'name-nik',
             password: '123'
         };
         mockingoose(UserModel).toReturn(_doc, 'update');
@@ -33,17 +31,16 @@ describe('Test mongoose User model', () => {
             });
     });
 
-    it('Incorrect user name', async () => {
+    it('Incorrect email', async () => {
         const _doc = {
             _id: '507f191e810c19729de860ea',
             email: 'name@email.com',
-            nickname: 'name-nik',
             password: '123'
         };
         mockingoose(UserModel).toReturn(_doc, 'findOne');
         return UserModel.findById({ _id: '507f191e810c19729de860ea' }).then(doc => {
-            doc.nickname = "Another";
-            expect(doc.nickname).not.toBe(_doc.nickname);
+            doc.email = "Another";
+            expect(doc.email).not.toBe(_doc.email);
         });
     });
 

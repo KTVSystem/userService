@@ -3,11 +3,11 @@ import { UserService } from '../../../services/cabinet/users/user.servise';
 import { roles } from '../../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Role } from '../../../models/cabinet/users/role';
 import { Status } from '../../../models/common/status/status';
 import { MessageTypeEnum } from "../../../models/common/message/enums/message-type-enum";
 import { ActivatedRoute } from '@angular/router';
 import { UserEditDto } from '../../../models/cabinet/users/dtos/user-edit-dto';
+import { RolesListDto } from '../../../models/cabinet/users/dtos/roles-list-dto';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class UserEditComponent implements OnInit {
     role: new FormControl('0'),
     status: new FormControl('0'),
   });
-  public roles: Array<Role>;
+  public roles: Array<RolesListDto>;
   public statuses: Array<Status>;
   responseMessage: string;
   responseMessageType: string;

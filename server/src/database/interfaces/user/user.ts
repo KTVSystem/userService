@@ -4,11 +4,10 @@ import {Token} from './token';
 export interface User {
     _id?:string,
     email: string;
-    nickname: string;
-    status: string;
     password: string;
-    role?: Role | undefined;
-    token?: Token | undefined;
+    status: string;
+    role?: Role['_id'];
+    token?: Token['_id'];
     created: Date;
     updated: Date;
 }

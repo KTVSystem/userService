@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import auth from './api/routes/auth/auth';
+import users from './api/routes/user/users';
 import seed from './api/routes/system/seed';
 const app = express();
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', auth);
+app.use('/users', users);
 app.use('/seed', seed);
 
 export default app;

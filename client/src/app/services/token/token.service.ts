@@ -14,10 +14,10 @@ export class TokenService {
 
   public get isAuth(): boolean {
     let token = localStorage.getItem('token');
-    let roles = localStorage.getItem('roles');
+    let role = localStorage.getItem('role');
     let result: boolean;
 
-    if (token && (roles === 'ROLE_ADMIN' || roles === 'ROLE_SUPER_ADMIN'))
+    if (token && (role === 'Admin'))
       result = true;
     else
       result = false;
@@ -29,9 +29,9 @@ export class TokenService {
     localStorage.setItem('token', jwtToken);
     localStorage.setItem('id', tokenData.id);
     localStorage.setItem('email', tokenData.email);
-    localStorage.setItem('exp', tokenData.exp);
+    localStorage.setItem('role', tokenData.role);
     localStorage.setItem('iat', tokenData.iat);
-    localStorage.setItem('roles', tokenData.roles);
+    localStorage.setItem('exp', tokenData.exp);
     console.log(tokenData);
   }
 
@@ -39,9 +39,9 @@ export class TokenService {
     localStorage.removeItem('token');
     localStorage.removeItem('id');
     localStorage.removeItem('email');
-    localStorage.removeItem('exp');
+    localStorage.removeItem('role');
     localStorage.removeItem('iat');
-    localStorage.removeItem('roles');
+    localStorage.removeItem('exp');
   }
 
   public getToken(): string|null {

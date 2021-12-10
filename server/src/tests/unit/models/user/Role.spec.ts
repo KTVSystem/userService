@@ -39,8 +39,8 @@ describe('Test mongoose Role model', () => {
         };
         mockingoose(RoleModel).toReturn(_doc, 'findOne');
         return RoleModel.findById({ _id: '507f191e810c19729de860ea' }).then(doc => {
-            doc.hash = "Another";
-            expect(doc.hash).not.toBe(_doc.name);
+            doc.name = "Another";
+            expect(doc.name).not.toBe(_doc.name);
         });
     });
 

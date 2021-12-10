@@ -35,7 +35,7 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Email</th>
-        <th scope="col">Roles</th>
+        <th scope="col">Role</th>
         <th scope="col">Status</th>
         <th scope="col">Action</th>
       </tr>
@@ -45,14 +45,12 @@
         <th scope="row">{{i + 1}}</th>
         <td>{{user.email}}</td>
         <td>
-      <span *ngFor="let role of user.roles">
-        <span class="badge bg-secondary">{{role}}</span>
-      </span>
+          <span class="badge bg-secondary">{{user.role.name}}</span>
         </td>
         <td>
           <span class="badge bg-secondary" [className]="'badge bg-secondary badge-' + user.status">{{user.status}}</span>
         </td>
-        <td><a class="btn btn-primary" [routerLink]="['/cabinet/users/' + user.id]">Open</a></td>
+        <td><a class="btn btn-primary" [routerLink]="['/cabinet/users/' + user._id]">Open</a></td>
       </tr>
       </tbody>
     </table>

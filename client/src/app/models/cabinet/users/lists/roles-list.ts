@@ -1,6 +1,6 @@
-import { Role } from '../role';
+import { RolesListDto } from '../dtos/roles-list-dto';
 
-export const roles: Array<Role> = [
+export const roles: Array<RolesListDto> = [
   {key: 'ROLE_USER', title: 'User'},
   {key: 'ROLE_ADMIN', title: 'Admin'},
   {key: 'ROLE_SUPER_ADMIN', title: 'Super Admin'},

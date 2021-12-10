@@ -7,55 +7,20 @@
             <h4>Data</h4>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><span>Id: </span> {{user.id}}</li>
+            <li class="list-group-item"><span>Id: </span> {{user._id}}</li>
             <li class="list-group-item"><span>Email: </span> {{user.email}}</li>
             <li class="list-group-item"><span>Status: </span> {{user.status}}</li>
-            <li class="list-group-item"><span>Role: </span> {{user.roles[0]}}</li>
+            <li class="list-group-item"><span>Role: </span> {{user.role.name}}</li>
           </ul>
         </div>
       </div>
-      <div class="col-3">
-        <div class="card">
-          <div class="card-header">
-            <h4>Permissions</h4>
-          </div>
-          <div class="card-body">
-            <ng-container *ngIf="user.permission.length > 0; else no_permission">
-              <div class="permission-loop" *ngFor="let permission of user.permission">
-                <span class="badge bg-primary">{{permission.name}}</span>
-              </div>
-            </ng-container>
-            <ng-template #no_permission>
-              No data ...
-            </ng-template>
-          </div>
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="card">
-          <div class="card-header">
-            <h4>Social Networks</h4>
-          </div>
-          <div class="card-body">
-            <ng-container *ngIf="user.social.length > 0; else no_social">
-              <div class="permission-loop" *ngFor="let social of user.social">
-                <div><span>Provider: </span>{{social.provider}}</div>
-                <div><span>Name: </span> {{social.name}}</div>
-              </div>
-              <hr>
-            </ng-container>
-            <ng-template #no_social>
-              No data ...
-            </ng-template>
-          </div>
-        </div>
-      </div>
+
     </div>
     <div class="row">
       <div class="col-12 mt-3">
-        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/users/edit/' + user.id]">Edit</a>
-        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/users/change-password/' + user.id]">Change password</a>
-        <button type="button" class="btn btn-danger" (click)="removeUser(user.id)">Remove</button>
+        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/users/edit/' + user._id]">Edit</a>
+        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/users/change-password/' + user._id]">Change password</a>
+        <button type="button" class="btn btn-danger" (click)="removeUser(user._id)">Remove</button>
       </div>
     </div>
   </div>
