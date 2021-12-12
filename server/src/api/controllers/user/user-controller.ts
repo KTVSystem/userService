@@ -8,7 +8,7 @@ import * as PasswordService from '../../services/password-service';
 import { UserEditDto } from '../../interfaces/user/dtos/user-edit-dto';
 import { UserChangePasswordDto } from '../../interfaces/user/dtos/user-change-password-dto';
 
-export const getUsers = async (): Promise<User[]> => {
+export const getUsers = async () => {
     return await all();
 }
 

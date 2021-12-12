@@ -1,13 +1,13 @@
-import {Role} from './role';
-import {Token} from './token';
+import { Role } from './role';
+import { Token } from './token';
 
 export interface User {
     _id?:string,
     email: string;
     password?: string;
     status: string;
-    role?: Role['_id'];
-    token?: Token['_id'];
+    role?: Role;
+    token?: Token;
     created: Date;
     updated: Date;
 }
