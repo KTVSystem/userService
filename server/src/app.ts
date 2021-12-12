@@ -19,6 +19,14 @@ app.use(function(req, res, next) {
 });
 // Cors
 
+// Auth Middleware
+app.use(async (req, res, next) => {
+    const url = req.url;
+    console.log(url);
+    next();
+});
+// Auth Middleware
+
 app.get('/', (req, res) => {
     res.send('User Service works !!!');
 });

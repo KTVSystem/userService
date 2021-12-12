@@ -10,7 +10,3 @@ const schema = new Schema<Token>({
 });
 
 export const TokenModel = model<Token>('Token', schema);
-
-export const removeTokenEntry = async (id: string) => {
-    await TokenModel.findByIdAndRemove(id);
-}

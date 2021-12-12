@@ -50,7 +50,7 @@ export class UserEditComponent implements OnInit {
   public onSubmit(): void {
     const user: UserEditDto = {
       email: this.editUserForm.value.email,
-      roles: (this.editUserForm.value.role === '0') ? this.roles[0].key :
+      role: (this.editUserForm.value.role === '0') ? this.roles[0].key :
         Array.isArray(this.editUserForm.value.role) ? this.editUserForm.value.role[0] : this.editUserForm.value.role,
       status: (this.editUserForm.value.status === '0') ? this.statuses[0].key : this.editUserForm.value.status
     };
@@ -60,7 +60,7 @@ export class UserEditComponent implements OnInit {
   }
 
   private fillEditUserForm(user: UserEditDto): void {
-    this.editUserForm.patchValue({email: user.email, role: user.roles, status: user.status});
+    this.editUserForm.patchValue({email: user.email, role: user.role.name, status: user.status});
   }
 
   private handleMessage(response: any): void {

@@ -28,4 +28,60 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.post('/', async (req, res) => {
+    try {
+        const user = await UserController.createUser(req.body);
+        res.status(200).json({
+            user: user,
+            message: 'Created successful',
+        });
+    } catch(error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    try {
+        const user = await UserController.editUser(req.params.id, req.body);
+        res.status(200).json({
+            user: user,
+            message: 'Updated successful',
+        });
+    } catch(error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+});
+
+router.put('/:id/change-password', async (req, res) => {
+    try {
+        const user = await UserController.changePassword(req.params.id, req.body);
+        res.status(200).json({
+            user: user,
+            message: 'Password changed successful',
+        });
+    } catch(error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const user = await UserController.deleteUser(req.params.id);
+        res.status(200).json({
+            user: user,
+            message: 'Deleted successful',
+        });
+    } catch(error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+});
+
 export default router;

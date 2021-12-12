@@ -1,12 +1,12 @@
-import { TokenModel } from '../models/user/token-model';
-import { PermissionModel } from '../models/user/permission-model';
-import { RoleModel } from '../models/user/role-model';
-import { UserModel } from '../models/user/user-model';
-import { Token } from '../interfaces/user/token';
-import { Permission } from '../interfaces/user/permission';
-import { Role } from '../interfaces/user/role';
+import { TokenModel } from '../../api/models/user/token-model';
+import { PermissionModel } from '../../api/models/user/permission-model';
+import { RoleModel } from '../../api/models/user/role-model';
+import { UserModel } from '../../api/models/user/user-model';
+import { Token } from '../../api/interfaces/user/token';
+import { Permission } from '../../api/interfaces/user/permission';
+import { Role } from '../../api/interfaces/user/role';
 import * as PasswordService  from '../../api/services/password-service';
-import { Status } from '../enums/status';
+import { Status } from '../../api/interfaces/base/enums/status';
 
 
     export const start = async (): Promise<void> => {

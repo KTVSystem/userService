@@ -1,9 +1,10 @@
 import * as PasswordService from '../../services/password-service';
 import * as JwtService from '../../services/auth/jwt-service';
-import { findByEmail } from '../../../database/models/user/user-model';
-import { Status } from '../../../database/enums/status';
-import { TokenModel, removeTokenEntry } from '../../../database/models/user/token-model';
-import { User } from '../../../database/interfaces/user/user';
+import { findByEmail } from '../../repositories/user/user-repository';
+import { Status } from '../../interfaces/base/enums/status';
+import { TokenModel } from '../../models/user/token-model';
+import { User } from '../../interfaces/user/user';
+import { removeTokenEntry } from '../../repositories/user/token-repository';
 
 export const loginUser = async (email, password): Promise<User> => {
     const user = await findByEmail(email);
