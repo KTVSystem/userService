@@ -1,5 +1,7 @@
+import { Role } from '../role';
+
 export interface UserEditDto {
   email: string;
-  roles: string;
+  role: Role;
   status: string;
 }

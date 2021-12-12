@@ -1,5 +1,5 @@
 import * as mockingoose from 'mockingoose';
-import { TokenModel } from '../../../../database/models/user/token-model';
+import { TokenModel } from '../../../../api/models/user/token-model';
 
 
 describe('Test mongoose Token model', () => {
