@@ -3,10 +3,10 @@ import { UserService } from '../../../services/cabinet/users/user.servise';
 import { UserCreateDto } from '../../../models/cabinet/users/dtos/user-create-dto';
 import { roles } from '../../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Status } from '../../../models/common/status/status';
-import { MessageTypeEnum } from "../../../models/common/message/enums/message-type-enum";
-import {RolesListDto} from "../../../models/cabinet/users/dtos/roles-list-dto";
+import { MessageTypeEnum } from '../../../models/common/message/enums/message-type-enum';
+import { RolesListDto } from '../../../models/cabinet/users/dtos/roles-list-dto';
 
 
 @Component({
@@ -41,7 +41,7 @@ export class UserCreateComponent implements OnInit {
     const user: UserCreateDto = {
       email: this.createUserForm.value.email,
       password: this.createUserForm.value.password,
-      roles: (this.createUserForm.value.role === '0') ? this.roles[0].key : this.createUserForm.value.role,
+      role: (this.createUserForm.value.role === '0') ? this.roles[0].key : this.createUserForm.value.role,
       status: (this.createUserForm.value.status === '0') ? this.statuses[0].key : this.createUserForm.value.status
     };
     this.userService.createUser(user).subscribe((response) => {

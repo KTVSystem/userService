@@ -1,5 +1,5 @@
 import * as mockingoose from 'mockingoose';
-import { PermissionModel } from '../../../../database/models/user/permission-model';
+import { PermissionModel } from '../../../../api/models/user/permission-model';
 
 
 describe('Test mongoose Permission model', () => {

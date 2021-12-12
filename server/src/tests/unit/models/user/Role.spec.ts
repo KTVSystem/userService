@@ -1,5 +1,5 @@
 import * as mockingoose from 'mockingoose';
-import { RoleModel } from '../../../../database/models/user/role-model';
+import { RoleModel } from '../../../../api/models/user/role-model';
 
 
 describe('Test mongoose Role model', () => {

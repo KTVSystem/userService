@@ -1,5 +1,5 @@
 import jwt from 'json-web-token';
-import { User } from '../../../database/interfaces/user/user';
+import { User } from '../../interfaces/user/user';
 import { secret }  from '../../../config/settings';
 
 export const createToken = async (user: User) => {
@@ -19,3 +19,13 @@ export const createToken = async (user: User) => {
         }
     });
 };
+
+export const decodeToken = async (token) => {
+    return jwt.decode(secret, token, (err, decodedPayload) => {
+        if (err) {
+            return false;
+        } else {
+            return decodedPayload;
+        }
+    });
+}

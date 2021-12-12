@@ -1,6 +1,6 @@
 export interface UserCreateDto {
   email: string;
   password: string;
-  roles: string;
+  role: string;
   status: string;
 }
