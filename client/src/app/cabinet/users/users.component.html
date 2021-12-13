@@ -7,17 +7,17 @@
       <div class="input-block">
         <select class="form-select" aria-label="Default select example" formControlName="role">
           <option value="0">Role</option>
-          <option value="ROLE_USER">User</option>
-          <option value="ROLE_ADMIN">Admin</option>
-          <option value="ROLE_SUPER_ADMIN">Super_Admin</option>
+          <ng-container *ngFor="let role of roles">
+            <option value="{{role.key}}">{{role.title}}</option>
+          </ng-container>
         </select>
       </div>
       <div class="input-block">
         <select class="form-select" aria-label="Default select example" formControlName="status">
           <option value="0">Status</option>
-          <option value="new">New</option>
-          <option value="active">Active</option>
-          <option value="blocked">Blocked</option>
+          <ng-container *ngFor="let status of statuses">
+            <option value="{{status.key}}">{{status.title}}</option>
+          </ng-container>
         </select>
       </div>
       <button type="submit" class="btn btn-success">Filter</button>
