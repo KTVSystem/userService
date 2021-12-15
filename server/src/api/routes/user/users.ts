@@ -4,9 +4,11 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const users = await UserController.getUsers();
+        const users = await UserController.getUsers(req.query);
+        const userCount = await UserController.getUsersCount(req.query);
         res.status(200).json({
-            users: users
+            users: users,
+            count: userCount
         });
     } catch(error) {
         res.status(400).json({

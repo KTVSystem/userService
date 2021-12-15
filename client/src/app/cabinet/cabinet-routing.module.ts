@@ -16,26 +16,80 @@ const routes: Routes = [
       {
         path: '',
         component: HomeComponent,
+        data: {
+          breadcrumb: {
+            label: 'Home'
+          }
+        }
       },
       {
         path: 'users',
         component: UsersComponent,
+        data: {
+          breadcrumb: {
+            label: 'Users'
+          }
+        }
       },
       {
         path: 'users/create',
         component: UserCreateComponent,
+        data: {
+          breadcrumb: {
+            label: 'Create user',
+            parent: [
+              {
+                label: 'Users',
+                link: '/cabinet/users'
+              }
+            ]
+          }
+        }
       },
       {
         path: 'users/edit/:id',
         component: UserEditComponent,
+        data: {
+          breadcrumb: {
+            label: 'Edit user',
+            parent: [
+              {
+                label: 'Users',
+                link: '/cabinet/users'
+              }
+            ]
+          }
+        }
       },
       {
         path: 'users/change-password/:id',
         component: UserChangePasswordComponent,
+        data: {
+          breadcrumb: {
+            label: 'Change user password',
+            parent: [
+              {
+                label: 'Users',
+                link: '/cabinet/users'
+              }
+            ]
+          }
+        }
       },
       {
         path: 'users/:id',
         component: UserDetailComponent,
+        data: {
+          breadcrumb: {
+            label: 'User detail',
+            parent: [
+              {
+                label: 'Users',
+                link: '/cabinet/users'
+              }
+            ]
+          }
+        }
       },
     ],
   },

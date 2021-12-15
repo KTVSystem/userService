@@ -1,0 +1,11 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/cabinet">Home</a></li>
+    <ng-container *ngIf="!isHomePage && isData">
+      <li class="breadcrumb-item" *ngFor="let parent of parentLinks">
+        <a routerLink="{{ parent.link }}">{{ parent.label }}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{ currentLinkLabel }}</li>
+    </ng-container>
+  </ol>
+</nav>
