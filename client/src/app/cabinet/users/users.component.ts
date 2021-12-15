@@ -73,13 +73,12 @@ export class UsersComponent implements OnInit {
       this.filterQueryString = '?page=' + this.paginationService.page;
     } else {
       this.filterQueryString = this.clearPageString(this.filterQueryString);
-      this.filterQueryString = this.filterQueryString !== ''
-        ? this.filterQueryString + '&page=' + this.paginationService.page
-        : this.filterQueryString + '?page=' + this.paginationService.page;
+      const separator = this.filterQueryString !== '' ? '&' : '?';
+      this.filterQueryString = this.filterQueryString + separator + 'page=' + this.paginationService.page;
     }
   }
 
-  private clearPageString(filterQueryString: string) {
+  private clearPageString(filterQueryString: string): string {
     let filteredString = '';
     const splitArray = filterQueryString.split('&');
     splitArray.forEach((item) => {

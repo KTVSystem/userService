@@ -26,18 +26,6 @@ header {
     background: $white-color;
     border-bottom: 2px solid $base-color;
 
-      .breadcrumb {
-        padding: 15px 0 0 20px;
-
-        .active {
-          color: $base-grey;
-        }
-
-        a {
-          color: $base-color;
-        }
-      }
-
       .notify-block {
         display: flex;
         flex-direction: row-reverse;

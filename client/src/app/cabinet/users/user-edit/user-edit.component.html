@@ -4,7 +4,8 @@
   </div>
   <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
     <div class="input-block">
-      <input type="text" class="form-control" formControlName="email" placeholder="Email" />
+      <label for="email" class="form-label">Email</label>
+      <input type="text" class="form-control" id="email" formControlName="email" placeholder="Email" />
       <div *ngIf="editUserForm.controls.email.invalid && (editUserForm.controls.email.dirty || editUserForm.controls.email.touched)" class="error">
         <div *ngIf="editUserForm.controls.email.errors?.required">
           Please enter an email
@@ -15,7 +16,8 @@
       </div>
     </div>
     <div class="input-block">
-      <select class="form-select" aria-label="Default select example" formControlName="role">
+      <label for="role" class="form-label">Role</label>
+      <select class="form-select" id="role" aria-label="Default select example" formControlName="role">
         <option value="0">Role</option>
         <ng-container *ngFor="let role of roles">
           <option value="{{role.key}}">{{role.title}}</option>
@@ -23,7 +25,8 @@
       </select>
     </div>
     <div class="input-block">
-      <select class="form-select" aria-label="Default select example" formControlName="status">
+      <label for="status" class="form-label">Status</label>
+      <select class="form-select" id="status" aria-label="Default select example" formControlName="status">
         <option value="0">Status</option>
         <ng-container *ngFor="let status of statuses">
           <option value="{{status.key}}">{{status.title}}</option>
