@@ -14,6 +14,10 @@ import { UserCreateComponent } from './users/user-create/user-create.component';
 import { UserEditComponent } from './users/user-edit/user-edit.component';
 import { UserChangePasswordComponent } from './users/user-change-password/user-change-password.component';
 import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component';
+import { PermissionsComponent } from './permissions/permissions.component';
+import { PermissionDetailComponent } from './permissions/permission-detail/permission-detail.component';
+import { PermissionCreateComponent } from './permissions/permission-create/permission-create.component';
+import { PermissionEditComponent } from './permissions/permission-edit/permission-edit.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,11 @@ import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component
     UserDetailComponent,
     UserCreateComponent,
     UserEditComponent,
-    UserChangePasswordComponent
+    UserChangePasswordComponent,
+    PermissionsComponent,
+    PermissionDetailComponent,
+    PermissionCreateComponent,
+    PermissionEditComponent
   ],
   imports: [
     CommonModule,

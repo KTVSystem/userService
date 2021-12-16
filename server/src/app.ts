@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import auth from './api/routes/auth/auth';
 import users from './api/routes/user/users';
+import permissions from './api/routes/user/permissions';
 import seed from './api/routes/system/seed';
 import { authUrlLst } from './api/interfaces/base/lists/auth-url-list';
 import * as AuthController from './api/controllers/auth/auth-controller';
@@ -24,13 +25,15 @@ app.use(function(req, res, next) {
 // Auth Middleware
 app.use(async (req, res, next) => {
     const url = req.url;
-    if (authUrlLst.includes(url) && String(req.method) !== 'OPTIONS') {
-        const token = String(req.header('authorization')).substring(7);
-        const result = await AuthController.checkToken(token);
-        if (!result) {
-            return res.status(401).json({
-                message: 'Unauthorized'
-            });
+    for (const authUrl of authUrlLst) {
+        if (url.indexOf(authUrl) !== -1 && String(req.method) !== 'OPTIONS') {
+            const token = String(req.header('authorization')).substring(7);
+            const result = await AuthController.checkToken(token);
+            if (!result) {
+                res.status(401).json({
+                    message: 'Unauthorized'
+                });
+            }
         }
     }
     next();
@@ -43,6 +46,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', auth);
 app.use('/users', users);
+app.use('/permissions', permissions);
 app.use('/seed', seed);
 
 export default app;

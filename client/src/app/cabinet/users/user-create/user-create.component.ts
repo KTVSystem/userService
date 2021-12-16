@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/cabinet/users/user.servise';
-import { UserCreateDto } from '../../../models/cabinet/users/dtos/user-create-dto';
+import { UserCreateDto } from '../../../models/cabinet/users/dtos/user/user-create-dto';
 import { roles } from '../../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from '@angular/forms';

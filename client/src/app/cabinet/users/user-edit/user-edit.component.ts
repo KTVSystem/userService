@@ -6,7 +6,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Status } from '../../../models/common/status/status';
 import { MessageTypeEnum } from "../../../models/common/message/enums/message-type-enum";
 import { ActivatedRoute } from '@angular/router';
-import { UserEditDto } from '../../../models/cabinet/users/dtos/user-edit-dto';
+import { UserEditDto } from '../../../models/cabinet/users/dtos/user/user-edit-dto';
 import { RolesListDto } from '../../../models/cabinet/users/dtos/roles-list-dto';
 
 

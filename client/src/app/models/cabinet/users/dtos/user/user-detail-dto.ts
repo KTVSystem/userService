@@ -1,6 +1,6 @@
-import { Social } from '../social';
-import { Permission } from '../permission';
-import { Role } from '../role';
+import { Social } from '../../social';
+import { Permission } from '../../permission';
+import { Role } from '../../role';
 
 export interface UserDetailDto {
   email: string;

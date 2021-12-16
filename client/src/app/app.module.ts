@@ -11,6 +11,7 @@ import { LoginService } from './services/login/login.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TokenService } from './services/token/token.service';
 import { UserService } from './services/cabinet/users/user.servise';
+import { PermissionService } from './services/cabinet/permissions/permission.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { UserService } from './services/cabinet/users/user.servise';
   providers: [
     LoginService,
     TokenService,
-    UserService
+    UserService,
+    PermissionService
   ],
   bootstrap: [AppComponent]
 })
