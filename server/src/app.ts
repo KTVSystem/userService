@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import auth from './api/routes/auth/auth';
 import users from './api/routes/user/users';
 import permissions from './api/routes/user/permissions';
+import roles from './api/routes/user/roles';
 import seed from './api/routes/system/seed';
 import { authUrlLst } from './api/interfaces/base/lists/auth-url-list';
 import * as AuthController from './api/controllers/auth/auth-controller';
@@ -47,6 +48,7 @@ app.get('/', (req, res) => {
 app.use('/auth', auth);
 app.use('/users', users);
 app.use('/permissions', permissions);
+app.use('/roles', roles);
 app.use('/seed', seed);
 
 export default app;

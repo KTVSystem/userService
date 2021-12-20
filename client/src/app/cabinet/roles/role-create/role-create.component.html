@@ -1,0 +1,26 @@
+<div class="role-create">
+  <div class="alert alert-{{responseMessageType}}" role="alert" *ngIf="responseMessage && responseMessageType">
+    {{responseMessage}}
+  </div>
+  <form [formGroup]="createRoleForm" (ngSubmit)="onSubmit()">
+    <div class="input-block">
+      <label for="email" class="form-label">Name</label>
+      <input type="text" class="form-control" id="email" formControlName="name" placeholder="Name" />
+      <div *ngIf="createRoleForm.controls.name.invalid && (createRoleForm.controls.name.dirty || createRoleForm.controls.name.touched)" class="error">
+        <div *ngIf="createRoleForm.controls.name.errors?.required">
+          Please enter an name
+        </div>
+      </div>
+    </div>
+    <div class="input-block">
+      <label for="status" class="form-label">Status</label>
+      <select class="form-select" id="status" aria-label="Default select example" formControlName="status">
+        <option value="0">Status</option>
+        <ng-container *ngFor="let status of statuses">
+          <option value="{{status.key}}">{{status.title}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!createRoleForm.valid">Create</button>
+  </form>
+</div>

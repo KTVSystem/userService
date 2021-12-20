@@ -1,6 +1,6 @@
-<div class="permissions-block">
-  <div class="permissions-filter">
-    <form [formGroup]="permissionsFilterForm" (ngSubmit)="onSubmit()">
+<div class="roles-block">
+  <div class="roles-filter">
+    <form [formGroup]="rolesFilterForm" (ngSubmit)="onSubmit()">
       <div class="input-block">
         <input class="form-control" type="text" formControlName="name" placeholder="Name" />
       </div>
@@ -18,11 +18,11 @@
     <hr>
   </div>
   <div class="permission-create">
-    <a [routerLink]="['/cabinet/permissions/create']" class="btn btn-success">Create permission</a>
+    <a [routerLink]="['/cabinet/roles/create']" class="btn btn-success">Create role</a>
     <hr>
   </div>
   <div class="permissions-table">
-    <table class="table" *ngIf="permissions.length > 0;else no_users">
+    <table class="table" *ngIf="roles.length > 0;else no_users">
       <thead>
       <tr>
         <th scope="col">#</th>
@@ -32,17 +32,17 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let permission of permissions; let i = index;">
+      <tr *ngFor="let role of roles; let i = index;">
         <th scope="row">{{i + 1}}</th>
-        <td>{{permission.name}}</td>
+        <td>{{role.name}}</td>
         <td>
-          <span class="badge bg-secondary" [className]="'badge bg-secondary badge-' + permission.status">{{permission.status}}</span>
+          <span class="badge bg-secondary" [className]="'badge bg-secondary badge-' + role.status">{{ role.status }}</span>
         </td>
-        <td><a class="btn btn-primary" [routerLink]="['/cabinet/permissions/' + permission._id]">Open</a></td>
+        <td><a class="btn btn-primary" [routerLink]="['/cabinet/roles/' + role._id]">Open</a></td>
       </tr>
       </tbody>
     </table>
-    <ng-template #no_users>There are not permissions ...</ng-template>
+    <ng-template #no_users>There are not roles ...</ng-template>
   </div>
-  <app-pagination [model]="permissions" (previousPage)="onPreviousPage()" (nextPage)="onNextPage()"></app-pagination>
+  <app-pagination [model]="roles" (previousPage)="onPreviousPage()" (nextPage)="onNextPage()"></app-pagination>
 </div>

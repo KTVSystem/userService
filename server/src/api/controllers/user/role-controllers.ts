@@ -1,0 +1,38 @@
+import { allByQuery, allRoleCount, findRoleById, removeRoleById } from '../../repositories/user/role-repository';
+import { Role } from '../../interfaces/user/role';
+import { RoleDto } from '../../interfaces/user/dtos/role/role-dto';
+import { RoleModel } from '../../models/user/role-model';
+
+export const getRoleCount = async (params: any) => {
+    return  await allRoleCount(params);
+}
+
+export const getRoles= async (params: any) => {
+    return await allByQuery(params);
+}
+
+export const getPermission = async (id: string): Promise<Role> => {
+    return await findRoleById(id);
+}
+
+export const createRole = async (roleDto: RoleDto): Promise<Role> => {
+    return await RoleModel.create({
+        name: roleDto.name,
+        status: roleDto.status,
+        created: new Date(),
+        updated: new Date(),
+    });
+}
+
+export const editRole = async (id: string, roleDto: RoleDto): Promise<Role> => {
+    const role = await findRoleById(id);
+    role.name = roleDto.name;
+    role.status = roleDto.status;
+    role.updated = new Date();
+    await role.updateOne(role);
+    return role;
+}
+
+export const deleteRole = async (id: string): Promise<void> => {
+    await removeRoleById(id);
+}

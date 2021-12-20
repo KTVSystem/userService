@@ -1,0 +1,25 @@
+<div class="role-detail" *ngIf="role">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            <h4>Data</h4>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><span>Id: </span> {{role._id}}</li>
+            <li class="list-group-item"><span>Name: </span> {{role.name}}</li>
+            <li class="list-group-item"><span>Status: </span> {{role.status}}</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-12 mt-3">
+        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/roles/edit/' + role._id]">Edit</a>
+        <button type="button" class="btn btn-danger" (click)="removeRole(role._id)">Remove</button>
+      </div>
+    </div>
+  </div>
+</div>

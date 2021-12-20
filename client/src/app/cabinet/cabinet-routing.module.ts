@@ -12,6 +12,10 @@ import { PermissionsComponent } from './permissions/permissions.component';
 import { PermissionDetailComponent } from './permissions/permission-detail/permission-detail.component';
 import { PermissionCreateComponent } from './permissions/permission-create/permission-create.component';
 import { PermissionEditComponent } from './permissions/permission-edit/permission-edit.component';
+import { RolesComponent } from './roles/roles.component';
+import { RoleDetailComponent } from './roles/role-detail/role-detail.component';
+import { RoleCreateComponent } from './roles/role-create/role-create.component';
+import { RoleEditComponent } from './roles/role-edit/role-edit.component';
 
 const routes: Routes = [
   {
@@ -155,6 +159,63 @@ const routes: Routes = [
         }
       },
       //Permissions
+
+      //Roles
+      {
+        path: 'roles',
+        component: RolesComponent,
+        data: {
+          breadcrumb: {
+            label: 'Roles'
+          }
+        }
+      },
+      {
+        path: 'roles/create',
+        component: RoleCreateComponent,
+        data: {
+          breadcrumb: {
+            label: 'Create role',
+            parent: [
+              {
+                label: 'Roles',
+                link: '/cabinet/roles'
+              }
+            ]
+          }
+        }
+      },
+      {
+        path: 'roles/:id',
+        component: RoleDetailComponent,
+        data: {
+          breadcrumb: {
+            label: 'Roles detail',
+            parent: [
+              {
+                label: 'Roles',
+                link: '/cabinet/roles'
+              }
+            ]
+          }
+        }
+      },
+      {
+        path: 'roles/edit/:id',
+        component: RoleEditComponent,
+        data: {
+          breadcrumb: {
+            label: 'Edit role',
+            parent: [
+              {
+                label: 'Roles',
+                link: '/cabinet/roles'
+              }
+            ]
+          }
+        }
+      },
+      //Roles
     ],
   },
 ];

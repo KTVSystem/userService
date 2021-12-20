@@ -18,6 +18,10 @@ import { PermissionsComponent } from './permissions/permissions.component';
 import { PermissionDetailComponent } from './permissions/permission-detail/permission-detail.component';
 import { PermissionCreateComponent } from './permissions/permission-create/permission-create.component';
 import { PermissionEditComponent } from './permissions/permission-edit/permission-edit.component';
+import { RolesComponent } from './roles/roles.component';
+import { RoleDetailComponent } from './roles/role-detail/role-detail.component';
+import { RoleCreateComponent } from './roles/role-create/role-create.component';
+import { RoleEditComponent } from './roles/role-edit/role-edit.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,11 @@ import { PermissionEditComponent } from './permissions/permission-edit/permissio
     PermissionsComponent,
     PermissionDetailComponent,
     PermissionCreateComponent,
-    PermissionEditComponent
+    PermissionEditComponent,
+    RolesComponent,
+    RoleDetailComponent,
+    RoleCreateComponent,
+    RoleEditComponent,
   ],
   imports: [
     CommonModule,

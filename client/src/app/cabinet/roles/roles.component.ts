@@ -3,24 +3,24 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
 import { Status } from '../../models/common/status/status';
 import { statuses } from '../../models/common/status/lists/statuses-list';
-import { PermissionService } from "../../services/cabinet/permissions/permission.service";
-import { Permission } from "../../models/cabinet/users/permission";
+import { Role } from '../../models/cabinet/users/role';
+import { RolesService } from '../../services/cabinet/roles/roles.service';
 
 @Component({
-  selector: 'app-permissions',
-  templateUrl: './permissions.component.html',
-  styleUrls: ['./permissions.component.scss']
+  selector: 'app-roles',
+  templateUrl: './roles.component.html',
+  styleUrls: ['./roles.component.scss']
 })
-export class PermissionsComponent implements OnInit {
-  public permissions: Array<Permission> = [];
+export class RolesComponent implements OnInit {
+  public roles: Array<Role> = [];
   public statuses: Array<Status>;
-  public permissionsFilterForm = new FormGroup({
+  public rolesFilterForm = new FormGroup({
     name: new FormControl(''),
     status: new FormControl('0'),
   });
   public filterQueryString: string = '';
 
-  constructor(public paginationService: PaginationService, private permissionService: PermissionService) { }
+  constructor(public paginationService: PaginationService, private rolesService: RolesService) { }
 
   ngOnInit(): void {
     this.getUsers();
@@ -28,23 +28,23 @@ export class PermissionsComponent implements OnInit {
   }
 
   private getUsers(): void {
-    this.permissionService.getPermissions(this.filterQueryString).subscribe((response) => {
-      this.permissions = response.permissions;
-      console.log(this.permissions);
+    this.rolesService.getRoles(this.filterQueryString).subscribe((response) => {
+      this.roles = response.roles;
+      console.log(this.roles);
       this.paginationService.initializaPagination.next(response.count);
     });
   }
 
   public onSubmit(): void {
-    const name = (this.permissionsFilterForm.value.name !== '') ? this.permissionsFilterForm.value.name : null;
-    const status = (this.permissionsFilterForm.value.status !== '0') ? this.permissionsFilterForm.value.status : null;
+    const name = (this.rolesFilterForm.value.name !== '') ? this.rolesFilterForm.value.name : null;
+    const status = (this.rolesFilterForm.value.status !== '0') ? this.rolesFilterForm.value.status : null;
     this.filterQueryString = this.createFilterQueryParam(name, status);
     this.paginationService.page = 1;
     this.getUsers();
   }
 
   public clearFilters(): void {
-    this.permissionsFilterForm.patchValue({
+    this.rolesFilterForm.patchValue({
       name: '',
       status: '0'
     });
