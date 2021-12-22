@@ -24,6 +24,11 @@ export class PermissionService {
       .pipe(catchError(this.error));
   }
 
+  public getPermissionsAll(): Observable<any> {
+    return this.http.get(this.baseUrl + 'all', { headers: this.headers })
+      .pipe(catchError(this.error));
+  }
+
   public getPermissionById(id: number): Observable<any> {
     return this.http.get(this.baseUrl + id, { headers: this.headers })
       .pipe(catchError(this.error));

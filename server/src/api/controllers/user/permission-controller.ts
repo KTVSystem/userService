@@ -1,5 +1,5 @@
 import {
-    allByQuery,
+    allByQuery, allByQueryFilter,
     allPermissionCount,
     findPermissionById,
     removePermissionById
@@ -14,7 +14,11 @@ export const getPermissionCount = async (params: any) => {
 }
 
 export const getPermissions = async (params: any) => {
-    return await allByQuery(params);
+    return await allByQueryFilter(params);
+}
+
+export const getPermissionsAll = async () => {
+    return await allByQuery();
 }
 
 export const getPermission = async (id: string): Promise<Permission> => {

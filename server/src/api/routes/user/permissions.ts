@@ -17,6 +17,19 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/all', async (req, res) => {
+    try {
+        const permissions = await PermissionController.getPermissionsAll();
+        res.status(200).json({
+            permissions: permissions,
+        });
+    } catch(error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         const permission = await PermissionController.getPermission(req.params.id);

@@ -14,7 +14,7 @@ export const allPermissionCount = async (params) => {
     return query.count();
 }
 
-export const allByQuery = async (params: any) => {
+export const allByQueryFilter = async (params: any) => {
     const {name, status} = params;
 
     const page = (typeof params.page !== 'undefined') ? params.page : 1;
@@ -31,6 +31,10 @@ export const allByQuery = async (params: any) => {
     return query.skip(skip).limit(perPageValue);
 }
 
+export const allByQuery = async () => {
+    return PermissionModel.find({});
+}
+
 export const findPermissionById = async (id: string) => {
     const permission = (await PermissionModel.find({ _id: id }).limit(1))[0];
     if (typeof permission !== 'undefined') {
@@ -41,4 +45,8 @@ export const findPermissionById = async (id: string) => {
 
 export const removePermissionById = async (id: string) => {
     return PermissionModel.findOneAndRemove({_id: id});
+}
+
+export const getMultiplePermissionsByIds = async (permissionsIds: Array<string>) => {
+    return PermissionModel.find({ '_id': { $in: permissionsIds } });
 }

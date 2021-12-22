@@ -6,6 +6,8 @@ import { MessageTypeEnum } from "../../../models/common/message/enums/message-ty
 import { ActivatedRoute } from '@angular/router';
 import { RolesService } from '../../../services/cabinet/roles/roles.service';
 import { RoleCreateDto } from '../../../models/cabinet/users/dtos/role/role-create-dto';
+import {PermissionService} from "../../../services/cabinet/permissions/permission.service";
+import {Permission} from "../../../models/cabinet/users/permission";
 
 
 @Component({
@@ -17,14 +19,16 @@ export class RoleEditComponent implements OnInit {
   public editRoleForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     status: new FormControl('0'),
+    permissions: new FormControl([]),
   });
   public statuses: Array<Status>;
   responseMessage: string;
   responseMessageType: string;
   public role: RoleCreateDto;
   public id: number;
+  public permissions: Array<Permission> = [];
 
-  constructor(private rolesService: RolesService, private route: ActivatedRoute) { }
+  constructor(private rolesService: RolesService, private route: ActivatedRoute, private permissionService: PermissionService) { }
 
   ngOnInit(): void {
     this.statuses = statuses;
@@ -36,12 +40,16 @@ export class RoleEditComponent implements OnInit {
       }
       console.log(this.role);
     });
+    this.permissionService.getPermissionsAll().subscribe((response) => {
+      this.permissions = response.permissions;
+    });
   }
 
   public onSubmit(): void {
     const role: RoleCreateDto = {
       name: this.editRoleForm.value.name,
-      status: (this.editRoleForm.value.status === '0') ? this.statuses[0].key : this.editRoleForm.value.status
+      status: (this.editRoleForm.value.status === '0') ? this.statuses[0].key : this.editRoleForm.value.status,
+      permissions: this.editRoleForm.value.permissions,
     };
     this.rolesService.editRole(this.id, role).subscribe((response) => {
       this.handleMessage(response);

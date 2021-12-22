@@ -21,6 +21,14 @@
         </ng-container>
       </select>
     </div>
+    <div class="input-block">
+      <label for="status" class="form-label">Permissions</label>
+      <select class="form-select" multiple aria-label="multiple select example" size="20" formControlName="permissions">
+        <ng-container *ngFor="let permission of permissions">
+          <option value="{{permission._id}}">{{permission.name}}</option>
+        </ng-container>
+      </select>
+    </div>
     <button type="submit" class="btn btn-success" [disabled]="!createRoleForm.valid">Create</button>
   </form>
 </div>
