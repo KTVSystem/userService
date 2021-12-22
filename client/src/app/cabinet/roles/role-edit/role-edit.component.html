@@ -1,0 +1,34 @@
+<div class="role-edit">
+  <div class="alert alert-{{responseMessageType}}" role="alert" *ngIf="responseMessage && responseMessageType">
+    {{responseMessage}}
+  </div>
+  <form [formGroup]="editRoleForm" (ngSubmit)="onSubmit()">
+    <div class="input-block">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="Name" />
+      <div *ngIf="editRoleForm.controls.name.invalid && (editRoleForm.controls.name.dirty || editRoleForm.controls.name.touched)" class="error">
+        <div *ngIf="editRoleForm.controls.name.errors?.required">
+          Please enter an name
+        </div>
+      </div>
+    </div>
+    <div class="input-block">
+      <label for="status" class="form-label">Status</label>
+      <select class="form-select" id="status" aria-label="Default select example" formControlName="status">
+        <option value="0">Status</option>
+        <ng-container *ngFor="let status of statuses">
+          <option value="{{status.key}}">{{status.title}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <div class="input-block">
+      <label for="status" class="form-label">Permissions</label>
+      <select class="form-select" multiple aria-label="select" size="20" formControlName="permissions">
+        <ng-container *ngFor="let permission of permissions">
+          <option value="{{permission._id}}">{{permission.name}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!editRoleForm.valid">Edit</button>
+  </form>
+</div>

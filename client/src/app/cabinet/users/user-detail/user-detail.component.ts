@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/cabinet/users/user.servise';
-import { UserDetailDto } from "../../../models/cabinet/users/dtos/user-detail-dto";
+import { UserDetailDto } from "../../../models/cabinet/users/dtos/user/user-detail-dto";
 
 @Component({
   selector: 'app-user-detail',

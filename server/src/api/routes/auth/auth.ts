@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/signin', async (req, res) => {
     try {
-        const user = await AuthController.loginUser(req.body.email, req.body.password);
+        const user = await AuthController.loginUser(req.body.email, req.body.password, req.body.type);
         res.status(200).json({
             token: user.token.hash
         });

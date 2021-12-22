@@ -1,0 +1,48 @@
+<div class="permissions-block">
+  <div class="permissions-filter">
+    <form [formGroup]="permissionsFilterForm" (ngSubmit)="onSubmit()">
+      <div class="input-block">
+        <input class="form-control" type="text" formControlName="name" placeholder="Name" />
+      </div>
+      <div class="input-block">
+        <select class="form-select" aria-label="Default select example" formControlName="status">
+          <option value="0">Status</option>
+          <ng-container *ngFor="let status of statuses">
+            <option value="{{status.key}}">{{status.title}}</option>
+          </ng-container>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">Filter</button>
+      <button type="submit" class="btn btn-danger" (click)="clearFilters()">Clear</button>
+    </form>
+    <hr>
+  </div>
+  <div class="permission-create">
+    <a [routerLink]="['/cabinet/permissions/create']" class="btn btn-success">Create permission</a>
+    <hr>
+  </div>
+  <div class="permissions-table">
+    <table class="table" *ngIf="permissions.length > 0;else no_users">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let permission of permissions; let i = index;">
+        <th scope="row">{{i + 1}}</th>
+        <td>{{permission.name}}</td>
+        <td>
+          <span class="badge bg-secondary" [className]="'badge bg-secondary badge-' + permission.status">{{permission.status}}</span>
+        </td>
+        <td><a class="btn btn-primary" [routerLink]="['/cabinet/permissions/' + permission._id]">Open</a></td>
+      </tr>
+      </tbody>
+    </table>
+    <ng-template #no_users>There are not permissions ...</ng-template>
+  </div>
+  <app-pagination [model]="permissions" (previousPage)="onPreviousPage()" (nextPage)="onNextPage()"></app-pagination>
+</div>

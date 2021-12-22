@@ -18,7 +18,8 @@ export class LoginService {
   }
 
   public signIn(login: Login): Observable<any> {
-    return this.http.post(this.baseUrl + 'signin', {email: login.email, password: login.password}, { headers: this.headers })
+    return this.http.post(this.baseUrl + 'signin', {email: login.email, password: login.password, type: 'Admin'},
+      { headers: this.headers })
       .pipe(catchError(this.error));
   }
 

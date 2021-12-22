@@ -1,0 +1,25 @@
+<div class="permission-detail" *ngIf="permission">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-header">
+            <h4>Data</h4>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><span>Id: </span> {{permission._id}}</li>
+            <li class="list-group-item"><span>Email: </span> {{permission.name}}</li>
+            <li class="list-group-item"><span>Status: </span> {{permission.status}}</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-12 mt-3">
+        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/permissions/edit/' + permission._id]">Edit</a>
+        <button type="button" class="btn btn-danger" (click)="removePermission(permission._id)">Remove</button>
+      </div>
+    </div>
+  </div>
+</div>
