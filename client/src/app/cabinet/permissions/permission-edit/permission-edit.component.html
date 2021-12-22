@@ -1,0 +1,26 @@
+<div class="permission-edit">
+  <div class="alert alert-{{responseMessageType}}" role="alert" *ngIf="responseMessage && responseMessageType">
+    {{responseMessage}}
+  </div>
+  <form [formGroup]="editPermissionForm" (ngSubmit)="onSubmit()">
+    <div class="input-block">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="Name" />
+      <div *ngIf="editPermissionForm.controls.name.invalid && (editPermissionForm.controls.name.dirty || editPermissionForm.controls.name.touched)" class="error">
+        <div *ngIf="editPermissionForm.controls.name.errors?.required">
+          Please enter an name
+        </div>
+      </div>
+    </div>
+    <div class="input-block">
+      <label for="status" class="form-label">Status</label>
+      <select class="form-select" id="status" aria-label="Default select example" formControlName="status">
+        <option value="0">Status</option>
+        <ng-container *ngFor="let status of statuses">
+          <option value="{{status.key}}">{{status.title}}</option>
+        </ng-container>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!editPermissionForm.valid">Edit</button>
+  </form>
+</div>

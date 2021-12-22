@@ -3,7 +3,7 @@ import { UserService } from '../../../services/cabinet/users/user.servise';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageTypeEnum } from '../../../models/common/message/enums/message-type-enum';
 import { ActivatedRoute } from '@angular/router';
-import { UserChangePasswordDto } from '../../../models/cabinet/users/dtos/user-change-password-dto';
+import { UserChangePasswordDto } from '../../../models/cabinet/users/dtos/user/user-change-password-dto';
 
 
 @Component({
