@@ -5,10 +5,14 @@ import { Status } from '../../interfaces/base/enums/status';
 import { TokenModel } from '../../models/user/token-model';
 import { User } from '../../interfaces/user/user';
 import { removeTokenEntry } from '../../repositories/user/token-repository';
+import { AuthTypes } from '../../interfaces/base/enums/auth-types';
 
-export const loginUser = async (email, password): Promise<User> => {
+export const loginUser = async (email: string, password: string, type: string): Promise<User> => {
     const user = await findUserByEmail(email);
     if (user && await PasswordService.comparePassword(password, user.password)) {
+        if (type === AuthTypes.ADMIN && user.role.name !== AuthTypes.ADMIN) {
+            throw new Error('User does not have permission level!');
+        }
         const tokenHash = await JwtService.createToken(user);
 
         if (typeof user.token !== 'undefined') {
