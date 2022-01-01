@@ -16,7 +16,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - ./data:/data/db
+      - ./helper:/helper/db
     container_name: mongo
   client:
       build:
