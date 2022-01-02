@@ -1,4 +1,4 @@
-import {RoleModel} from '../../../../api/models/user/role-model';
+import { RoleModel } from '../../../../api/models/user/role-model';
 import { roleAdminDto, roleUserDto } from '../dtos/roleDto';
 
 
