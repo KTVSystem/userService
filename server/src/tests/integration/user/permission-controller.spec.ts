@@ -62,9 +62,9 @@ describe('Test Permission Controller', () => {
 
     it('Get permission by id, permission doesn\'t exist', async () => {
         const permission = await buildPermission();
-        const mistakeUserId = String(permission._id).slice(0, -1) + '1';
+        const mistakePermissionId = String(permission._id).slice(0, -1) + '1';
         const token = await getToken();
-        const response = await agent.get('/permissions/' + mistakeUserId)
+        const response = await agent.get('/permissions/' + mistakePermissionId)
             .set('Authorization', `Bearer ${token}`)
             .send();
 
