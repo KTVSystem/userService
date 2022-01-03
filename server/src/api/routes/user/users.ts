@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const user = await UserController.createUser(req.body);
-        res.status(200).json({
+        res.status(201).json({
             user: user,
             message: 'Created successful',
         });
@@ -74,9 +74,8 @@ router.put('/:id/change-password', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const user = await UserController.deleteUser(req.params.id);
+        await UserController.deleteUser(req.params.id);
         res.status(200).json({
-            user: user,
             message: 'Deleted successful',
         });
     } catch(error) {

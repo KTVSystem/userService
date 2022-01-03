@@ -3,7 +3,7 @@ import { Permission } from './permission';
 export interface Role {
     name: string;
     status: string;
-    permissions: Permission[];
+    permissions?: Permission[];
     created: Date;
     updated: Date;
 }

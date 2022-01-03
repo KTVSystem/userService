@@ -1,3 +1,4 @@
 {
-  "testRegex":"./tests/.*\\.(spec.ts|spec.js)$"
+  "testRegex":"./tests/.*\\.(spec.ts|spec.js)$",
+  "testTimeout": 2000000
 }
