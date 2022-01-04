@@ -13,6 +13,11 @@ import { TokenService } from './services/token/token.service';
 import { UserService } from './services/cabinet/users/user.servise';
 import { PermissionService } from './services/cabinet/permissions/permission.service';
 import { RolesService } from './services/cabinet/roles/roles.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -25,7 +30,12 @@ import { RolesService } from './services/cabinet/roles/roles.service';
     HttpClientModule,
     ReactiveFormsModule,
     CabinetModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    FlexLayoutModule,
+    MatButtonModule,
+    MatSnackBarModule
   ],
   providers: [
     LoginService,
