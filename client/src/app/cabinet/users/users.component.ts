@@ -23,6 +23,7 @@ export class UsersComponent implements OnInit {
     status: new FormControl('0'),
   });
   public filterQueryString: string = '';
+  displayedColumns: string[] = ['email', 'role', 'status', 'actions'];
 
   constructor(public paginationService: PaginationService, private userService: UserService) { }
 

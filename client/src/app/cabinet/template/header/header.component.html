@@ -1,27 +1,4 @@
-<header>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-2 header-logo-block">
-        <div class="header-logo"><a href="">User Service</a></div>
-      </div>
-      <div class="col-10 p-0 header-main-block">
-        <div class="row">
-          <div class="col-10">
-            <app-breadcrumbs></app-breadcrumbs>
-          </div>
-          <div class="col-1 notify-block">
-            <div>
-              <i class="fa fa-bell"></i>
-            </div>
-            <div>
-              <i class="fa fa-envelope"></i>
-            </div>
-          </div>
-          <div class="col-1">
-            <p class="log-out"><a href="" (click)="logout()">Log out</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<header fxLayout="row" fxLayoutAlign="space-between">
+  <div class="display-6 logo">User CRM</div>
+  <div class="log-out"><button mat-raised-button (click)="logout()">Log Out</button></div>
 </header>

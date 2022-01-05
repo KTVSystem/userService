@@ -22,6 +22,14 @@ import { RolesComponent } from './roles/roles.component';
 import { RoleDetailComponent } from './roles/role-detail/role-detail.component';
 import { RoleCreateComponent } from './roles/role-create/role-create.component';
 import { RoleEditComponent } from './roles/role-edit/role-edit.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -49,6 +57,14 @@ import { RoleEditComponent } from './roles/role-edit/role-edit.component';
     CommonModule,
     CabinetRoutingModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
+    MatButtonModule,
+    MatListModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDividerModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   exports: [CabinetComponent],
   providers: [

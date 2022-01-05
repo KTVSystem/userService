@@ -1,6 +1,34 @@
 @import 'src/assets/scss/base';
 
-.users-block {
+.content-block {
+  @include content-block();
+
+  .title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .filter {
+    padding-bottom: 20px;
+
+    mat-form-field {
+      margin-right: 20px;
+    }
+    button {
+      margin-right: 10px;
+    }
+  }
+  .data {
+    margin-top: 20px;
+    table {
+      width: 100%;
+    }
+  }
+
+}
+
+
+/*.users-block {
   .users-filter {
     form {
       display: flex;
@@ -34,5 +62,5 @@
       background: $base-danger !important;
     }
   }
-}
+}*/
 

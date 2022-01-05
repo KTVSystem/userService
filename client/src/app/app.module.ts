@@ -15,7 +15,6 @@ import { PermissionService } from './services/cabinet/permissions/permission.ser
 import { RolesService } from './services/cabinet/roles/roles.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -33,7 +32,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatInputModule,
-    FlexLayoutModule,
     MatButtonModule,
     MatSnackBarModule
   ],

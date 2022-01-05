@@ -1,45 +1,15 @@
 @import 'src/assets/scss/base';
 
-aside {
-  height: 100%;
-  background: $base-color;
-  border-radius: 0;
+mat-list {
+  background: $white-color;
+  border-radius: 4px;
+  padding: 10px;
+  @include shadow-block();
 
-  .list-group {
-    border-radius: none;
-
-    .list-group-item {
-      &:first-child {
-        border-top: 2px solid $base-light;
-      }
-
-      background-color: $base-color;
-      border-color: $white-color;
-      border-left: none;
-      border-right: none;
-      color: $white-color;
-      text-transform: uppercase;
-      padding: 12px 16px;
-      font-size: 12px;
-      font-weight: bold;
-      border-bottom: none;
-      padding-left: 20px;
-
-      i {
-        margin-right: 3px;
-      }
-
-      &:hover {
-        color: $base-light;
-      }
-
-      .list-group-body {
-        display: flex;
-
-        .list-group-body_icon {
-          margin-right: 5px;
-        }
-      }
+  a {
+    color: $base-dark-grey;
+    &:hover {
+      color: $base-grey;
     }
   }
 }
