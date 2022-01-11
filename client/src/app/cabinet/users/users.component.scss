@@ -2,7 +2,6 @@
 
 .content-block {
   @include content-block();
-
   .title {
     font-size: 2rem;
     margin-bottom: 10px;
@@ -24,43 +23,4 @@
       width: 100%;
     }
   }
-
 }
-
-
-/*.users-block {
-  .users-filter {
-    form {
-      display: flex;
-      padding-bottom: 10px;
-
-      .input-block {
-        width: 15%;
-        margin-right: 20px;
-      }
-      .btn {
-        margin-right: 5px;
-      }
-    }
-  }
-
-  .users-table {
-    margin-bottom: 20px;
-
-    .btn-primary {
-      background-color: $base-color;
-      border-color: $base-color;
-    }
-
-    .badge-active {
-      background: $base-green !important;
-    }
-    .badge-new {
-      background: $base-blue !important;
-    }
-    .badge-blocked {
-      background: $base-danger !important;
-    }
-  }
-}*/
-

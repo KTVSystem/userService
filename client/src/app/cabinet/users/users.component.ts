@@ -8,6 +8,7 @@ import { roles } from '../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../models/common/status/lists/statuses-list';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
 
 @Component({
   selector: 'app-users',
@@ -26,11 +27,8 @@ export class UsersComponent implements OnInit {
   public filterQueryString: string = '';
   displayedColumns: string[] = ['email', 'role', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  public usersSource: MatTableDataSource<User>;
-  public pageSize = 5;
-  public currentPage = 0;
 
-  constructor(private userService: UserService) { }
+  constructor(public paginationService: PaginationService, private userService: UserService) { }
 
   ngOnInit(): void {
     this.getUsers();
@@ -41,23 +39,10 @@ export class UsersComponent implements OnInit {
   private getUsers(): void {
     this.userService.getUsers(this.filterQueryString).subscribe((response) => {
       this.users = response.users;
-      this.usersSource = new MatTableDataSource<User>(response.users);
-      this.usersSource.paginator = this.paginator;
-      this.iterator();
+      this.paginationService.dataSource = new MatTableDataSource<any>(response.users);
+      this.paginationService.dataSource.paginator = this.paginator;
+      this.paginationService.iterator(this.users);
     });
-  }
-
-  public handlePage(e: any) {
-    this.currentPage = e.pageIndex;
-    this.pageSize = e.pageSize;
-    this.iterator();
-  }
-
-  private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const usersPart = this.users.slice(start, end);
-    this.usersSource = new MatTableDataSource<User>(usersPart);
   }
 
   public onSubmit(): void {
