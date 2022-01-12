@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Status } from '../../../models/common/status/status';
-import { MessageTypeEnum } from '../../../models/common/message/enums/message-type-enum';
 import { PermissionService } from '../../../services/cabinet/permissions/permission.service';
 import { PermissionCreateDto } from '../../../models/cabinet/users/dtos/permission/permission-create-dto';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 
 
 @Component({
@@ -18,10 +19,12 @@ export class PermissionCreateComponent implements OnInit {
     status: new FormControl('0'),
   });
   public statuses: Array<Status>;
-  responseMessage: string;
-  responseMessageType: string;
 
-  constructor(private permissionService: PermissionService) { }
+  constructor(
+    private permissionService: PermissionService,
+    private snackbar: MatSnackBar,
+    private redirectService: RedirectService
+  ) { }
 
   ngOnInit(): void {
     this.statuses = statuses;
@@ -39,11 +42,18 @@ export class PermissionCreateComponent implements OnInit {
 
   private handleMessage(response: any): void {
     if (response.error) {
-      this.responseMessage = response.error;
-      this.responseMessageType = MessageTypeEnum.DANGER;
+      this.snackbar.open(response.error, 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: 'snack-danger'
+      });
     } else {
-      this.responseMessage = response.message;
-      this.responseMessageType = MessageTypeEnum.SUCCESS;
+      this.snackbar.open(response.message, 'Close', {
+        duration: 2000,
+        verticalPosition: 'top',
+        panelClass: 'snack-success'
+      });
+      this.redirectService.redirect('/cabinet/users', 2000);
     }
   }
 

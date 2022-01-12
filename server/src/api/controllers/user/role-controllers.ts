@@ -1,14 +1,10 @@
-import { allByQuery, allRoleCount, findRoleById, removeRoleById } from '../../repositories/user/role-repository';
+import { allByQuery, findRoleById, removeRoleById } from '../../repositories/user/role-repository';
 import { getMultiplePermissionsByIds } from '../../repositories/user/permission-repository';
 import { Role } from '../../interfaces/user/role';
 import { RoleDto } from '../../interfaces/user/dtos/role/role-dto';
 import { RoleModel } from '../../models/user/role-model';
 
-export const getRoleCount = async (params: any) => {
-    return  await allRoleCount(params);
-}
-
-export const getRoles= async (params: any) => {
+export const getRoles = async (params: any) => {
     return await allByQuery(params);
 }
 

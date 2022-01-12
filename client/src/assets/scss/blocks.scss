@@ -1,0 +1,25 @@
+@import './colors';
+
+@mixin shadow-header () {
+  -webkit-box-shadow: 0px 0px 10px 6px rgba(164, 98, 231, 0.16);
+  -moz-box-shadow: 0px 0px 10px 6px rgba(164, 98, 231, 0.16);
+  box-shadow: 0px 0px 10px 6px rgba(164, 98, 231, 0.16);
+}
+
+@mixin shadow-block () {
+  -webkit-box-shadow: 0px 0px 2px 1px rgba(139, 77, 191, 0.11);
+  -moz-box-shadow: 0px 0px 2px 1px rgba(139, 77, 191, 0.11);
+  box-shadow: 0px 0px 2px 1px rgba(139, 77, 191, 0.11);
+}
+
+@mixin content-block () {
+  padding: 20px 40px;
+  background-color: $white-color;
+  min-height: 600px;
+  @include shadow-block();
+}
+
+@mixin title ($size: 2rem, $margin: 10px) {
+  font-size: $size;
+  margin-bottom: $margin;
+}

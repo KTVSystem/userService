@@ -5,10 +5,8 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const permissions = await PermissionController.getPermissions(req.query);
-        const permissionCount = await PermissionController.getPermissionCount(req.query);
         res.status(200).json({
-            permissions: permissions,
-            count: permissionCount
+            permissions: permissions
         });
     } catch(error) {
         res.status(400).json({

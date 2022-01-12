@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
 import { Status } from '../../models/common/status/status';
 import { statuses } from '../../models/common/status/lists/statuses-list';
-import { PermissionService } from "../../services/cabinet/permissions/permission.service";
-import { Permission } from "../../models/cabinet/users/permission";
+import { PermissionService } from '../../services/cabinet/permissions/permission.service';
+import { Permission } from '../../models/cabinet/users/permission';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-permissions',
@@ -19,19 +21,22 @@ export class PermissionsComponent implements OnInit {
     status: new FormControl('0'),
   });
   public filterQueryString: string = '';
+  displayedColumns: string[] = ['name', 'status', 'actions'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public paginationService: PaginationService, private permissionService: PermissionService) { }
 
   ngOnInit(): void {
-    this.getUsers();
+    this.getPermissions();
     this.statuses = statuses;
   }
 
-  private getUsers(): void {
+  private getPermissions(): void {
     this.permissionService.getPermissions(this.filterQueryString).subscribe((response) => {
       this.permissions = response.permissions;
-      console.log(this.permissions);
-      this.paginationService.initializaPagination.next(response.count);
+      this.paginationService.dataSource = new MatTableDataSource<any>(response.permissions);
+      this.paginationService.dataSource.paginator = this.paginator;
+      this.paginationService.iterator(this.permissions);
     });
   }
 
@@ -39,8 +44,7 @@ export class PermissionsComponent implements OnInit {
     const name = (this.permissionsFilterForm.value.name !== '') ? this.permissionsFilterForm.value.name : null;
     const status = (this.permissionsFilterForm.value.status !== '0') ? this.permissionsFilterForm.value.status : null;
     this.filterQueryString = this.createFilterQueryParam(name, status);
-    this.paginationService.page = 1;
-    this.getUsers();
+    this.getPermissions();
   }
 
   public clearFilters(): void {
@@ -48,39 +52,7 @@ export class PermissionsComponent implements OnInit {
       name: '',
       status: '0'
     });
-    this.getUsers();
-  }
-
-  public onPreviousPage(): void {
-    this.setPageNumber();
-    this.getUsers();
-  }
-
-  public onNextPage(): void {
-    this.setPageNumber();
-    this.getUsers();
-  }
-
-  private setPageNumber(): void {
-    if (this.filterQueryString === '') {
-      this.filterQueryString = '?page=' + this.paginationService.page;
-    } else {
-      this.filterQueryString = this.clearPageString(this.filterQueryString);
-      const separator = this.filterQueryString !== '' ? '&' : '?';
-      this.filterQueryString = this.filterQueryString + separator + 'page=' + this.paginationService.page;
-    }
-  }
-
-  private clearPageString(filterQueryString: string): string {
-    let filteredString = '';
-    const splitArray = filterQueryString.split('&');
-    splitArray.forEach((item) => {
-      if (item.indexOf('page') === -1) {
-        const ampersantValue = (item.indexOf('?') === -1) ? '&' : '';
-        filteredString = filteredString + ampersantValue + item;
-      }
-    });
-    return filteredString;
+    this.getPermissions();
   }
 
   private createFilterQueryParam(name: string, status: string): string {

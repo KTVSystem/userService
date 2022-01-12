@@ -1,0 +1,8 @@
+<div class="modal-content">
+  <div mat-dialog-title>Warning</div>
+  <div class="modal-message">{{data.message}}</div>
+  <div class="modal-actions">
+    <button class="actions-buttons" mat-button mat-raised-button mat-accent (click)="submit(false)" >Cancel</button>
+    <button class="actions-buttons" mat-button mat-raised-button mat-accent color="accent" (click)="submit(true)" >OK</button>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { Login } from '../models/login/login';
 import { LoginService } from '../services/login/login.service';
 import { TokenService } from '../services/token/token.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -11,10 +12,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
-  public loginError = false;
-  public loginApiMessage = '';
-
   public loginForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
@@ -23,7 +20,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
   });
 
-  constructor(private loginService: LoginService, private tokenService: TokenService, private router: Router) { }
+  constructor(private loginService: LoginService, private tokenService: TokenService, private router: Router, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     if (this.tokenService.isAuth) {
@@ -36,10 +33,11 @@ export class LoginComponent implements OnInit {
     this.loginService.signIn(login).subscribe((response) => {
       if (response) {
         if (response.error) {
-          this.loginError = true;
-          this.loginApiMessage = response.error;
+          this.snackbar.open(response.error, 'Close', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
         } else {
-          this.loginError = false;
           this.tokenService.writeToken(response.token);
           this.router.navigate(['/cabinet']).then();
         }

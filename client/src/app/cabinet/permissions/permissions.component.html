@@ -1,48 +1,54 @@
-<div class="permissions-block">
-  <div class="permissions-filter">
+<div class="content-block">
+  <h1 class="display-5 title">Filter</h1>
+  <div class="filter" fxLayout="row">
     <form [formGroup]="permissionsFilterForm" (ngSubmit)="onSubmit()">
-      <div class="input-block">
-        <input class="form-control" type="text" formControlName="name" placeholder="Name" />
-      </div>
-      <div class="input-block">
-        <select class="form-select" aria-label="Default select example" formControlName="status">
-          <option value="0">Status</option>
-          <ng-container *ngFor="let status of statuses">
-            <option value="{{status.key}}">{{status.title}}</option>
-          </ng-container>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-success">Filter</button>
-      <button type="submit" class="btn btn-danger" (click)="clearFilters()">Clear</button>
+      <mat-form-field class="example-full-width" appearance="legacy">
+        <mat-label>Name</mat-label>
+        <input type="text" matInput formControlName="name" placeholder="Name">
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Status</mat-label>
+        <mat-select matNativeControl formControlName="status">
+          <mat-option *ngFor="let status of statuses" [value]="status.key">{{status.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary">Filter</button>
+      <button mat-raised-button color="warn" (click)="clearFilters()">Clear</button>
     </form>
-    <hr>
   </div>
-  <div class="permission-create">
-    <a [routerLink]="['/cabinet/permissions/create']" class="btn btn-success">Create permission</a>
-    <hr>
-  </div>
-  <div class="permissions-table">
-    <table class="table" *ngIf="permissions.length > 0;else no_users">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Status</th>
-        <th scope="col">Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let permission of permissions; let i = index;">
-        <th scope="row">{{i + 1}}</th>
-        <td>{{permission.name}}</td>
-        <td>
-          <span class="badge bg-secondary" [className]="'badge bg-secondary badge-' + permission.status">{{permission.status}}</span>
-        </td>
-        <td><a class="btn btn-primary" [routerLink]="['/cabinet/permissions/' + permission._id]">Open</a></td>
-      </tr>
-      </tbody>
+  <mat-divider></mat-divider>
+
+  <div class="data">
+    <div class="header">
+      <h1 class="display-5 title">Permissions</h1>
+      <a mat-raised-button color="primary" class="create-btn" [routerLink]="['/cabinet/permissions/create']">Create</a>
+    </div>
+    <table mat-table [dataSource]="paginationService.dataSource" class="mat-elevation-z8" *ngIf="permissions.length > 0;else no_data">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element">{{element.status}}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element"><a mat-raised-button [routerLink]="['/cabinet/permissions/' + element._id]" >Open</a></td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <ng-template #no_users>There are not permissions ...</ng-template>
+    <ng-container *ngIf="permissions.length > 0">
+      <mat-paginator [length]="permissions.length"
+                     [pageSize]="paginationService.pageSize"
+                     [pageIndex]="paginationService.currentPage"
+                     [pageSizeOptions]="[5, 10, 25, 100]"
+                     (page)="paginationService.handlePage($event, permissions)"
+                     aria-label="Select page">
+      </mat-paginator>
+    </ng-container>
+    <ng-template #no_data>There are not entries ...</ng-template>
   </div>
-  <app-pagination [model]="permissions" (previousPage)="onPreviousPage()" (nextPage)="onNextPage()"></app-pagination>
 </div>

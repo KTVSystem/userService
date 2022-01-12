@@ -1,41 +1,49 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import { MatTableDataSource } from '@angular/material/table';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class PaginationService {
-  private _page: number = 1;
-  public totalUsers: number = 0;
-  public maxPages: number = 0;
-  public perPage: number = 2;
-  public initializaPagination: BehaviorSubject<any> = new BehaviorSubject(null);
+  private _pageSize = 5;
+  private _currentPage = 0;
+  private _dataSource: MatTableDataSource<any>;
 
-  public get page(): number {
-    return this._page;
+  public handlePage(e: any, data: Array<any>) {
+    this.currentPage = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.iterator(data);
   }
 
-  public set page(page: number) {
-    this._page = page;
+  public iterator(data: Array<any>) {
+    const end = (this.currentPage + 1) * this.pageSize;
+    const start = this.currentPage * this.pageSize;
+    const dataPart = data.slice(start, end);
+    this.dataSource = new MatTableDataSource<any>(dataPart);
   }
 
-  public setTotalUsers(totalUsers: number): void {
-    this.totalUsers = totalUsers;
+  public get currentPage(): number {
+    return this._currentPage;
   }
 
-  public setMaxPages(): void {
-    this.maxPages = Math.ceil(this.totalUsers / this.perPage);
+  public set currentPage(page: number) {
+    this._currentPage = page;
   }
 
-  public setPreviousPage(): void {
-    this.page = this.page - 1;
+  public get pageSize(): number {
+    return this._pageSize;
   }
 
-  public setNextPage(): void {
-    this.page = this.page + 1;
+  public set pageSize(pageSize: number) {
+    this._pageSize = pageSize;
   }
 
+  public get dataSource(): any {
+    return this._dataSource;
+  }
 
-
+  public set dataSource(dataSource: any) {
+    this._dataSource = dataSource;
+  }
 }

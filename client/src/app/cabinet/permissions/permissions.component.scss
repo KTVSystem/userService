@@ -1,38 +1,31 @@
 @import 'src/assets/scss/base';
 
-.permissions-block {
-  .permissions-filter {
-    form {
-      display: flex;
-      padding-bottom: 10px;
-
-      .input-block {
-        width: 15%;
-        margin-right: 20px;
-      }
-      .btn {
-        margin-right: 5px;
-      }
+.content-block {
+  @include content-block();
+  .header {
+    display: flex;
+    .title {
+      @include title();
+    }
+    .create-btn {
+      margin: 0 0 20px 20px;
     }
   }
 
-  .permissions-table {
-    margin-bottom: 20px;
+  .filter {
+    padding-bottom: 20px;
 
-    .btn-primary {
-      background-color: $base-color;
-      border-color: $base-color;
+    mat-form-field {
+      margin-right: 20px;
     }
-
-    .badge-active {
-      background: $base-green !important;
+    button {
+      margin-right: 10px;
     }
-    .badge-new {
-      background: $base-blue !important;
-    }
-    .badge-blocked {
-      background: $base-danger !important;
+  }
+  .data {
+    margin-top: 20px;
+    table {
+      width: 100%;
     }
   }
 }
-

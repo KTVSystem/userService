@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { UserService } from '../../services/cabinet/users/user.servise';
 import { User} from '../../models/cabinet/users/user';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
 import { RolesListDto } from '../../models/cabinet/users/dtos/roles-list-dto';
 import { Status } from '../../models/common/status/status';
 import { roles } from '../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../models/common/status/lists/statuses-list';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
 
 @Component({
   selector: 'app-users',
@@ -23,6 +25,8 @@ export class UsersComponent implements OnInit {
     status: new FormControl('0'),
   });
   public filterQueryString: string = '';
+  displayedColumns: string[] = ['email', 'role', 'status', 'actions'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(public paginationService: PaginationService, private userService: UserService) { }
 
@@ -35,8 +39,9 @@ export class UsersComponent implements OnInit {
   private getUsers(): void {
     this.userService.getUsers(this.filterQueryString).subscribe((response) => {
       this.users = response.users;
-      console.log(this.users);
-      this.paginationService.initializaPagination.next(response.count);
+      this.paginationService.dataSource = new MatTableDataSource<any>(response.users);
+      this.paginationService.dataSource.paginator = this.paginator;
+      this.paginationService.iterator(this.users);
     });
   }
 
@@ -45,7 +50,6 @@ export class UsersComponent implements OnInit {
     const role = (this.usersFilterForm.value.role !== '0') ? this.usersFilterForm.value.role : null;
     const status = (this.usersFilterForm.value.status !== '0') ? this.usersFilterForm.value.status : null;
     this.filterQueryString = this.createFilterQueryParam(email, role, status);
-    this.paginationService.page = 1;
     this.getUsers();
   }
 
@@ -56,38 +60,6 @@ export class UsersComponent implements OnInit {
       status: '0'
     });
     this.getUsers();
-  }
-
-  public onPreviousPage(): void {
-    this.setPageNumber();
-    this.getUsers();
-  }
-
-  public onNextPage(): void {
-    this.setPageNumber();
-    this.getUsers();
-  }
-
-  private setPageNumber(): void {
-    if (this.filterQueryString === '') {
-      this.filterQueryString = '?page=' + this.paginationService.page;
-    } else {
-      this.filterQueryString = this.clearPageString(this.filterQueryString);
-      const separator = this.filterQueryString !== '' ? '&' : '?';
-      this.filterQueryString = this.filterQueryString + separator + 'page=' + this.paginationService.page;
-    }
-  }
-
-  private clearPageString(filterQueryString: string): string {
-    let filteredString = '';
-    const splitArray = filterQueryString.split('&');
-    splitArray.forEach((item) => {
-      if (item.indexOf('page') === -1) {
-        const ampersantValue = (item.indexOf('?') === -1) ? '&' : '';
-        filteredString = filteredString + ampersantValue + item;
-      }
-    });
-    return filteredString;
   }
 
   private createFilterQueryParam(email: string, role: string, status: string): string {

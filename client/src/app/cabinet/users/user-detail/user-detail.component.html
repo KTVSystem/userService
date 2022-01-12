@@ -1,27 +1,27 @@
-<div class="user-detail" *ngIf="user">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-6">
-        <div class="card">
-          <div class="card-header">
-            <h4>Data</h4>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><span>Id: </span> {{user._id}}</li>
-            <li class="list-group-item"><span>Email: </span> {{user.email}}</li>
-            <li class="list-group-item"><span>Status: </span> {{user.status}}</li>
-            <li class="list-group-item"><span>Role: </span> {{user.role.name}}</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-    <div class="row">
-      <div class="col-12 mt-3">
-        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/users/edit/' + user._id]">Edit</a>
-        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/users/change-password/' + user._id]">Change password</a>
-        <button type="button" class="btn btn-danger" (click)="removeUser(user._id)">Remove</button>
-      </div>
-    </div>
+<div fxLayout="row" *ngIf="user">
+  <div class="content-block info">
+    <h1 class="display-5 title">User Information</h1>
+    <mat-card>
+      <mat-card-title>ID</mat-card-title>
+      <mat-card-subtitle>{{user._id}}</mat-card-subtitle>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Email</mat-card-title>
+      <mat-card-subtitle>{{user.email}}</mat-card-subtitle>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Status</mat-card-title>
+      <mat-card-subtitle>{{user.status}}</mat-card-subtitle>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Role</mat-card-title>
+      <mat-card-subtitle>{{user.role.name}}</mat-card-subtitle>
+    </mat-card>
+      <button mat-raised-button color="primary" [routerLink]="['/cabinet/users/edit/' + user._id]">Edit</button>
+      <button mat-raised-button color="primary" [routerLink]="['/cabinet/users/change-password/' + user._id]">Change password</button>
+      <button mat-raised-button color="warn" (click)="removeUser(user._id)">Delete</button>
+  </div>
+  <div class="content-block social">
+    <h1 class="display-5 title">Social Networks</h1>
   </div>
 </div>
