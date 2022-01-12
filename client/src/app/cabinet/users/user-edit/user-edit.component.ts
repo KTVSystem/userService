@@ -4,10 +4,11 @@ import { roles } from '../../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Status } from '../../../models/common/status/status';
-import { MessageTypeEnum } from "../../../models/common/message/enums/message-type-enum";
 import { ActivatedRoute } from '@angular/router';
 import { UserEditDto } from '../../../models/cabinet/users/dtos/user/user-edit-dto';
 import { RolesListDto } from '../../../models/cabinet/users/dtos/roles-list-dto';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 
 
 @Component({
@@ -27,12 +28,15 @@ export class UserEditComponent implements OnInit {
   });
   public roles: Array<RolesListDto>;
   public statuses: Array<Status>;
-  responseMessage: string;
-  responseMessageType: string;
   public user: UserEditDto;
   public id: number;
 
-  constructor(private userService: UserService, private route: ActivatedRoute) { }
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private snackbar: MatSnackBar,
+    private redirectService: RedirectService
+  ) { }
 
   ngOnInit(): void {
     this.roles = roles;
@@ -65,11 +69,18 @@ export class UserEditComponent implements OnInit {
 
   private handleMessage(response: any): void {
     if (response.error) {
-      this.responseMessage = response.error;
-      this.responseMessageType = MessageTypeEnum.DANGER;
+      this.snackbar.open(response.error, 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: 'snack-danger'
+      });
     } else {
-      this.responseMessage = response.message;
-      this.responseMessageType = MessageTypeEnum.SUCCESS;
+      this.snackbar.open(response.message, 'Close', {
+        duration: 2000,
+        verticalPosition: 'top',
+        panelClass: 'snack-success'
+      });
+      this.redirectService.redirect('/cabinet/users', 2000);
     }
   }
 

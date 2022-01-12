@@ -1,14 +1,17 @@
 @import 'src/assets/scss/base';
 
-.role-create {
-  .input-block {
-    margin-bottom: 20px;
-    width: 50%;
+.content-block {
+  @include content-block();
+
+  .title {
+    @include title(2rem, 20px);
   }
 
-  .error {
-    font-size: 10px;
-    color: $base-red;
-    position: absolute;
+  .form-line {
+    width: 100%;
+    mat-form-field {
+      width: 30%;
+      margin-bottom: 20px;
+    }
   }
 }

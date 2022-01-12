@@ -1,25 +1,26 @@
-<div class="role-detail" *ngIf="role">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-6">
-        <div class="card">
-          <div class="card-header">
-            <h4>Data</h4>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><span>Id: </span> {{role._id}}</li>
-            <li class="list-group-item"><span>Name: </span> {{role.name}}</li>
-            <li class="list-group-item"><span>Status: </span> {{role.status}}</li>
-          </ul>
-        </div>
-      </div>
+<div fxLayout="row" *ngIf="role">
+  <div class="content-block info">
+    <h1 class="display-5 title">Role Information</h1>
+    <mat-card>
+      <mat-card-title>ID</mat-card-title>
+      <mat-card-subtitle>{{role._id}}</mat-card-subtitle>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Name</mat-card-title>
+      <mat-card-subtitle>{{role.name}}</mat-card-subtitle>
+    </mat-card>
+    <mat-card>
+      <mat-card-title>Status</mat-card-title>
+      <mat-card-subtitle>{{role.status}}</mat-card-subtitle>
+    </mat-card>
+    <button mat-raised-button color="primary" [routerLink]="['/cabinet/roles/edit/' + role._id]">Edit</button>
+    <button mat-raised-button color="warn" (click)="removeRole(role._id)">Delete</button>
+  </div>
+  <div class="content-block permissions">
+    <h1 class="display-5 title">Permissions</h1>
+    <mat-list *ngIf="role.permissions">
+      <mat-list-item *ngFor="let permission of role.permissions">{{ permission.name }}</mat-list-item>
+    </mat-list>
 
-    </div>
-    <div class="row">
-      <div class="col-12 mt-3">
-        <a type="button" class="btn btn-primary me-3" [routerLink]="['/cabinet/roles/edit/' + role._id]">Edit</a>
-        <button type="button" class="btn btn-danger" (click)="removeRole(role._id)">Remove</button>
-      </div>
-    </div>
   </div>
 </div>

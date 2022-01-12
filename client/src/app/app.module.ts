@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CabinetModule } from './cabinet/cabinet.module';
@@ -13,6 +12,11 @@ import { TokenService } from './services/token/token.service';
 import { UserService } from './services/cabinet/users/user.servise';
 import { PermissionService } from './services/cabinet/permissions/permission.service';
 import { RolesService } from './services/cabinet/roles/roles.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RedirectService } from './services/cabinet/shared/redirect/redirect.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,11 @@ import { RolesService } from './services/cabinet/roles/roles.service';
     HttpClientModule,
     ReactiveFormsModule,
     CabinetModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule
   ],
   providers: [
     LoginService,
@@ -33,6 +41,7 @@ import { RolesService } from './services/cabinet/roles/roles.service';
     UserService,
     PermissionService,
     RolesService,
+    RedirectService
   ],
   bootstrap: [AppComponent]
 })

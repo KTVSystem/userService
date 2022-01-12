@@ -1,15 +1,12 @@
 import express from 'express';
 import * as RoleController from '../../controllers/user/role-controllers';
-import {deleteRole, editRole} from "../../controllers/user/role-controllers";
 const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
         const roles = await RoleController.getRoles(req.query);
-        const roleCount = await RoleController.getRoleCount(req.query);
         res.status(200).json({
             roles: roles,
-            count: roleCount
         });
     } catch(error) {
         res.status(400).json({

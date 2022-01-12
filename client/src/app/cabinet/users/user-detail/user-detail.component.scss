@@ -1,9 +1,28 @@
-.user-detail {
-  .card {
-    min-height: 250px;
+@import 'src/assets/scss/base';
 
-    span {
-      font-weight: 900;
+.content-block {
+  @include content-block();
+
+  .title {
+    @include title();
+  }
+
+  mat-card {
+    margin-bottom: 20px;
+    mat-card-title {
+      font-size: 16px;
     }
+  }
+
+  button {
+    margin-right: 10px;
+  }
+
+  &.info {
+    width: 60%;
+    margin-right: 50px;
+  }
+  &.social {
+    width: 40%;
   }
 }

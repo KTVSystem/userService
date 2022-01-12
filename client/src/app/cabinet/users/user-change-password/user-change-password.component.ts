@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/cabinet/users/user.servise';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MessageTypeEnum } from '../../../models/common/message/enums/message-type-enum';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserChangePasswordDto } from '../../../models/cabinet/users/dtos/user/user-change-password-dto';
+import { Observable, of } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 
 
 @Component({
@@ -15,13 +17,18 @@ export class UserChangePasswordComponent implements OnInit {
 
   public changePasswordUserForm = new FormGroup({
     password: new FormControl('', [Validators.required]),
-    confirmPassword: new FormControl('', Validators.required),
-  }, { validators: this.comparePassword });
+    confirmPassword: new FormControl('', [Validators.required], [this.comparePassword()]),
+  });
   responseMessage: string;
   responseMessageType: string;
   public id: number;
 
-  constructor(private userService: UserService, private route: ActivatedRoute) { }
+  constructor(
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private snackbar: MatSnackBar,
+    private redirectService: RedirectService
+  ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -36,20 +43,29 @@ export class UserChangePasswordComponent implements OnInit {
     });
   }
 
-  private comparePassword(control: AbstractControl): {[key: string]: any} | null  {
-    if (control.value.password !== control.value.confirmPassword) {
-      return {notSame: true};
-    }
-    return null;
+  private comparePassword(): AsyncValidatorFn {
+    return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+      if (control.value !== this.changePasswordUserForm.value.password) {
+        return of({notSame: true});
+      }
+      return of(null);
+    };
   }
 
   private handleMessage(response: any): void {
     if (response.error) {
-      this.responseMessage = response.error;
-      this.responseMessageType = MessageTypeEnum.DANGER;
+      this.snackbar.open(response.error, 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: 'snack-danger'
+      });
     } else {
-      this.responseMessage = response.message;
-      this.responseMessageType = MessageTypeEnum.SUCCESS;
+      this.snackbar.open(response.message, 'Close', {
+        duration: 2000,
+        verticalPosition: 'top',
+        panelClass: 'snack-success'
+      });
+      this.redirectService.redirect('/cabinet/users', 2000);
     }
   }
 

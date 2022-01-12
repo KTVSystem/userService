@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionService } from '../../../services/cabinet/permissions/permission.service';
 import { Permission } from '../../../models/cabinet/users/permission';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { WarningConfirmationComponent } from '../../shared/warning-confirmation/warning-confirmation.component';
+import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 
 @Component({
   selector: 'app-permission-detail',
@@ -10,20 +14,40 @@ import { Permission } from '../../../models/cabinet/users/permission';
 })
 export class PermissionDetailComponent implements OnInit {
   public permission: Permission;
+  private message: string  = 'Are you sure you want to delete this permission?';
 
-  constructor(private permissionService: PermissionService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private permissionService: PermissionService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar,
+    private redirectService: RedirectService
+  ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
     this.permissionService.getPermissionById(id).subscribe((response) => {
       this.permission = response.permission;
-      console.log(this.permission);
     });
   }
 
   public removePermission(id: number): void {
-    this.permissionService.removePermission(id).subscribe(() => {
-      this.router.navigate(['/cabinet/permissions']).then();
+    const dialogRef = this.dialog.open(WarningConfirmationComponent, {
+      width: '400px',
+      height: '200px',
+      data: { message: this.message }
+    });
+    dialogRef.afterClosed().subscribe((dialogResult) => {
+      if (dialogResult) {
+        this.permissionService.removePermission(id).subscribe(() => {
+          this.snackbar.open('Permission was deleted!', 'Close', {
+            duration: 2000,
+            verticalPosition: 'top'
+          });
+          this.redirectService.redirect('/cabinet/permissions', 2000);
+        });
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-import {allByQuery, allUsersCount, findUserById, removeUserById} from '../../repositories/user/user-repository';
+import {allByQuery, findUserById, removeUserById} from '../../repositories/user/user-repository';
 import { findRoleByName } from '../../repositories/user/role-repository';
 import { User } from '../../interfaces/user/user';
 import { UserCreateDto } from '../../interfaces/user/dtos/user/user-create-dto';
@@ -7,10 +7,6 @@ import { Status } from '../../interfaces/base/enums/status';
 import * as PasswordService from '../../services/password-service';
 import { UserEditDto } from '../../interfaces/user/dtos/user/user-edit-dto';
 import { UserChangePasswordDto } from '../../interfaces/user/dtos/user/user-change-password-dto';
-
-export const getUsersCount = async (params: any) => {
-    return  await allUsersCount(params);
-}
 
 export const getUsers = async (params: any) => {
     return await allByQuery(params);

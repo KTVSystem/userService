@@ -1,11 +1,9 @@
 <app-header></app-header>
-<div class="container-fluid content-big">
-  <div class="row">
-    <div class="col-2 p-0 sidebar">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div class="col-10 content">
-      <router-outlet></router-outlet>
-    </div>
+<div class="main" fxLayout="row" fxLayoutAlign="space-between">
+  <div class="sidebar">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="content">
+    <router-outlet></router-outlet>
   </div>
 </div>

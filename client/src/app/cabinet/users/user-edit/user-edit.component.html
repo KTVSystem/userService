@@ -1,38 +1,37 @@
-<div class="user-edit">
-  <div class="alert alert-{{responseMessageType}}" role="alert" *ngIf="responseMessage && responseMessageType">
-    {{responseMessage}}
-  </div>
+<div class="content-block">
   <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
-    <div class="input-block">
-      <label for="email" class="form-label">Email</label>
-      <input type="text" class="form-control" id="email" formControlName="email" placeholder="Email" />
-      <div *ngIf="editUserForm.controls.email.invalid && (editUserForm.controls.email.dirty || editUserForm.controls.email.touched)" class="error">
-        <div *ngIf="editUserForm.controls.email.errors?.required">
-          Please enter an email
-        </div>
-        <div *ngIf="editUserForm.controls.email.errors?.pattern">
-          Please enter a valid email
-        </div>
-      </div>
+    <h1 class="display-5 title">Create User</h1>
+
+    <div class="form-line">
+      <mat-form-field class="example-full-width" appearance="legacy">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+        <mat-error *ngIf="editUserForm.controls.email.invalid">
+          Please enter a valid email address
+        </mat-error>
+      </mat-form-field>
     </div>
-    <div class="input-block">
-      <label for="role" class="form-label">Role</label>
-      <select class="form-select" id="role" aria-label="Default select example" formControlName="role">
-        <option value="0">Role</option>
-        <ng-container *ngFor="let role of roles">
-          <option value="{{role.key}}">{{role.title}}</option>
-        </ng-container>
-      </select>
+
+    <div class="form-line">
+      <mat-form-field appearance="legacy">
+        <mat-label>Role</mat-label>
+        <mat-select matNativeControl formControlName="role">
+          <mat-option *ngFor="let role of roles" [value]="role.key">{{role.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <div class="input-block">
-      <label for="status" class="form-label">Status</label>
-      <select class="form-select" id="status" aria-label="Default select example" formControlName="status">
-        <option value="0">Status</option>
-        <ng-container *ngFor="let status of statuses">
-          <option value="{{status.key}}">{{status.title}}</option>
-        </ng-container>
-      </select>
+
+    <div class="form-line">
+      <mat-form-field appearance="legacy">
+        <mat-label>Status</mat-label>
+        <mat-select matNativeControl formControlName="status">
+          <mat-option *ngFor="let status of statuses" [value]="status.key">{{status.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="!editUserForm.valid">Edit</button>
+
+    <div class="form-line">
+      <button mat-raised-button color="primary" [disabled]="!editUserForm.valid">Submit</button>
+    </div>
   </form>
 </div>
