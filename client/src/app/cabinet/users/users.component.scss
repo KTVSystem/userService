@@ -3,8 +3,7 @@
 .content-block {
   @include content-block();
   .title {
-    font-size: 2rem;
-    margin-bottom: 10px;
+    @include title();
   }
 
   .filter {

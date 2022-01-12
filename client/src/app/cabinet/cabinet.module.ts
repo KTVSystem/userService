@@ -29,6 +29,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { WarningConfirmationComponent } from './shared/warning-confirmation/warning-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     RoleDetailComponent,
     RoleCreateComponent,
     RoleEditComponent,
+    WarningConfirmationComponent
   ],
   imports: [
     CommonModule,
@@ -62,7 +66,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSelectModule,
     MatDividerModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatCardModule,
+    MatDialogModule
   ],
   exports: [CabinetComponent],
   providers: [

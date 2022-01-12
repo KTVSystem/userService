@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CabinetModule } from './cabinet/cabinet.module';
@@ -17,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RedirectService } from './services/cabinet/shared/redirect/redirect.service';
 
 @NgModule({
   declarations: [
@@ -41,6 +41,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     UserService,
     PermissionService,
     RolesService,
+    RedirectService
   ],
   bootstrap: [AppComponent]
 })

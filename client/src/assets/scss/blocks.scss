@@ -18,3 +18,8 @@
   min-height: 600px;
   @include shadow-block();
 }
+
+@mixin title ($size: 2rem) {
+  font-size: $size;
+  margin-bottom: 10px;
+}

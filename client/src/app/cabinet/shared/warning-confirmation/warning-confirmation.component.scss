@@ -1,0 +1,15 @@
+.modal-content {
+  display: block;
+  border: none;
+
+  .modal-message {
+    margin-bottom: 35px
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+
