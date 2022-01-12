@@ -28,10 +28,12 @@ export class UserCreateComponent implements OnInit {
   });
   public roles: Array<RolesListDto>;
   public statuses: Array<Status>;
-  responseMessage: string;
-  responseMessageType: string;
 
-  constructor(private userService: UserService, private snackbar: MatSnackBar, private redirectService: RedirectService) { }
+  constructor(
+    private userService: UserService,
+    private snackbar: MatSnackBar,
+    private redirectService: RedirectService
+  ) { }
 
   ngOnInit(): void {
     this.roles = roles;

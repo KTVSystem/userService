@@ -22,8 +22,6 @@ export class RoleCreateComponent implements OnInit {
     permissions: new FormControl([]),
   });
   public statuses: Array<Status>;
-  responseMessage: string;
-  responseMessageType: string;
   public permissions: Array<Permission> = [];
 
   constructor(
@@ -65,6 +63,7 @@ export class RoleCreateComponent implements OnInit {
         verticalPosition: 'top',
         panelClass: 'snack-success'
       });
+      this.redirectService.redirect('/cabinet/roles', 2000);
     }
   }
 

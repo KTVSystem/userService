@@ -19,10 +19,12 @@ export class PermissionCreateComponent implements OnInit {
     status: new FormControl('0'),
   });
   public statuses: Array<Status>;
-  responseMessage: string;
-  responseMessageType: string;
 
-  constructor(private permissionService: PermissionService, private snackbar: MatSnackBar, private redirectService: RedirectService) { }
+  constructor(
+    private permissionService: PermissionService,
+    private snackbar: MatSnackBar,
+    private redirectService: RedirectService
+  ) { }
 
   ngOnInit(): void {
     this.statuses = statuses;

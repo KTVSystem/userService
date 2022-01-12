@@ -13,7 +13,7 @@
       <mat-card-title>Status</mat-card-title>
       <mat-card-subtitle>{{role.status}}</mat-card-subtitle>
     </mat-card>
-    <button mat-raised-button color="primary" [routerLink]="['/cabinet/permissions/edit/' + role._id]">Edit</button>
+    <button mat-raised-button color="primary" [routerLink]="['/cabinet/roles/edit/' + role._id]">Edit</button>
     <button mat-raised-button color="warn" (click)="removeRole(role._id)">Delete</button>
   </div>
   <div class="content-block permissions">

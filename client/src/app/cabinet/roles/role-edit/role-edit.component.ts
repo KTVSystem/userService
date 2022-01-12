@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Status } from '../../../models/common/status/status';
-import { MessageTypeEnum } from "../../../models/common/message/enums/message-type-enum";
 import { ActivatedRoute } from '@angular/router';
 import { RolesService } from '../../../services/cabinet/roles/roles.service';
 import { RoleCreateDto } from '../../../models/cabinet/users/dtos/role/role-create-dto';
-import {PermissionService} from "../../../services/cabinet/permissions/permission.service";
-import {Permission} from "../../../models/cabinet/users/permission";
+import { PermissionService } from '../../../services/cabinet/permissions/permission.service';
+import { Permission } from '../../../models/cabinet/users/permission';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 
 
 @Component({
@@ -22,13 +23,17 @@ export class RoleEditComponent implements OnInit {
     permissions: new FormControl([]),
   });
   public statuses: Array<Status>;
-  responseMessage: string;
-  responseMessageType: string;
   public role: RoleCreateDto;
   public id: number;
   public permissions: Array<Permission> = [];
 
-  constructor(private rolesService: RolesService, private route: ActivatedRoute, private permissionService: PermissionService) { }
+  constructor(
+    private rolesService: RolesService,
+    private route: ActivatedRoute,
+    private permissionService: PermissionService,
+    private snackbar: MatSnackBar,
+    private redirectService: RedirectService
+  ) { }
 
   ngOnInit(): void {
     this.statuses = statuses;
@@ -38,7 +43,6 @@ export class RoleEditComponent implements OnInit {
         this.role = response.role;
         this.fillEditPermissionForm(response.role);
       }
-      console.log(this.role);
     });
     this.permissionService.getPermissionsAll().subscribe((response) => {
       this.permissions = response.permissions;
@@ -57,16 +61,24 @@ export class RoleEditComponent implements OnInit {
   }
 
   private fillEditPermissionForm(role: RoleCreateDto): void {
-    this.editRoleForm.patchValue({name: role.name, status: role.status});
+    const permissionIds = role.permissions?.map((item: any) => item._id);
+    this.editRoleForm.patchValue({name: role.name, status: role.status, permissions: permissionIds});
   }
 
   private handleMessage(response: any): void {
     if (response.error) {
-      this.responseMessage = response.error;
-      this.responseMessageType = MessageTypeEnum.DANGER;
+      this.snackbar.open(response.error, 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        panelClass: 'snack-danger'
+      });
     } else {
-      this.responseMessage = response.message;
-      this.responseMessageType = MessageTypeEnum.SUCCESS;
+      this.snackbar.open(response.message, 'Close', {
+        duration: 2000,
+        verticalPosition: 'top',
+        panelClass: 'snack-success'
+      });
+      this.redirectService.redirect('/cabinet/roles', 2000);
     }
   }
 
