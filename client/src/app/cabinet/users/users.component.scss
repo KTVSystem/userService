@@ -2,8 +2,15 @@
 
 .content-block {
   @include content-block();
-  .title {
-    @include title();
+
+  .header {
+    display: flex;
+    .title {
+      @include title();
+    }
+    .create-btn {
+      margin: 0 0 20px 20px;
+    }
   }
 
   .filter {

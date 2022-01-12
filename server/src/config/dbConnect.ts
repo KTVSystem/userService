@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { mongoUrl }  from './settings';
+import { mongoUrl } from './settings';
 
 export const connect = async () => {
     if (mongoose.connection.readyState === 0) {

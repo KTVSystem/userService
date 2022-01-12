@@ -1,26 +1,28 @@
-<div class="permission-create">
-  <div class="alert alert-{{responseMessageType}}" role="alert" *ngIf="responseMessage && responseMessageType">
-    {{responseMessage}}
-  </div>
+<div class="content-block">
   <form [formGroup]="createPermissionForm" (ngSubmit)="onSubmit()">
-    <div class="input-block">
-      <label for="email" class="form-label">Name</label>
-      <input type="text" class="form-control" id="email" formControlName="name" placeholder="Name" />
-      <div *ngIf="createPermissionForm.controls.name.invalid && (createPermissionForm.controls.name.dirty || createPermissionForm.controls.name.touched)" class="error">
-        <div *ngIf="createPermissionForm.controls.name.errors?.required">
+    <h1 class="display-5 title">Create Permission</h1>
+
+    <div class="form-line">
+      <mat-form-field class="example-full-width" appearance="legacy">
+        <mat-label>Name</mat-label>
+        <input type="email" matInput formControlName="name">
+        <mat-error *ngIf="createPermissionForm.controls.name.invalid">
           Please enter an name
-        </div>
-      </div>
+        </mat-error>
+      </mat-form-field>
     </div>
-    <div class="input-block">
-      <label for="status" class="form-label">Status</label>
-      <select class="form-select" id="status" aria-label="Default select example" formControlName="status">
-        <option value="0">Status</option>
-        <ng-container *ngFor="let status of statuses">
-          <option value="{{status.key}}">{{status.title}}</option>
-        </ng-container>
-      </select>
+
+    <div class="form-line">
+      <mat-form-field appearance="legacy">
+        <mat-label>Status</mat-label>
+        <mat-select matNativeControl formControlName="status">
+          <mat-option *ngFor="let status of statuses" [value]="status.key">{{status.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="!createPermissionForm.valid">Create</button>
+
+    <div class="form-line">
+      <button mat-raised-button color="primary" [disabled]="!createPermissionForm.valid">Submit</button>
+    </div>
   </form>
 </div>

@@ -1,34 +1,37 @@
-<div class="role-create">
-  <div class="alert alert-{{responseMessageType}}" role="alert" *ngIf="responseMessage && responseMessageType">
-    {{responseMessage}}
-  </div>
+<div class="content-block">
   <form [formGroup]="createRoleForm" (ngSubmit)="onSubmit()">
-    <div class="input-block">
-      <label for="email" class="form-label">Name</label>
-      <input type="text" class="form-control" id="email" formControlName="name" placeholder="Name" />
-      <div *ngIf="createRoleForm.controls.name.invalid && (createRoleForm.controls.name.dirty || createRoleForm.controls.name.touched)" class="error">
-        <div *ngIf="createRoleForm.controls.name.errors?.required">
+    <h1 class="display-5 title">Create Role</h1>
+
+    <div class="form-line">
+      <mat-form-field class="example-full-width" appearance="legacy">
+        <mat-label>Name</mat-label>
+        <input type="email" matInput formControlName="name">
+        <mat-error *ngIf="createRoleForm.controls.name.invalid">
           Please enter an name
-        </div>
-      </div>
+        </mat-error>
+      </mat-form-field>
     </div>
-    <div class="input-block">
-      <label for="status" class="form-label">Status</label>
-      <select class="form-select" id="status" aria-label="Default select example" formControlName="status">
-        <option value="0">Status</option>
-        <ng-container *ngFor="let status of statuses">
-          <option value="{{status.key}}">{{status.title}}</option>
-        </ng-container>
-      </select>
+
+    <div class="form-line">
+      <mat-form-field appearance="legacy">
+        <mat-label>Permissions</mat-label>
+        <mat-select matNativeControl formControlName="permissions" multiple>
+          <mat-option *ngFor="let permission of permissions" [value]="permission._id">{{permission.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <div class="input-block">
-      <label for="status" class="form-label">Permissions</label>
-      <select class="form-select" multiple aria-label="multiple select example" size="20" formControlName="permissions">
-        <ng-container *ngFor="let permission of permissions">
-          <option value="{{permission._id}}">{{permission.name}}</option>
-        </ng-container>
-      </select>
+
+    <div class="form-line">
+      <mat-form-field appearance="legacy">
+        <mat-label>Status</mat-label>
+        <mat-select matNativeControl formControlName="status">
+          <mat-option *ngFor="let status of statuses" [value]="status.key">{{status.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="!createRoleForm.valid">Create</button>
+
+    <div class="form-line">
+      <button mat-raised-button color="primary" [disabled]="!createRoleForm.valid">Submit</button>
+    </div>
   </form>
 </div>

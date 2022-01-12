@@ -47,3 +47,22 @@ a {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* Snack messages */
+.snack-success {
+  background-color: #198754;
+  color: white;
+  button {
+    color: white;
+  }
+}
+
+.snack-danger {
+  background-color: #dc3545;
+  color: white;
+  button {
+    color: white;
+  }
+}
+/* Snack messages */

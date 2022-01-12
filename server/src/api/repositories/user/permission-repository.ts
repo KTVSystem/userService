@@ -1,26 +1,7 @@
-import { perPage } from '../../../config/settings';
 import { PermissionModel } from '../../models/user/permission-model';
-
-export const allPermissionCount = async (params) => {
-    const {name, status} = params;
-    let query = PermissionModel.find({});
-
-    if (typeof name !== 'undefined') {
-        query.find({name: { $regex: '.*' + name + '.*' } });
-    }
-    if (typeof status !== 'undefined') {
-        query.find({ status: status });
-    }
-    return query.count();
-}
 
 export const allByQueryFilter = async (params: any) => {
     const {name, status} = params;
-
-    const page = (typeof params.page !== 'undefined') ? params.page : 1;
-    const perPageValue = Number(perPage);
-    const skip = (page === 1) ? 0 : (perPageValue * (page - 1));
-
     let query = PermissionModel.find({});
     if (typeof name !== 'undefined') {
         query.find({name: { $regex: '.*' + name + '.*' } });
@@ -28,7 +9,7 @@ export const allByQueryFilter = async (params: any) => {
     if (typeof status !== 'undefined') {
         query.find({ status: status });
     }
-    return query.skip(skip).limit(perPageValue);
+    return query;
 }
 
 export const allByQuery = async () => {

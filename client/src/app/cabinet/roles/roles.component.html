@@ -20,7 +20,10 @@
   <mat-divider></mat-divider>
 
   <div class="data">
-    <h1 class="display-5 title">Roles</h1>
+    <div class="header">
+      <h1 class="display-5 title">Roles</h1>
+      <a mat-raised-button color="primary" class="create-btn" [routerLink]="['/cabinet/roles/create']">Create</a>
+    </div>
     <table mat-table [dataSource]="paginationService.dataSource" class="mat-elevation-z8" *ngIf="roles.length > 0;else no_data">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
