@@ -32,6 +32,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { WarningConfirmationComponent } from './shared/warning-confirmation/warning-confirmation.component';
+import { AuthInterceptor } from './auth-interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -72,7 +74,12 @@ import { WarningConfirmationComponent } from './shared/warning-confirmation/warn
   ],
   exports: [CabinetComponent],
   providers: [
-    PaginationService
+    PaginationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: []
 })
