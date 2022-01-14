@@ -19,5 +19,10 @@
       </mat-form-field>
       <button mat-raised-button color="primary" [disabled]="!loginForm.valid">Login</button>
     </form>
+
+    <div class="social">
+      <i class="fa fa-facebook-square" (click)="loginFacebook()"></i>
+      <i class="fa fa-google-plus-square" (click)="loginGoogle()"></i>
+    </div>
   </div>
 </div>

@@ -38,5 +38,22 @@
       width: 100%;
       margin-bottom: 20px;
     }
+
+    .social {
+      margin-top: 20px;
+      i {
+        font-size: 40px;
+        margin-right: 10px;
+        &.fa-facebook-square {
+          color: #4267B2;
+        }
+        &.fa-google-plus-square {
+          color: #db4a39;
+        }
+        &.fa-instagram {
+          color: #833ab4;
+        }
+      }
+    }
   }
 }

@@ -5,6 +5,7 @@ import { LoginService } from '../services/login/login.service';
 import { TokenService } from '../services/token/token.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,13 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
   });
 
-  constructor(private loginService: LoginService, private tokenService: TokenService, private router: Router, private snackbar: MatSnackBar) { }
+  constructor(
+    private loginService: LoginService,
+    private tokenService: TokenService,
+    private router: Router,
+    private snackbar: MatSnackBar,
+    private authService: SocialAuthService
+  ) { }
 
   ngOnInit(): void {
     if (this.tokenService.isAuth) {
@@ -42,6 +49,18 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/cabinet']).then();
         }
       }
+    });
+  }
+
+  public loginFacebook(): void {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((response) => {
+      console.log(response);
+    });
+  }
+
+  public loginGoogle(): void {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((response) => {
+      console.log(response);
     });
   }
 
