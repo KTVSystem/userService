@@ -7,6 +7,7 @@ const schema = new Schema<User>({
     status: { type: String, required: true, max: 20 },
     role: { type: Schema.Types.ObjectId, ref: 'Role' },
     token: { type: Schema.Types.ObjectId, ref: 'Token' },
+    socials: [{ type: Schema.Types.ObjectId, ref: 'SocialUser' }],
     created: { type: Date, required: false},
     updated: { type: Date, required: false}
 }, {
