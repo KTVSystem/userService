@@ -1,5 +1,5 @@
 <div class="content-block">
-  <h1 class="display-5 title">Filter</h1>
+  <h1 class="title">Filter</h1>
   <div class="filter" fxLayout="row">
     <form [formGroup]="rolesFilterForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="example-full-width" appearance="legacy">
@@ -20,9 +20,9 @@
   <mat-divider></mat-divider>
 
   <div class="data">
-    <div class="header">
-      <h1 class="display-5 title">Roles</h1>
-      <a mat-raised-button color="primary" class="create-btn" [routerLink]="['/cabinet/roles/create']">Create</a>
+    <div class="header" fxLayout="row">
+      <h1 class="title">Roles</h1>
+      <button mat-raised-button color="primary" class="create-btn" [routerLink]="['/cabinet/roles/create']">Create</button>
     </div>
     <table mat-table [dataSource]="paginationService.dataSource" class="mat-elevation-z8" *ngIf="roles.length > 0;else no_data">
       <ng-container matColumnDef="name">

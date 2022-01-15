@@ -58,7 +58,7 @@ import { MatIconModule } from '@angular/material/icon';
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('clientId')
+            provider: new GoogleLoginProvider('966404853961-bl88ukkan3aim1dr4av6ds876mef8sr1')
           },
           {
             id: FacebookLoginProvider.PROVIDER_ID,

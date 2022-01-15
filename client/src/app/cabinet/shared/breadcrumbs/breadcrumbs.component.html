@@ -1,11 +1,15 @@
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a routerLink="/cabinet">Home</a></li>
+<nav>
+  <ul class="breadcrumb" fxLayout="row">
+    <li class="breadcrumb-item">
+      <a routerLink="/cabinet">Home</a>
+      <span class="breadcrumb-divider" *ngIf="parentLinks && parentLinks.length || currentLinkLabel"> / </span>
+    </li>
     <ng-container *ngIf="!isHomePage && isData">
       <li class="breadcrumb-item" *ngFor="let parent of parentLinks">
         <a routerLink="{{ parent.link }}">{{ parent.label }}</a>
+        <span class="breadcrumb-divider" *ngIf="parentLinks && parentLinks.length > 1 || currentLinkLabel"> / </span>
       </li>
       <li class="breadcrumb-item active" aria-current="page">{{ currentLinkLabel }}</li>
     </ng-container>
-  </ol>
+  </ul>
 </nav>

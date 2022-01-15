@@ -5,7 +5,8 @@ import { LoginService } from '../services/login/login.service';
 import { TokenService } from '../services/token/token.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FacebookLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { SocialUser } from '../models/login/social-user';
 
 @Component({
   selector: 'app-login',
@@ -53,13 +54,13 @@ export class LoginComponent implements OnInit {
   }
 
   public loginFacebook(): void {
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((response) => {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((response: SocialUser) => {
       console.log(response);
     });
   }
 
   public loginGoogle(): void {
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((response) => {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((response: SocialUser) => {
       console.log(response);
     });
   }

@@ -1,8 +1,8 @@
 <div class="main">
-  <div class="name display-3">User CRM</div>
+  <div class="name">User CRM</div>
   <div class="login-block">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <h1 class="display-5">Login</h1>
+      <h1 class="title">Login</h1>
       <mat-form-field class="example-full-width" appearance="legacy">
         <mat-label>Email</mat-label>
         <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
@@ -21,8 +21,8 @@
     </form>
 
     <div class="social">
-      <i class="fa fa-facebook-square" (click)="loginFacebook()"></i>
-      <i class="fa fa-google-plus-square" (click)="loginGoogle()"></i>
+      <img src="/assets/images/facebook.svg" (click)="loginFacebook()" title="Facebook"/>
+      <img src="/assets/images/google.svg" (click)="loginGoogle()" title="Google"/>
     </div>
   </div>
 </div>

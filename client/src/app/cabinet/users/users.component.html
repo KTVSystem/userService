@@ -1,5 +1,5 @@
 <div class="content-block">
-  <h1 class="display-5 title">Filter</h1>
+  <h1 class="title">Filter</h1>
   <div class="filter" fxLayout="row">
     <form [formGroup]="usersFilterForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="example-full-width" appearance="legacy">
@@ -27,9 +27,9 @@
   <mat-divider></mat-divider>
 
   <div class="data">
-    <div class="header">
-      <h1 class="display-5 title">Users</h1>
-      <a mat-raised-button color="primary" class="create-btn" [routerLink]="['/cabinet/users/create']">Create</a>
+    <div class="header" fxLayout="row">
+      <h1 class="title">Users</h1>
+      <button mat-raised-button color="primary" class="create-btn" [routerLink]="['/cabinet/users/create']">Create</button>
     </div>
     <table mat-table [dataSource]="paginationService.dataSource" class="mat-elevation-z8" *ngIf="users.length > 0;else no_data">
       <ng-container matColumnDef="email">
