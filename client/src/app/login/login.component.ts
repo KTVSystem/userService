@@ -40,29 +40,41 @@ export class LoginComponent implements OnInit {
     const login: Login = {email: this.loginForm.value.email, password: this.loginForm.value.password};
     this.loginService.signIn(login).subscribe((response) => {
       if (response) {
-        if (response.error) {
-          this.snackbar.open(response.error, 'Close', {
-            duration: 3000,
-            verticalPosition: 'top'
-          });
-        } else {
-          this.tokenService.writeToken(response.token);
-          this.router.navigate(['/cabinet']).then();
-        }
+        this.handleResponse(response);
       }
     });
   }
 
   public loginFacebook(): void {
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((response: SocialUser) => {
-      console.log(response);
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((socialUser: SocialUser) => {
+      this.loginService.signInSocial(socialUser).subscribe((response) => {
+        if (response) {
+          this.handleResponse(response);
+        }
+      });
     });
   }
 
   public loginGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((response: SocialUser) => {
-      console.log(response);
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((socialUser: SocialUser) => {
+      this.loginService.signInSocial(socialUser).subscribe((response) => {
+        if (response) {
+          this.handleResponse(response);
+        }
+      });
     });
+  }
+
+  private handleResponse(response: any): void {
+    if (response.error) {
+      this.snackbar.open(response.error, 'Close', {
+        duration: 3000,
+        verticalPosition: 'top'
+      });
+    } else {
+      this.tokenService.writeToken(response.token);
+      this.router.navigate(['/cabinet']).then();
+    }
   }
 
 }
