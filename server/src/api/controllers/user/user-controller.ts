@@ -9,6 +9,7 @@ import { UserEditDto } from '../../interfaces/user/dtos/user/user-edit-dto';
 import { UserChangePasswordDto } from '../../interfaces/user/dtos/user/user-change-password-dto';
 import { removeSocialById } from '../../repositories/user/social-user-repository';
 import { socialCount } from '../../../config/settings';
+import {SocialUser} from '../../interfaces/user/social-user';
 
 export const getUsers = async (params: any) => {
     return await allByQuery(params);
@@ -53,7 +54,7 @@ export const changePassword = async (id: string, userDto: UserChangePasswordDto)
 export const unbindSocial = async (id: string, social: string): Promise<string> => {
     const user = await findUserById(id);
     await removeSocialById(social);
-    if (user.socials.length < socialCount) {
+    if (user.socials.length < Number(socialCount)) {
         await removeUserById(id);
         return 'User was deleted!';
     } else {
@@ -62,5 +63,11 @@ export const unbindSocial = async (id: string, social: string): Promise<string> 
 };
 
 export const deleteUser = async (id: string): Promise<void> => {
+    const user = await findUserById(id);
+    if (user.socials.length) {
+        for (const social of user.socials) {
+            await removeSocialById(social.id);
+        }
+    }
     await removeUserById(id);
-}
+};

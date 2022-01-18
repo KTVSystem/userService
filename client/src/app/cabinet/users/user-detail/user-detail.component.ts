@@ -14,7 +14,6 @@ import { RedirectService } from '../../../services/cabinet/shared/redirect/redir
 })
 export class UserDetailComponent implements OnInit {
   public user: UserDetailDto;
-  private messageDeleteUser: string  = 'Are you sure you want to delete this user?';
   private id: number;
 
   constructor(
@@ -41,8 +40,8 @@ export class UserDetailComponent implements OnInit {
   public removeUser(id: string): void {
     const dialogRef = this.dialog.open(WarningConfirmationComponent, {
       width: '400px',
-      height: '200px',
-      data: { message: this.messageDeleteUser }
+      height: '210px',
+      data: { message: this.generateWarningMessage() }
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
@@ -58,12 +57,10 @@ export class UserDetailComponent implements OnInit {
   }
 
   public unbindSocial(id: string, socialId: string): void {
-    const message = this.user.socials.length === 1 ? 'Are you sure you want to unbind this social account. User will be deleted?'
-      : 'Are you sure you want to unbind this social account?';
     const dialogRef = this.dialog.open(WarningConfirmationComponent, {
       width: '400px',
       height: '210px',
-      data: { message: message }
+      data: { message: this.generateWarningMessage('social') }
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
@@ -80,6 +77,25 @@ export class UserDetailComponent implements OnInit {
         });
       }
     });
+  }
+
+  private generateWarningMessage(type: string = 'user'): string {
+    let message = 'Are you sure you want to delete this';
+    switch(type) {
+      case 'user':
+        message = message.concat(' user?');
+        if (this.user.socials.length) {
+          message = message.concat(' This user contain social connection.');
+        }
+        break;
+      case 'social':
+        message = message.concat(' social connection?');
+        if (this.user.socials.length === 1) {
+          message = message.concat(' User will be deleted.');
+        }
+        break;
+    }
+    return message;
   }
 
 }
