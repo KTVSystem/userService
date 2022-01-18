@@ -63,7 +63,7 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string): Pro
         user.socials = [...user.socials, social];
     }
 
-    await checkAdminAccess(type, user.role.name);
+    //await checkAdminAccess(type, user.role.name);
     const tokenHash = await JwtService.createToken(user);
     if (typeof user.token !== 'undefined') {
         await removeTokenEntry(user.token.hash);

@@ -1,4 +1,4 @@
-import {allByQuery, findUserById, removeUserById} from '../../repositories/user/user-repository';
+import { allByQuery, findUserById, removeUserById } from '../../repositories/user/user-repository';
 import { findRoleByName } from '../../repositories/user/role-repository';
 import { User } from '../../interfaces/user/user';
 import { UserCreateDto } from '../../interfaces/user/dtos/user/user-create-dto';
@@ -7,6 +7,8 @@ import { Status } from '../../interfaces/base/enums/status';
 import * as PasswordService from '../../services/password-service';
 import { UserEditDto } from '../../interfaces/user/dtos/user/user-edit-dto';
 import { UserChangePasswordDto } from '../../interfaces/user/dtos/user/user-change-password-dto';
+import { removeSocialById } from '../../repositories/user/social-user-repository';
+import { socialCount } from '../../../config/settings';
 
 export const getUsers = async (params: any) => {
     return await allByQuery(params);
@@ -47,6 +49,17 @@ export const changePassword = async (id: string, userDto: UserChangePasswordDto)
     await user.updateOne(user);
     return user;
 }
+
+export const unbindSocial = async (id: string, social: string): Promise<string> => {
+    const user = await findUserById(id);
+    await removeSocialById(social);
+    if (user.socials.length < socialCount) {
+        await removeUserById(id);
+        return 'User was deleted!';
+    } else {
+        return 'Social account was unbinded!';
+    }
+};
 
 export const deleteUser = async (id: string): Promise<void> => {
     await removeUserById(id);

@@ -28,6 +28,19 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+router.get('/:id/unbind-social/:social', async (req, res) => {
+    try {
+        const message = await UserController.unbindSocial(req.params.id, req.params.social);
+        res.status(200).json({
+            message: message,
+        });
+    } catch(error) {
+        res.status(400).json({
+            error: error.message,
+        });
+    }
+});
+
 router.post('/', async (req, res) => {
     try {
         const user = await UserController.createUser(req.body);
@@ -74,7 +87,7 @@ router.delete('/:id', async (req, res) => {
     try {
         await UserController.deleteUser(req.params.id);
         res.status(200).json({
-            message: 'Deleted successful',
+            message: 'User was deleted!',
         });
     } catch(error) {
         res.status(400).json({
