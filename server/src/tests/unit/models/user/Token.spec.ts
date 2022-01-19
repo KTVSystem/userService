@@ -36,7 +36,7 @@ describe('Test mongoose Token model', () => {
         };
         mockingoose(TokenModel).toReturn(_doc, 'findOne');
         return TokenModel.findById({ _id: '507f191e810c19729de860ea' }).then(doc => {
-            doc.hash = "Another";
+            doc.hash = 'Another';
             expect(doc.hash).not.toBe(_doc.hash);
         });
     });

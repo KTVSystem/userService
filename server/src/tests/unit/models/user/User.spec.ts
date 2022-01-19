@@ -39,7 +39,7 @@ describe('Test mongoose User model', () => {
         };
         mockingoose(UserModel).toReturn(_doc, 'findOne');
         return UserModel.findById({ _id: '507f191e810c19729de860ea' }).then(doc => {
-            doc.email = "Another";
+            doc.email = 'Another';
             expect(doc.email).not.toBe(_doc.email);
         });
     });

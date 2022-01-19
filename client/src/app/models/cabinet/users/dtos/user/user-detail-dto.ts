@@ -1,12 +1,12 @@
-import { Social } from '../../social';
 import { Permission } from '../../permission';
 import { Role } from '../../role';
+import { SocialUser } from '../../../../login/social-user';
 
 export interface UserDetailDto {
   email: string;
-  _id: number;
+  _id: string;
   role: Role;
-  social: Array<Social>;
+  socials: Array<SocialUser>;
   permission: Array<Permission>;
   status: string;
 }

@@ -43,8 +43,13 @@ export class UserService {
       .pipe(catchError(this.error));
   }
 
-  public removeUser(id: number): Observable<any> {
+  public removeUser(id: string): Observable<any> {
     return this.http.delete(this.baseUrl + id)
+      .pipe(catchError(this.error));
+  }
+
+  public unbindSocial(id: string, socialId: string): Observable<any> {
+    return this.http.get(this.baseUrl + id + '/unbind-social/' + socialId)
       .pipe(catchError(this.error));
   }
 

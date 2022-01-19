@@ -1,7 +1,6 @@
 import * as mockingoose from 'mockingoose';
 import { PermissionModel } from '../../../../api/models/user/permission-model';
 
-
 describe('Test mongoose Permission model', () => {
 
     it('Find by Id permission', async () => {
@@ -39,7 +38,7 @@ describe('Test mongoose Permission model', () => {
         };
         mockingoose(PermissionModel).toReturn(_doc, 'findOne');
         return PermissionModel.findById({ _id: '507f191e810c19729de860ea' }).then(doc => {
-            doc.name = "Another";
+            doc.name = 'Another';
             expect(doc.name).not.toBe(_doc.name);
         });
     });

@@ -1,7 +1,7 @@
 /* eslint @typescript-eslint/no-var-requires: "off" */
+// tslint:disable-next-line:no-var-requires
 const bcrypt = require('bcrypt');
-import { saltRound }  from '../../config/settings';
-
+import { saltRound } from '../../config/settings';
 
 export const hashPassword = async (password: string): Promise<string> => {
     const salt = bcrypt.genSaltSync(parseInt(saltRound));
@@ -11,4 +11,3 @@ export const hashPassword = async (password: string): Promise<string> => {
 export const comparePassword = async (password, hashPassword): Promise<boolean> => {
     return await bcrypt.compare(password, hashPassword);
 }
-

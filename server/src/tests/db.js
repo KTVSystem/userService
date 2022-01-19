@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const mongoose = require('mongoose');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 let mongoServer;

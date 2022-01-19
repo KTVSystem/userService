@@ -5,6 +5,8 @@ import { LoginService } from '../services/login/login.service';
 import { TokenService } from '../services/token/token.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { SocialUser } from '../models/login/social-user';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +22,13 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
   });
 
-  constructor(private loginService: LoginService, private tokenService: TokenService, private router: Router, private snackbar: MatSnackBar) { }
+  constructor(
+    private loginService: LoginService,
+    private tokenService: TokenService,
+    private router: Router,
+    private snackbar: MatSnackBar,
+    private authService: SocialAuthService
+  ) { }
 
   ngOnInit(): void {
     if (this.tokenService.isAuth) {
@@ -32,17 +40,41 @@ export class LoginComponent implements OnInit {
     const login: Login = {email: this.loginForm.value.email, password: this.loginForm.value.password};
     this.loginService.signIn(login).subscribe((response) => {
       if (response) {
-        if (response.error) {
-          this.snackbar.open(response.error, 'Close', {
-            duration: 3000,
-            verticalPosition: 'top'
-          });
-        } else {
-          this.tokenService.writeToken(response.token);
-          this.router.navigate(['/cabinet']).then();
-        }
+        this.handleResponse(response);
       }
     });
+  }
+
+  public loginFacebook(): void {
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((socialUser: SocialUser) => {
+      this.loginService.signInSocial(socialUser).subscribe((response) => {
+        if (response) {
+          this.handleResponse(response);
+        }
+      });
+    });
+  }
+
+  public loginGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((socialUser: SocialUser) => {
+      this.loginService.signInSocial(socialUser).subscribe((response) => {
+        if (response) {
+          this.handleResponse(response);
+        }
+      });
+    });
+  }
+
+  private handleResponse(response: any): void {
+    if (response.error) {
+      this.snackbar.open(response.error, 'Close', {
+        duration: 3000,
+        verticalPosition: 'top'
+      });
+    } else {
+      this.tokenService.writeToken(response.token);
+      this.router.navigate(['/cabinet']).then();
+    }
   }
 
 }

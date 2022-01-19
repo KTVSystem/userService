@@ -17,6 +17,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RedirectService } from './services/cabinet/shared/redirect/redirect.service';
+import {
+  FacebookLoginProvider,
+  GoogleLoginProvider,
+  SocialAuthServiceConfig,
+  SocialLoginModule
+} from 'angularx-social-login';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -33,7 +40,9 @@ import { RedirectService } from './services/cabinet/shared/redirect/redirect.ser
     BrowserAnimationsModule,
     MatInputModule,
     MatButtonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule,
+    SocialLoginModule
   ],
   providers: [
     LoginService,
@@ -41,7 +50,26 @@ import { RedirectService } from './services/cabinet/shared/redirect/redirect.ser
     UserService,
     PermissionService,
     RolesService,
-    RedirectService
+    RedirectService,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('966404853961-bl88ukkan3aim1dr4av6ds876mef8sr1')
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('293796066115382')
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    },
   ],
   bootstrap: [AppComponent]
 })

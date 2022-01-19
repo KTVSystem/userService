@@ -4,7 +4,7 @@ import { Role } from '../../interfaces/user/role';
 import { RoleDto } from '../../interfaces/user/dtos/role/role-dto';
 import { RoleModel } from '../../models/user/role-model';
 
-export const getRoles = async (params: any) => {
+export const getRoles = async (params: never) => {
     return await allByQuery(params);
 }
 
@@ -17,7 +17,7 @@ export const createRole = async (roleDto: RoleDto) => {
     return await RoleModel.create({
         name: roleDto.name,
         status: roleDto.status,
-        permissions: permissions,
+        permissions,
         created: new Date(),
         updated: new Date(),
     });

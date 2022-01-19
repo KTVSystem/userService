@@ -1,14 +1,16 @@
 import app from '../../../app';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const db = require('../../db');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const request = require('supertest');
 const agent = request.agent(app);
 
 import { buildRoleUser } from '../../helper/user/builders/roleBuilder';
 import { buildUserUser } from '../../helper/user/builders/userBuilder';
+import { buildSocialUser, buildSocialUserSecond } from '../../helper/user/builders/socialUserBuilder';
 import { userDtoUser } from '../../helper/user/dtos/userDto';
 import { getToken } from '../../helper/user/auth/token';
 import * as PasswordService from '../../../api/services/password-service';
-
 
 beforeAll(async () => {
     await db.connect();
@@ -30,7 +32,7 @@ describe('Test User Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('users')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'users')).toBeTruthy();
         expect(JSON.parse(response.res.text).users.length > 0).toBeTruthy();
     });
 
@@ -43,7 +45,7 @@ describe('Test User Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('user')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'user')).toBeTruthy();
         expect(String(JSON.parse(response.res.text).user._id)).toEqual(String(user._id));
     });
 
@@ -73,7 +75,7 @@ describe('Test User Controller', () => {
             });
 
         expect(response.status).toBe(201);
-        expect(JSON.parse(response.res.text).hasOwnProperty('user')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'user')).toBeTruthy();
         expect(JSON.parse(response.res.text).message).toBe('Created successful');
         expect(JSON.parse(response.res.text).user.email).toBe(userDtoUser.email);
     });
@@ -92,7 +94,7 @@ describe('Test User Controller', () => {
             });
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('user')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'user')).toBeTruthy();
         expect(JSON.parse(response.res.text).message).toBe('Updated successful');
         expect(JSON.parse(response.res.text).user.email).toBe('edited' + userDtoUser.email);
     });
@@ -109,10 +111,39 @@ describe('Test User Controller', () => {
             });
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('user')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'user')).toBeTruthy();
         expect(JSON.parse(response.res.text).message).toBe('Password changed successful');
         expect(await PasswordService.comparePassword(newPassword, JSON.parse(response.res.text).user.password))
             .toBeTruthy();
+    });
+
+    it('Unbind social from user [many]', async () => {
+        const roleUser = await buildRoleUser();
+        const social = await buildSocialUser();
+        const social2 = await buildSocialUserSecond();
+        const user = await buildUserUser(roleUser, [social, social2]);
+        const token = await getToken();
+        const response = await agent.get('/users/' + user._id + '/unbind-social/' + social.id)
+            .set('Authorization', `Bearer ${token}`)
+            .send();
+
+        expect(response.status).toBe(200);
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'message')).toBeTruthy();
+        expect(JSON.parse(response.res.text).message).toBe('Social account was unbinded!');
+    });
+
+    it('Unbind social from user [one]', async () => {
+        const roleUser = await buildRoleUser();
+        const social = await buildSocialUser();
+        const user = await buildUserUser(roleUser, [social]);
+        const token = await getToken();
+        const response = await agent.get('/users/' + user._id + '/unbind-social/' + social.id)
+            .set('Authorization', `Bearer ${token}`)
+            .send();
+
+        expect(response.status).toBe(200);
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'message')).toBeTruthy();
+        expect(JSON.parse(response.res.text).message).toBe('User was deleted!');
     });
 
     it('Delete user', async () => {
@@ -124,6 +155,6 @@ describe('Test User Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).message).toBe('Deleted successful');
+        expect(JSON.parse(response.res.text).message).toBe('User was deleted!');
     });
 });

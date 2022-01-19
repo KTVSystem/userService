@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Login } from '../../models/login/login';
+import { SocialUser } from '../../models/login/social-user';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,12 @@ export class LoginService {
 
   public signIn(login: Login): Observable<any> {
     return this.http.post(this.baseUrl + 'signin', {email: login.email, password: login.password, type: 'Admin'},
+      { headers: this.headers })
+      .pipe(catchError(this.error));
+  }
+
+  public signInSocial(socialUser: SocialUser): Observable<any> {
+    return this.http.post(this.baseUrl + 'social', {socialUser, type: 'Admin'},
       { headers: this.headers })
       .pipe(catchError(this.error));
   }

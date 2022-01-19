@@ -1,14 +1,12 @@
 import app from '../../../app';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const db = require('../../db');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const request = require('supertest');
 const agent = request.agent(app);
-
-import { buildRoleUser } from '../../helper/user/builders/roleBuilder';
-import { buildUserUser } from '../../helper/user/builders/userBuilder';
 import { getToken } from '../../helper/user/auth/token';
-import {buildPermission} from "../../helper/user/builders/permissionBuilder";
-import {permissionDto} from "../../helper/user/dtos/permissionDto";
-
+import { buildPermission } from '../../helper/user/builders/permissionBuilder';
+import { permissionDto } from '../../helper/user/dtos/permissionDto';
 
 beforeAll(async () => {
     await db.connect();
@@ -31,8 +29,7 @@ describe('Test Permission Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('permissions')).toBeTruthy();
-        expect(JSON.parse(response.res.text).hasOwnProperty('count')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permissions')).toBeTruthy();
         expect(JSON.parse(response.res.text).permissions.length > 0).toBeTruthy();
     });
 
@@ -44,7 +41,7 @@ describe('Test Permission Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('permissions')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permissions')).toBeTruthy();
         expect(JSON.parse(response.res.text).permissions.length > 0).toBeTruthy();
     });
 
@@ -56,7 +53,7 @@ describe('Test Permission Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('permission')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permission')).toBeTruthy();
         expect(String(JSON.parse(response.res.text).permission._id)).toEqual(String(permission._id));
     });
 
@@ -82,7 +79,7 @@ describe('Test Permission Controller', () => {
             });
 
         expect(response.status).toBe(201);
-        expect(JSON.parse(response.res.text).hasOwnProperty('permission')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permission')).toBeTruthy();
         expect(JSON.parse(response.res.text).message).toBe('Created successful');
         expect(JSON.parse(response.res.text).permission.name).toBe(permissionDto.name);
     });
@@ -98,7 +95,7 @@ describe('Test Permission Controller', () => {
             });
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('permission')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permission')).toBeTruthy();
         expect(JSON.parse(response.res.text).message).toBe('Updated successful');
         expect(JSON.parse(response.res.text).permission.name).toBe(permissionDto.name + 'edited');
     });

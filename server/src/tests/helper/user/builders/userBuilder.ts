@@ -15,13 +15,14 @@ export const buildUserAdmin = async (role) => {
     });
 }
 
-export const buildUserUser = async (role) => {
+export const buildUserUser = async (role, socials = []) => {
     const passwordHashUser = await PasswordService.hashPassword(userDtoUser.password);
     return await UserModel.create({
         email: userDtoUser.email,
         password: passwordHashUser,
         status: Status.ACTIVE,
         role: role,
+        socials: socials,
         created: new Date(),
         updated: new Date(),
     });
