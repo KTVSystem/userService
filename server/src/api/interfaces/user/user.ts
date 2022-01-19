@@ -3,7 +3,7 @@ import { Token } from './token';
 import { SocialUser } from './social-user';
 
 export interface User {
-    _id?:string,
+    _id?: string,
     email: string;
     password?: string;
     status: string;

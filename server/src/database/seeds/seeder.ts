@@ -5,12 +5,11 @@ import { UserModel } from '../../api/models/user/user-model';
 import { Token } from '../../api/interfaces/user/token';
 import { Permission } from '../../api/interfaces/user/permission';
 import { Role } from '../../api/interfaces/user/role';
-import * as PasswordService  from '../../api/services/password-service';
+import * as PasswordService from '../../api/services/password-service';
 import { Status } from '../../api/interfaces/base/enums/status';
 import { SocialUser } from '../../api/interfaces/user/social-user';
 import { SocialUserModel } from '../../api/models/user/social-user-model';
 import { SocialUserProviders } from '../../api/interfaces/base/enums/social-user-providers';
-
 
 export const start = async (): Promise<void> => {
     removeStore().then();

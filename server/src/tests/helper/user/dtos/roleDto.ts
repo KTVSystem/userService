@@ -1,11 +1,12 @@
-import { RoleDto } from "../../../../api/interfaces/user/dtos/role/role-dto";
+import { RoleDto } from '../../../../api/interfaces/user/dtos/role/role-dto';
+import { Status } from '../../../../api/interfaces/base/enums/status';
 
 export const roleAdminDto: RoleDto = {
     name: 'Admin',
-    status: 'active'
+    status: Status.ACTIVE
 }
 
 export const roleUserDto: RoleDto = {
     name: 'User',
-    status: 'active'
+    status: Status.ACTIVE
 }

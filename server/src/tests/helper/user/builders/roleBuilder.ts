@@ -1,7 +1,6 @@
 import { RoleModel } from '../../../../api/models/user/role-model';
 import { roleAdminDto, roleUserDto } from '../dtos/roleDto';
 
-
 export const buildRoleAdmin = async () => {
     return await RoleModel.create({
         name: roleAdminDto.name,

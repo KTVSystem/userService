@@ -1,4 +1,4 @@
-export const authUrlLst: Array<string> = [
+export const authUrlLst: string[] = [
     '/users',
     '/permissions',
 ];

@@ -7,7 +7,7 @@ import { Permission } from '../../interfaces/user/permission';
 import { PermissionDto } from '../../interfaces/user/dtos/permission/permission-dto';
 import { PermissionModel } from '../../models/user/permission-model';
 
-export const getPermissions = async (params: any) => {
+export const getPermissions = async (params: never) => {
     return await allByQueryFilter(params);
 }
 

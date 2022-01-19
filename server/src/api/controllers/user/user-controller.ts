@@ -9,9 +9,8 @@ import { UserEditDto } from '../../interfaces/user/dtos/user/user-edit-dto';
 import { UserChangePasswordDto } from '../../interfaces/user/dtos/user/user-change-password-dto';
 import { removeSocialById } from '../../repositories/user/social-user-repository';
 import { socialCount } from '../../../config/settings';
-import {SocialUser} from '../../interfaces/user/social-user';
 
-export const getUsers = async (params: any) => {
+export const getUsers = async (params: never) => {
     return await allByQuery(params);
 }
 
@@ -26,7 +25,7 @@ export const createUser = async (userDto: UserCreateDto): Promise<User> => {
         email: userDto.email,
         password: passwordHash,
         status: Status.ACTIVE,
-        role: role,
+        role,
         created: new Date(),
         updated: new Date(),
     });

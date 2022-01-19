@@ -53,7 +53,7 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string): Pro
         user = await UserModel.create({
             email: socialUser.email,
             status: Status.ACTIVE,
-            role: role,
+            role,
             created: new Date(),
             updated: new Date(),
         });
@@ -63,7 +63,8 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string): Pro
         user.socials = [...user.socials, social];
     }
 
-    //await checkAdminAccess(type, user.role.name);
+    console.log(type);
+    // await checkAdminAccess(type, user.role.name);
     const tokenHash = await JwtService.createToken(user);
     if (typeof user.token !== 'undefined') {
         await removeTokenEntry(user.token.hash);
@@ -81,7 +82,7 @@ const checkAdminAccess = async (type: string, role: string) => {
 
 export const checkToken = async (token: string): Promise<boolean> => {
     const tokenDecoded = await JwtService.decodeToken(token);
-    if (!tokenDecoded) return false;
+    if (!tokenDecoded) { return false; }
     const user = await findUserById(tokenDecoded.id);
     const result = await checkTokenExpiredDate(tokenDecoded.iat);
     return !(!user && user.token !== tokenDecoded.id && !result);

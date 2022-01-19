@@ -1,14 +1,14 @@
 import { RoleModel } from '../../models/user/role-model';
 
-export const allByQuery = async (params: any) => {
+export const allByQuery = async (params: never) => {
     const {name, status} = params;
 
-    let query = RoleModel.find({});
+    const query = RoleModel.find({});
     if (typeof name !== 'undefined') {
         query.find({name: { $regex: '.*' + name + '.*' } });
     }
     if (typeof status !== 'undefined') {
-        query.find({ status: status });
+        query.find({ status });
     }
     return query.populate('permissions');
 }
@@ -22,7 +22,7 @@ export const findRoleById = async (id: string) => {
 }
 
 export const findRoleByName = async (name: string) => {
-    const role = (await RoleModel.find({ name: name }).populate('permissions').limit(1))[0];
+    const role = (await RoleModel.find({ name }).populate('permissions').limit(1))[0];
     if (typeof role !== 'undefined') {
         return role;
     }

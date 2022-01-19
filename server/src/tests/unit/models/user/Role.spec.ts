@@ -1,7 +1,6 @@
 import * as mockingoose from 'mockingoose';
 import { RoleModel } from '../../../../api/models/user/role-model';
 
-
 describe('Test mongoose Role model', () => {
 
     it('Find by Id role', async () => {
@@ -39,7 +38,7 @@ describe('Test mongoose Role model', () => {
         };
         mockingoose(RoleModel).toReturn(_doc, 'findOne');
         return RoleModel.findById({ _id: '507f191e810c19729de860ea' }).then(doc => {
-            doc.name = "Another";
+            doc.name = 'Another';
             expect(doc.name).not.toBe(_doc.name);
         });
     });

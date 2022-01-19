@@ -1,6 +1,5 @@
 import express from 'express';
 import * as AuthController from '../../controllers/auth/auth-controller';
-import {AuthTypes} from '../../interfaces/base/enums/auth-types';
 const router = express.Router();
 
 router.post('/signin', async (req, res) => {
@@ -9,7 +8,7 @@ router.post('/signin', async (req, res) => {
         res.status(200).json({
             token: user.token.hash
         });
-    } catch(error) {
+    } catch (error) {
         res.status(400).json({
             error: error.message,
         });
@@ -20,9 +19,9 @@ router.post('/social', async (req, res) => {
     try {
         const user = await AuthController.loginSocialUser(req.body.socialUser, req.body.type);
         res.status(200).json({
-            token: user.token.hash
+            token: user.token.hash,
         });
-    } catch(error) {
+    } catch (error) {
         res.status(400).json({
             error: error.message,
         });
