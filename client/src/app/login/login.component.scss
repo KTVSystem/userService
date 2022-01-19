@@ -9,6 +9,7 @@
     text-align: center;
     margin-bottom: 20px;
     color: $base-color;
+    font-size: 40px;
   }
 
   .login-block {
@@ -30,13 +31,22 @@
       width: 80vw;
     }
 
-    h1 {
-      margin-bottom: 20px;
+    .title {
+      @include title(2rem, 20px);
     }
 
     mat-form-field {
       width: 100%;
       margin-bottom: 20px;
+    }
+
+    .social {
+      margin-top: 25px;
+      img {
+        height: 35px;
+        cursor: pointer;
+        margin-right: 15px;
+      }
     }
   }
 }

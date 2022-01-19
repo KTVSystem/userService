@@ -1,7 +1,6 @@
 @import 'src/assets/scss/base';
 
 .breadcrumb {
-  padding: 15px 0 0 20px;
 
   .active {
     color: $base-grey;
@@ -9,5 +8,12 @@
 
   a {
     color: $base-color;
+  }
+
+  li {
+    .breadcrumb-divider {
+      margin: 0 5px;
+      color: $base-color;
+    }
   }
 }

@@ -6,9 +6,9 @@ router.get('/', async (req, res) => {
     try {
         const roles = await RoleController.getRoles(req.query);
         res.status(200).json({
-            roles: roles,
+            roles,
         });
-    } catch(error) {
+    } catch (error) {
         res.status(400).json({
             error: error.message,
         });
@@ -19,9 +19,9 @@ router.get('/:id', async (req, res) => {
     try {
         const role = await RoleController.getPermission(req.params.id);
         res.status(200).json({
-            role: role
+            role
         });
-    } catch(error) {
+    } catch (error) {
         res.status(400).json({
             error: error.message,
         });
@@ -32,10 +32,10 @@ router.post('/', async (req, res) => {
     try {
         const role = await RoleController.createRole(req.body);
         res.status(201).json({
-            role: role,
+            role,
             message: 'Created successful',
         });
-    } catch(error) {
+    } catch (error) {
         res.status(400).json({
             error: error.message,
         });
@@ -46,10 +46,10 @@ router.put('/:id', async (req, res) => {
     try {
         const role = await RoleController.editRole(req.params.id, req.body);
         res.status(200).json({
-            role: role,
+            role,
             message: 'Updated successful',
         });
-    } catch(error) {
+    } catch (error) {
         res.status(400).json({
             error: error.message,
         });
@@ -60,10 +60,10 @@ router.delete('/:id', async (req, res) => {
     try {
         const role = await RoleController.deleteRole(req.params.id);
         res.status(200).json({
-            role: role,
+            role,
             message: 'Deleted successful',
         });
-    } catch(error) {
+    } catch (error) {
         res.status(400).json({
             error: error.message,
         });

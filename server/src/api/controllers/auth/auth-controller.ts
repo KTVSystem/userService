@@ -1,34 +1,88 @@
 import * as PasswordService from '../../services/password-service';
 import * as JwtService from '../../services/auth/jwt-service';
-import { findUserByEmail, findUserById } from '../../repositories/user/user-repository';
+import { findUserByEmail, findUserByEmailWithoutExc, findUserById } from '../../repositories/user/user-repository';
 import { Status } from '../../interfaces/base/enums/status';
+import { Roles } from '../../interfaces/base/enums/roles';
 import { TokenModel } from '../../models/user/token-model';
 import { User } from '../../interfaces/user/user';
 import { removeTokenEntry } from '../../repositories/user/token-repository';
 import { AuthTypes } from '../../interfaces/base/enums/auth-types';
+import { SocialUser } from '../../interfaces/user/social-user';
+import { findSocialById } from '../../repositories/user/social-user-repository';
+import { findRoleByName } from '../../repositories/user/role-repository';
+import { UserModel } from '../../models/user/user-model';
+import { SocialUserModel } from '../../models/user/social-user-model';
 
 export const loginUser = async (email: string, password: string, type: string): Promise<User> => {
     const user = await findUserByEmail(email);
     if (user && await PasswordService.comparePassword(password, user.password)) {
-        if (type === AuthTypes.ADMIN && user.role.name !== AuthTypes.ADMIN) {
-            throw new Error('User does not have permission level!');
-        }
+        await checkAdminAccess(type, user.role.name);
         const tokenHash = await JwtService.createToken(user);
-
         if (typeof user.token !== 'undefined') {
             await removeTokenEntry(user.token.hash);
         }
-
         user.token = await TokenModel.create({hash: tokenHash, status: Status.ACTIVE});
         await user.updateOne(user);
         return user;
     }
     throw new Error('Wrong email or password');
-}
+};
+
+export const loginSocialUser = async (socialUser: SocialUser, type: string): Promise<User> => {
+    let user = await findUserByEmailWithoutExc(socialUser.email);
+    let social = await findSocialById(socialUser.id);
+    let newSocial = false;
+
+    if (typeof social === 'undefined') {
+        newSocial = true;
+        social = await SocialUserModel.create({
+            id: socialUser.id,
+            email: socialUser.email,
+            firstName: socialUser.firstName,
+            lastName: socialUser.lastName,
+            photoUrl: socialUser.photoUrl,
+            provider: socialUser.provider,
+            status: Status.ACTIVE,
+            created: new Date(),
+            updated: new Date(),
+        });
+    }
+
+    if (typeof user === 'undefined') {
+        const role = await findRoleByName(Roles.USER);
+        user = await UserModel.create({
+            email: socialUser.email,
+            status: Status.ACTIVE,
+            role,
+            created: new Date(),
+            updated: new Date(),
+        });
+    }
+
+    if (newSocial) {
+        user.socials = [...user.socials, social];
+    }
+
+    console.log(type);
+    // await checkAdminAccess(type, user.role.name);
+    const tokenHash = await JwtService.createToken(user);
+    if (typeof user.token !== 'undefined') {
+        await removeTokenEntry(user.token.hash);
+    }
+    user.token = await TokenModel.create({hash: tokenHash, status: Status.ACTIVE});
+    await user.updateOne(user);
+    return user;
+};
+
+const checkAdminAccess = async (type: string, role: string) => {
+    if (type === AuthTypes.ADMIN && role !== AuthTypes.ADMIN) {
+        throw new Error('User does not have permission level!');
+    }
+};
 
 export const checkToken = async (token: string): Promise<boolean> => {
     const tokenDecoded = await JwtService.decodeToken(token);
-    if (!tokenDecoded) return false;
+    if (!tokenDecoded) { return false; }
     const user = await findUserById(tokenDecoded.id);
     const result = await checkTokenExpiredDate(tokenDecoded.iat);
     return !(!user && user.token !== tokenDecoded.id && !result);

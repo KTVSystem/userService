@@ -1,15 +1,13 @@
 import app from '../../../app';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const db = require('../../db');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const request = require('supertest');
 const agent = request.agent(app);
 
 import { buildRoleUser } from '../../helper/user/builders/roleBuilder';
-import { buildUserUser } from '../../helper/user/builders/userBuilder';
 import { getToken } from '../../helper/user/auth/token';
-import {buildPermission} from "../../helper/user/builders/permissionBuilder";
-import {permissionDto} from "../../helper/user/dtos/permissionDto";
-import {roleUserDto} from "../../helper/user/dtos/roleDto";
-
+import {roleUserDto} from '../../helper/user/dtos/roleDto';
 
 beforeAll(async () => {
     await db.connect();
@@ -32,8 +30,7 @@ describe('Test Role Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('roles')).toBeTruthy();
-        expect(JSON.parse(response.res.text).hasOwnProperty('count')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'roles')).toBeTruthy();
         expect(JSON.parse(response.res.text).roles.length > 0).toBeTruthy();
     });
 
@@ -45,7 +42,7 @@ describe('Test Role Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('role')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'role')).toBeTruthy();
         expect(String(JSON.parse(response.res.text).role._id)).toEqual(String(role._id));
     });
 
@@ -72,7 +69,7 @@ describe('Test Role Controller', () => {
             });
 
         expect(response.status).toBe(201);
-        expect(JSON.parse(response.res.text).hasOwnProperty('role')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'role')).toBeTruthy();
         expect(JSON.parse(response.res.text).message).toBe('Created successful');
         expect(JSON.parse(response.res.text).role.name).toBe(roleUserDto.name);
     });
@@ -89,7 +86,7 @@ describe('Test Role Controller', () => {
             });
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('role')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'role')).toBeTruthy();
         expect(JSON.parse(response.res.text).message).toBe('Updated successful');
         expect(JSON.parse(response.res.text).role.name).toBe(roleUserDto.name + 'edited');
     });

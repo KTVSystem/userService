@@ -1,9 +1,10 @@
-import app from "../../../../app";
+import app from '../../../../app';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const request = require('supertest');
 const agent = request.agent(app);
 import { userDtoAdmin } from '../dtos/userDto';
-import {buildRoleAdmin} from "../builders/roleBuilder";
-import {buildUserAdmin} from "../builders/userBuilder";
+import { buildRoleAdmin } from '../builders/roleBuilder';
+import { buildUserAdmin } from '../builders/userBuilder';
 
 export const getToken = async () => {
     const roleAdmin = await buildRoleAdmin();

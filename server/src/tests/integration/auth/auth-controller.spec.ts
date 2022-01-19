@@ -1,11 +1,14 @@
 import app from '../../../app';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const db = require('../../db');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const request = require('supertest');
 const agent = request.agent(app);
 
 import { buildRoleAdmin, buildRoleUser } from '../../helper/user/builders/roleBuilder';
 import { buildUserAdmin, buildUserUser } from '../../helper/user/builders/userBuilder';
 import { userDtoAdmin, userDtoUser } from '../../helper/user/dtos/userDto';
+import { socialUserDto } from '../../helper/user/dtos/socialUserDto';
 
 
 beforeAll(async () => {
@@ -29,7 +32,7 @@ describe('Test auth User', () => {
         });
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).hasOwnProperty('token')).toBeTruthy();
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'token')).toBeTruthy();
     });
 
     it('Signin user permission error', async () => {
@@ -63,5 +66,15 @@ describe('Test auth User', () => {
 
         expect(response.status).toBe(400);
         expect(JSON.parse(response.res.text).error).toEqual('Wrong email or password');
+    });
+
+    it('Login with social network', async () => {
+        const response = await agent.post('/auth/social').send({
+            socialUser: socialUserDto,
+            type: 'Admin'
+        });
+
+        expect(response.status).toBe(200);
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'token')).toBeTruthy();
     });
 });
