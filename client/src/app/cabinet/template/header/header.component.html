@@ -1,4 +1,15 @@
 <header fxLayout="row" fxLayoutAlign="space-between">
   <div class="display-6 logo">User CRM</div>
-  <div class="log-out"><button mat-raised-button (click)="logout()">Log Out</button></div>
+  <div class="log-out">
+    <form [formGroup]="languageForm">
+      <mat-form-field appearance="legacy">
+        <mat-select formControlName="language">
+          <mat-option *ngFor="let language of languages" [value]="language.key">
+            {{ language.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+    <button mat-raised-button (click)="logout()">{{ 'logOut' | translate }}</button>
+  </div>
 </header>
