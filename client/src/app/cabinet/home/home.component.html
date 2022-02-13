@@ -1,1 +1,13 @@
-<div class="content-block"></div>
+<div class="content-block">
+  <h2>Users statistic</h2>
+  <div class="chart">
+    <div class="total">
+      <p>Total: {{ userCount }}</p>
+    </div>
+    <ng-container *ngFor="let item of rolesCount | keyvalue">
+      <div class="total items" style="--height: {{ (item.value / this.userCount) * 100 }}%">
+        <p>{{ item.key }}: {{ item.value }}</p>
+      </div>
+    </ng-container>
+  </div>
+</div>
