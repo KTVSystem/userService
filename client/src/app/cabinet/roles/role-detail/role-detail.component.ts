@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { WarningConfirmationComponent } from '../../shared/warning-confirmation/warning-confirmation.component';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-role-detail',
@@ -22,7 +23,8 @@ export class RoleDetailComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private snackbar: MatSnackBar,
-    private redirectService: RedirectService
+    private redirectService: RedirectService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -41,11 +43,13 @@ export class RoleDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
         this.rolesService.removeRole(id).subscribe(() => {
-          this.snackbar.open('Role was deleted!', 'Close', {
-            duration: 2000,
-            verticalPosition: 'top'
+          this.translateService.get('close').subscribe((closeText) => {
+            this.snackbar.open('Role was deleted!', closeText, {
+              duration: 2000,
+              verticalPosition: 'top'
+            });
+            this.redirectService.redirect('/cabinet/roles', 2000);
           });
-          this.redirectService.redirect('/cabinet/roles', 2000);
         });
       }
     });

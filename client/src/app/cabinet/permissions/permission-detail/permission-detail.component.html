@@ -1,19 +1,19 @@
 <div fxLayout="row" *ngIf="permission">
   <div class="content-block info">
-    <h1 class="display-5 title">Permission Information</h1>
+    <h1 class="display-5 title">{{ 'permissionInformation' | translate }}</h1>
     <mat-card>
-      <mat-card-title>ID</mat-card-title>
+      <mat-card-title>{{ 'id' | translate }}</mat-card-title>
       <mat-card-subtitle>{{permission._id}}</mat-card-subtitle>
     </mat-card>
     <mat-card>
-      <mat-card-title>Name</mat-card-title>
+      <mat-card-title>{{ 'name' | translate }}</mat-card-title>
       <mat-card-subtitle>{{permission.name}}</mat-card-subtitle>
     </mat-card>
     <mat-card>
-      <mat-card-title>Status</mat-card-title>
+      <mat-card-title>{{ 'status' | translate }}</mat-card-title>
       <mat-card-subtitle>{{permission.status}}</mat-card-subtitle>
     </mat-card>
-    <button mat-raised-button color="primary" [routerLink]="['/cabinet/permissions/edit/' + permission._id]">Edit</button>
-    <button mat-raised-button color="warn" (click)="removePermission(permission._id)">Delete</button>
+    <button mat-raised-button color="primary" [routerLink]="['/cabinet/permissions/edit/' + permission._id]">{{ 'edit' | translate }}</button>
+    <button mat-raised-button color="warn" (click)="removePermission(permission._id)">{{ 'delete' | translate }}</button>
   </div>
 </div>

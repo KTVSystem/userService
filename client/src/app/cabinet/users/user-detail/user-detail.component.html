@@ -1,28 +1,28 @@
 <div fxLayout="row" *ngIf="user">
   <div class="content-block info">
-    <h1 class="display-5 title">User Information</h1>
+    <h1 class="display-5 title">{{ 'userInformation' | translate }}</h1>
     <mat-card>
-      <mat-card-title>ID</mat-card-title>
+      <mat-card-title>{{ 'id' | translate }}</mat-card-title>
       <mat-card-subtitle>{{user._id}}</mat-card-subtitle>
     </mat-card>
     <mat-card>
-      <mat-card-title>Email</mat-card-title>
+      <mat-card-title>{{ 'email' | translate }}</mat-card-title>
       <mat-card-subtitle>{{user.email}}</mat-card-subtitle>
     </mat-card>
     <mat-card>
-      <mat-card-title>Status</mat-card-title>
+      <mat-card-title>{{ 'status' | translate }}</mat-card-title>
       <mat-card-subtitle>{{user.status}}</mat-card-subtitle>
     </mat-card>
     <mat-card>
-      <mat-card-title>Role</mat-card-title>
+      <mat-card-title>{{ 'role' | translate }}</mat-card-title>
       <mat-card-subtitle>{{user.role.name}}</mat-card-subtitle>
     </mat-card>
-      <button mat-raised-button color="primary" [routerLink]="['/cabinet/users/edit/' + user._id]">Edit</button>
-      <button mat-raised-button color="primary" [routerLink]="['/cabinet/users/change-password/' + user._id]">Change password</button>
-      <button mat-raised-button color="warn" (click)="removeUser(user._id)">Delete</button>
+      <button mat-raised-button color="primary" [routerLink]="['/cabinet/users/edit/' + user._id]">{{ 'edit' | translate }}</button>
+      <button mat-raised-button color="primary" [routerLink]="['/cabinet/users/change-password/' + user._id]">{{ 'changePassword' | translate }}</button>
+      <button mat-raised-button color="warn" (click)="removeUser(user._id)">{{ 'delete' | translate }}</button>
   </div>
   <div class="content-block social">
-    <h1 class="title">Social Networks</h1>
+    <h1 class="title">{{ 'socialNetworks' | translate }}</h1>
     <ng-container *ngIf="user.socials.length;else no_data">
       <mat-card *ngFor="let social of user.socials">
         <h3 ngClass="{{social.provider | lowercase}}">{{social.provider}}</h3>
@@ -31,9 +31,9 @@
         <mat-card-subtitle>{{social.email}}</mat-card-subtitle>
         <mat-card-subtitle>{{social.firstName}}</mat-card-subtitle>
         <mat-card-subtitle>{{social.lastName}}</mat-card-subtitle>
-        <button mat-raised-button color="warn" class="unbind" (click)="unbindSocial(user._id, social.id)">Unbind</button>
+        <button mat-raised-button color="warn" class="unbind" (click)="unbindSocial(user._id, social.id)">{{ 'unbind' | translate }}</button>
       </mat-card>
     </ng-container>
-    <ng-template #no_data>There are not entries ...</ng-template>
+    <ng-template #no_data>{{ 'notEntries' | translate }}</ng-template>
   </div>
 </div>
