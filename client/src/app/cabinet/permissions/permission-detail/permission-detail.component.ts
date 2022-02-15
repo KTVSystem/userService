@@ -42,9 +42,9 @@ export class PermissionDetailComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
-        this.permissionService.removePermission(id).subscribe(() => {
+        this.permissionService.removePermission(id).subscribe((response) => {
           this.translateService.get('close').subscribe((closeText) => {
-            this.snackbar.open('Permission was deleted!', closeText, {
+            this.snackbar.open(response.message, closeText, {
               duration: 2000,
               verticalPosition: 'top'
             });

@@ -56,7 +56,7 @@ export class PermissionCreateComponent implements OnInit {
           verticalPosition: 'top',
           panelClass: 'snack-success'
         });
-        this.redirectService.redirect('/cabinet/users', 2000);
+        this.redirectService.redirect('/cabinet/permissions', 2000);
       }
     });
   }

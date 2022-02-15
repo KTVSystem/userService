@@ -8,8 +8,8 @@ export const getRoles = async (params: never) => {
     return await allByQuery(params);
 }
 
-export const getPermission = async (id: string): Promise<Role> => {
-    return await findRoleById(id);
+export const getPermission = async (id: string, lang: string): Promise<Role> => {
+    return await findRoleById(id, lang);
 }
 
 export const createRole = async (roleDto: RoleDto) => {
@@ -23,9 +23,9 @@ export const createRole = async (roleDto: RoleDto) => {
     });
 }
 
-export const editRole = async (id: string, roleDto: RoleDto): Promise<Role> => {
+export const editRole = async (id: string, roleDto: RoleDto, lang: string): Promise<Role> => {
     const permissions = roleDto.permissions.length ? await getMultiplePermissionsByIds(roleDto.permissions) : [];
-    const role = await findRoleById(id);
+    const role = await findRoleById(id, lang);
     role.name = roleDto.name;
     role.status = roleDto.status;
     role.permissions = permissions;

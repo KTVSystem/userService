@@ -42,9 +42,9 @@ export class RoleDetailComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
-        this.rolesService.removeRole(id).subscribe(() => {
+        this.rolesService.removeRole(id).subscribe((response) => {
           this.translateService.get('close').subscribe((closeText) => {
-            this.snackbar.open('Role was deleted!', closeText, {
+            this.snackbar.open(response.message, closeText, {
               duration: 2000,
               verticalPosition: 'top'
             });

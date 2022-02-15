@@ -12,9 +12,10 @@ import { findSocialById } from '../../repositories/user/social-user-repository';
 import { findRoleByName } from '../../repositories/user/role-repository';
 import { UserModel } from '../../models/user/user-model';
 import { SocialUserModel } from '../../models/user/social-user-model';
+import { translate } from '../../services/translate/translateService';
 
-export const loginUser = async (email: string, password: string, type: string): Promise<User> => {
-    const user = await findUserByEmail(email);
+export const loginUser = async (email: string, password: string, type: string, lang: string): Promise<User> => {
+    const user = await findUserByEmail(email, lang);
     if (user && await PasswordService.comparePassword(password, user.password)) {
         await checkAdminAccess(type, user.role.name);
         const tokenHash = await JwtService.createToken(user);
@@ -25,10 +26,10 @@ export const loginUser = async (email: string, password: string, type: string): 
         await user.updateOne(user);
         return user;
     }
-    throw new Error('Wrong email or password');
+    throw new Error(await translate(lang, 'wrongEmailOrPassword'));
 };
 
-export const loginSocialUser = async (socialUser: SocialUser, type: string): Promise<User> => {
+export const loginSocialUser = async (socialUser: SocialUser, type: string, lang: string): Promise<User> => {
     let user = await findUserByEmailWithoutExc(socialUser.email);
     let social = await findSocialById(socialUser.id);
     let newSocial = false;
@@ -49,7 +50,7 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string): Pro
     }
 
     if (typeof user === 'undefined') {
-        const role = await findRoleByName(Roles.USER);
+        const role = await findRoleByName(Roles.USER, lang);
         user = await UserModel.create({
             email: socialUser.email,
             status: Status.ACTIVE,
@@ -74,16 +75,16 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string): Pro
     return user;
 };
 
-const checkAdminAccess = async (type: string, role: string) => {
+const checkAdminAccess = async (type: string, role: string, lang: string) => {
     if (type === AuthTypes.ADMIN && role !== AuthTypes.ADMIN) {
-        throw new Error('User does not have permission level!');
+        throw new Error(await translate(lang, 'dontHavePermissions'));
     }
 };
 
-export const checkToken = async (token: string): Promise<boolean> => {
+export const checkToken = async (token: string, lang?: string): Promise<boolean> => {
     const tokenDecoded = await JwtService.decodeToken(token);
     if (!tokenDecoded) { return false; }
-    const user = await findUserById(tokenDecoded.id);
+    const user = await findUserById(tokenDecoded.id, lang);
     const result = await checkTokenExpiredDate(tokenDecoded.iat);
     return !(!user && user.token !== tokenDecoded.id && !result);
 }

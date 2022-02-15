@@ -1,5 +1,6 @@
 import express from 'express';
 import * as RoleController from '../../controllers/user/role-controllers';
+import { translate } from '../../services/translate/translateService';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const role = await RoleController.getPermission(req.params.id);
+        const role = await RoleController.getPermission(req.params.id, String(req.query.lang));
         res.status(200).json({
             role
         });
@@ -31,9 +32,10 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const role = await RoleController.createRole(req.body);
+        const message = await translate(String(req.query.lang), 'createdSuccess');
         res.status(201).json({
             role,
-            message: 'Created successful',
+            message,
         });
     } catch (error) {
         res.status(400).json({
@@ -44,10 +46,11 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        const role = await RoleController.editRole(req.params.id, req.body);
+        const role = await RoleController.editRole(req.params.id, req.body, String(req.query.lang));
+        const message = await translate(String(req.query.lang), 'updatedSuccess');
         res.status(200).json({
             role,
-            message: 'Updated successful',
+            message,
         });
     } catch (error) {
         res.status(400).json({
@@ -58,10 +61,10 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const role = await RoleController.deleteRole(req.params.id);
+        await RoleController.deleteRole(req.params.id);
+        const message = await translate(String(req.query.lang), 'deletedSuccess');
         res.status(200).json({
-            role,
-            message: 'Deleted successful',
+            message,
         });
     } catch (error) {
         res.status(400).json({

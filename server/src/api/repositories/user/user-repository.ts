@@ -1,13 +1,14 @@
 import { UserModel } from '../../models/user/user-model';
 import { findRoleByName } from './role-repository';
+import { translate } from '../../services/translate/translateService';
 
-export const findUserByEmail = async (email: string) => {
+export const findUserByEmail = async (email: string, lang?: string) => {
     const user = (await UserModel.find({ email }).populate('role').populate('socials')
         .limit(1))[0];
     if (typeof user !== 'undefined') {
         return user;
     }
-    throw new Error('User doesn\'t exist');
+    throw new Error(await translate(lang, 'userNotExist'));
 }
 
 export const findUserByEmailWithoutExc = async (email: string) => {
@@ -19,7 +20,7 @@ export const all = async () => {
     return UserModel.find({}).populate('role').populate('token').populate('socials');
 }
 
-export const allByQuery = async (params: never) => {
+export const allByQuery = async (params: never, lang: string) => {
     const {email, role, status} = params;
 
     const query = UserModel.find({});
@@ -27,7 +28,7 @@ export const allByQuery = async (params: never) => {
         query.find({email: { $regex: '.*' + email + '.*' } });
     }
     if (typeof role !== 'undefined') {
-        const roleObj  = await findRoleByName(role);
+        const roleObj  = await findRoleByName(role, lang);
         query.find({ role: roleObj._id });
     }
     if (typeof status !== 'undefined') {
@@ -36,13 +37,13 @@ export const allByQuery = async (params: never) => {
     return query.populate('role').populate('token');
 }
 
-export const findUserById = async (id: string) => {
+export const findUserById = async (id: string, lang?: string) => {
     const user = (await UserModel.find({ _id: id }).populate('role').populate('token').populate('socials')
         .limit(1))[0];
     if (typeof user !== 'undefined') {
         return user;
     }
-    throw new Error('User doesn\'t exist');
+    throw new Error(await translate(lang, 'userNotExist'));
 }
 
 export const removeUserById = async (id: string) => {

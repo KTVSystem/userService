@@ -42,6 +42,7 @@ export class HeaderComponent implements OnInit {
     this.languageForm.patchValue({language: 'ua'});
     this.languageForm.valueChanges.subscribe((value) => {
       this.translateService.use(value.language);
+      this.translateService.setDefaultLang(value.language);
     });
   }
 
