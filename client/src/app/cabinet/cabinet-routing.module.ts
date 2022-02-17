@@ -26,7 +26,7 @@ const routes: Routes = [
         component: HomeComponent,
         data: {
           breadcrumb: {
-            label: 'Home'
+            label: 'home'
           }
         }
       },
@@ -37,7 +37,7 @@ const routes: Routes = [
         component: UsersComponent,
         data: {
           breadcrumb: {
-            label: 'Users'
+            label: 'users'
           }
         }
       },
@@ -46,10 +46,10 @@ const routes: Routes = [
         component: UserCreateComponent,
         data: {
           breadcrumb: {
-            label: 'Create user',
+            label: 'createUser',
             parent: [
               {
-                label: 'Users',
+                label: 'users',
                 link: '/cabinet/users'
               }
             ]
@@ -61,10 +61,10 @@ const routes: Routes = [
         component: UserDetailComponent,
         data: {
           breadcrumb: {
-            label: 'User detail',
+            label: 'userInformation',
             parent: [
               {
-                label: 'Users',
+                label: 'users',
                 link: '/cabinet/users'
               }
             ]
@@ -76,10 +76,10 @@ const routes: Routes = [
         component: UserEditComponent,
         data: {
           breadcrumb: {
-            label: 'Edit user',
+            label: 'editUser',
             parent: [
               {
-                label: 'Users',
+                label: 'users',
                 link: '/cabinet/users'
               }
             ]
@@ -91,10 +91,10 @@ const routes: Routes = [
         component: UserChangePasswordComponent,
         data: {
           breadcrumb: {
-            label: 'Change user password',
+            label: 'changePassword',
             parent: [
               {
-                label: 'Users',
+                label: 'users',
                 link: '/cabinet/users'
               }
             ]
@@ -109,7 +109,7 @@ const routes: Routes = [
         component: PermissionsComponent,
         data: {
           breadcrumb: {
-            label: 'Permissions'
+            label: 'permissions'
           }
         }
       },
@@ -118,10 +118,10 @@ const routes: Routes = [
         component: PermissionCreateComponent,
         data: {
           breadcrumb: {
-            label: 'Create permissionp',
+            label: 'createPermission',
             parent: [
               {
-                label: 'Permissions',
+                label: 'permissions',
                 link: '/cabinet/permissions'
               }
             ]
@@ -133,10 +133,10 @@ const routes: Routes = [
         component: PermissionDetailComponent,
         data: {
           breadcrumb: {
-            label: 'Permission detail',
+            label: 'permissionInformation',
             parent: [
               {
-                label: 'Permissions',
+                label: 'permissions',
                 link: '/cabinet/permissions'
               }
             ]
@@ -148,10 +148,10 @@ const routes: Routes = [
         component: PermissionEditComponent,
         data: {
           breadcrumb: {
-            label: 'Edit permission',
+            label: 'editPermission',
             parent: [
               {
-                label: 'Permissions',
+                label: 'permissions',
                 link: '/cabinet/permissions'
               }
             ]
@@ -166,7 +166,7 @@ const routes: Routes = [
         component: RolesComponent,
         data: {
           breadcrumb: {
-            label: 'Roles'
+            label: 'roles'
           }
         }
       },
@@ -175,10 +175,10 @@ const routes: Routes = [
         component: RoleCreateComponent,
         data: {
           breadcrumb: {
-            label: 'Create role',
+            label: 'createRole',
             parent: [
               {
-                label: 'Roles',
+                label: 'roles',
                 link: '/cabinet/roles'
               }
             ]
@@ -190,10 +190,10 @@ const routes: Routes = [
         component: RoleDetailComponent,
         data: {
           breadcrumb: {
-            label: 'Roles detail',
+            label: 'roleInformation',
             parent: [
               {
-                label: 'Roles',
+                label: 'roles',
                 link: '/cabinet/roles'
               }
             ]
@@ -205,10 +205,10 @@ const routes: Routes = [
         component: RoleEditComponent,
         data: {
           breadcrumb: {
-            label: 'Edit role',
+            label: 'editRole',
             parent: [
               {
-                label: 'Roles',
+                label: 'roles',
                 link: '/cabinet/roles'
               }
             ]

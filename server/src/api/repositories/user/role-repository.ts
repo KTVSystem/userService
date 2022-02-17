@@ -1,4 +1,5 @@
 import { RoleModel } from '../../models/user/role-model';
+import { translate } from '../../services/translate/translateService';
 
 export const allByQuery = async (params: never) => {
     const {name, status} = params;
@@ -13,20 +14,20 @@ export const allByQuery = async (params: never) => {
     return query.populate('permissions');
 }
 
-export const findRoleById = async (id: string) => {
+export const findRoleById = async (id: string, lang: string) => {
     const role = (await RoleModel.find({ _id: id }).populate('permissions').limit(1))[0];
     if (typeof role !== 'undefined') {
         return role;
     }
-    throw new Error('Role doesn\'t exist');
+    throw new Error(await translate(lang, 'roleNotExist'));
 }
 
-export const findRoleByName = async (name: string) => {
+export const findRoleByName = async (name: string, lang: string) => {
     const role = (await RoleModel.find({ name }).populate('permissions').limit(1))[0];
     if (typeof role !== 'undefined') {
         return role;
     }
-    throw new Error('Role doesn\'t exist');
+    throw new Error(await translate(lang, 'roleNotExist'));
 }
 
 export const removeRoleById = async (id: string) => {

@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/signin', async (req, res) => {
     try {
-        const user = await AuthController.loginUser(req.body.email, req.body.password, req.body.type);
+        const user = await AuthController.loginUser(req.body.email, req.body.password, req.body.type, String(req.query.lang));
         res.status(200).json({
             token: user.token.hash
         });
@@ -17,7 +17,7 @@ router.post('/signin', async (req, res) => {
 
 router.post('/social', async (req, res) => {
     try {
-        const user = await AuthController.loginSocialUser(req.body.socialUser, req.body.type);
+        const user = await AuthController.loginSocialUser(req.body.socialUser, req.body.type, String(req.query.lang));
         res.status(200).json({
             token: user.token.hash,
         });

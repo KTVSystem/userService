@@ -27,7 +27,7 @@ afterAll(async () => {
 describe('Test User Controller', () => {
     it('Get users', async () => {
         const token = await getToken();
-        const response = await agent.get('/users')
+        const response = await agent.get('/users?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
@@ -40,7 +40,7 @@ describe('Test User Controller', () => {
         const roleUser = await buildRoleUser();
         const user = await buildUserUser(roleUser);
         const token = await getToken();
-        const response = await agent.get('/users/' + user._id)
+        const response = await agent.get('/users/' + user._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
@@ -54,7 +54,7 @@ describe('Test User Controller', () => {
         const user = await buildUserUser(roleUser);
         const mistakeUserId = String(user._id).slice(0, -1) + '1';
         const token = await getToken();
-        const response = await agent.get('/users/' + mistakeUserId)
+        const response = await agent.get('/users/' + mistakeUserId + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
@@ -65,7 +65,7 @@ describe('Test User Controller', () => {
     it('Create user', async () => {
         await buildRoleUser();
         const token = await getToken();
-        const response = await agent.post('/users')
+        const response = await agent.post('/users?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 email: userDtoUser.email,
@@ -84,7 +84,7 @@ describe('Test User Controller', () => {
         const roleUser = await buildRoleUser();
         const user = await buildUserUser(roleUser);
         const token = await getToken();
-        const response = await agent.put('/users/' + user._id)
+        const response = await agent.put('/users/' + user._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 email: 'edited' + userDtoUser.email,
@@ -104,7 +104,7 @@ describe('Test User Controller', () => {
         const user = await buildUserUser(roleUser);
         const token = await getToken();
         const newPassword = userDtoUser.password + 'new';
-        const response = await agent.put('/users/' + user._id + '/change-password')
+        const response = await agent.put('/users/' + user._id + '/change-password?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 password: newPassword,
@@ -123,7 +123,7 @@ describe('Test User Controller', () => {
         const social2 = await buildSocialUserSecond();
         const user = await buildUserUser(roleUser, [social, social2]);
         const token = await getToken();
-        const response = await agent.get('/users/' + user._id + '/unbind-social/' + social.id)
+        const response = await agent.get('/users/' + user._id + '/unbind-social/' + social.id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
@@ -137,24 +137,26 @@ describe('Test User Controller', () => {
         const social = await buildSocialUser();
         const user = await buildUserUser(roleUser, [social]);
         const token = await getToken();
-        const response = await agent.get('/users/' + user._id + '/unbind-social/' + social.id)
+        const response = await agent.get('/users/' + user._id + '/unbind-social/' + social.id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
+        console.log(response.status);
+        console.log(JSON.parse(response.res.text));
         expect(response.status).toBe(200);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'message')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('User was deleted!');
+        expect(JSON.parse(response.res.text).message).toBe('Deleted successful');
     });
 
     it('Delete user', async () => {
         const roleUser = await buildRoleUser();
         const user = await buildUserUser(roleUser);
         const token = await getToken();
-        const response = await agent.delete('/users/' + user._id)
+        const response = await agent.delete('/users/' + user._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).message).toBe('User was deleted!');
+        expect(JSON.parse(response.res.text).message).toBe('Deleted successful');
     });
 });

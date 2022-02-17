@@ -33,7 +33,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { WarningConfirmationComponent } from './shared/warning-confirmation/warning-confirmation.component';
 import { AuthInterceptor } from './auth-interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -70,7 +77,14 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     MatTableModule,
     MatPaginatorModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [CabinetComponent],
   providers: [

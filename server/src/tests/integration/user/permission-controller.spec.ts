@@ -48,7 +48,7 @@ describe('Test Permission Controller', () => {
     it('Get permission by id', async () => {
         const permission = await buildPermission();
         const token = await getToken();
-        const response = await agent.get('/permissions/' + permission._id)
+        const response = await agent.get('/permissions/' + permission._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
@@ -61,7 +61,7 @@ describe('Test Permission Controller', () => {
         const permission = await buildPermission();
         const mistakePermissionId = String(permission._id).slice(0, -1) + '1';
         const token = await getToken();
-        const response = await agent.get('/permissions/' + mistakePermissionId)
+        const response = await agent.get('/permissions/' + mistakePermissionId + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
@@ -71,7 +71,7 @@ describe('Test Permission Controller', () => {
 
     it('Create permission', async () => {
         const token = await getToken();
-        const response = await agent.post('/permissions')
+        const response = await agent.post('/permissions?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 name: permissionDto.name,
@@ -87,7 +87,7 @@ describe('Test Permission Controller', () => {
     it('Edit permission', async () => {
         const permission = await buildPermission();
         const token = await getToken();
-        const response = await agent.put('/permissions/' + permission._id)
+        const response = await agent.put('/permissions/' + permission._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 name: permissionDto.name + 'edited',
@@ -103,7 +103,7 @@ describe('Test Permission Controller', () => {
     it('Delete permission', async () => {
         const permission = await buildPermission();
         const token = await getToken();
-        const response = await agent.delete('/permissions/' + permission._id)
+        const response = await agent.delete('/permissions/' + permission._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 

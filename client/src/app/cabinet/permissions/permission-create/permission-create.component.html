@@ -1,20 +1,20 @@
 <div class="content-block">
   <form [formGroup]="createPermissionForm" (ngSubmit)="onSubmit()">
-    <h1 class="display-5 title">Create Permission</h1>
+    <h1 class="display-5 title">{{ 'createPermission' | translate }}</h1>
 
     <div class="form-line">
       <mat-form-field class="example-full-width" appearance="legacy">
-        <mat-label>Name</mat-label>
+        <mat-label>{{ 'name' | translate }}</mat-label>
         <input type="email" matInput formControlName="name">
         <mat-error *ngIf="createPermissionForm.controls.name.invalid">
-          Please enter an name
+          {{ 'nameValidation' | translate }}
         </mat-error>
       </mat-form-field>
     </div>
 
     <div class="form-line">
       <mat-form-field appearance="legacy">
-        <mat-label>Status</mat-label>
+        <mat-label>{{ 'status' | translate }}</mat-label>
         <mat-select matNativeControl formControlName="status">
           <mat-option *ngFor="let status of statuses" [value]="status.key">{{status.title}}</mat-option>
         </mat-select>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="form-line">
-      <button mat-raised-button color="primary" [disabled]="!createPermissionForm.valid">Submit</button>
+      <button mat-raised-button color="primary" [disabled]="!createPermissionForm.valid">{{ 'submit' | translate }}</button>
     </div>
   </form>
 </div>

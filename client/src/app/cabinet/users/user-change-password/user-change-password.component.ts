@@ -6,6 +6,7 @@ import { UserChangePasswordDto } from '../../../models/cabinet/users/dtos/user/u
 import { Observable, of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -19,15 +20,14 @@ export class UserChangePasswordComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required], [this.comparePassword()]),
   });
-  responseMessage: string;
-  responseMessageType: string;
   public id: number;
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
-    private redirectService: RedirectService
+    private redirectService: RedirectService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -53,20 +53,22 @@ export class UserChangePasswordComponent implements OnInit {
   }
 
   private handleMessage(response: any): void {
-    if (response.error) {
-      this.snackbar.open(response.error, 'Close', {
-        duration: 3000,
-        verticalPosition: 'top',
-        panelClass: 'snack-danger'
-      });
-    } else {
-      this.snackbar.open(response.message, 'Close', {
-        duration: 2000,
-        verticalPosition: 'top',
-        panelClass: 'snack-success'
-      });
-      this.redirectService.redirect('/cabinet/users', 2000);
-    }
+    this.translateService.get('close').subscribe((closeText) => {
+      if (response.error) {
+        this.snackbar.open(response.error, closeText, {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: 'snack-danger'
+        });
+      } else {
+        this.snackbar.open(response.message, closeText, {
+          duration: 2000,
+          verticalPosition: 'top',
+          panelClass: 'snack-success'
+        });
+        this.redirectService.redirect('/cabinet/users', 2000);
+      }
+    });
   }
 
 }
