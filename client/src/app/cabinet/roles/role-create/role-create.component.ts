@@ -8,6 +8,7 @@ import { PermissionService } from '../../../services/cabinet/permissions/permiss
 import { Permission } from '../../../models/cabinet/users/permission';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class RoleCreateComponent implements OnInit {
     private rolesService: RolesService,
     private permissionService: PermissionService,
     private snackbar: MatSnackBar,
-    private redirectService: RedirectService
+    private redirectService: RedirectService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -51,20 +53,22 @@ export class RoleCreateComponent implements OnInit {
   }
 
   private handleMessage(response: any): void {
-    if (response.error) {
-      this.snackbar.open(response.error, 'Close', {
-        duration: 3000,
-        verticalPosition: 'top',
-        panelClass: 'snack-danger'
-      });
-    } else {
-      this.snackbar.open(response.message, 'Close', {
-        duration: 2000,
-        verticalPosition: 'top',
-        panelClass: 'snack-success'
-      });
-      this.redirectService.redirect('/cabinet/roles', 2000);
-    }
+    this.translateService.get('close').subscribe((closeText) => {
+      if (response.error) {
+        this.snackbar.open(response.error, closeText, {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: 'snack-danger'
+        });
+      } else {
+        this.snackbar.open(response.message, closeText, {
+          duration: 2000,
+          verticalPosition: 'top',
+          panelClass: 'snack-success'
+        });
+        this.redirectService.redirect('/cabinet/roles', 2000);
+      }
+    });
   }
 
 }

@@ -37,7 +37,7 @@ describe('Test Role Controller', () => {
     it('Get role by id', async () => {
         const role = await buildRoleUser();
         const token = await getToken();
-        const response = await agent.get('/roles/' + role._id)
+        const response = await agent.get('/roles/' + role._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
@@ -50,7 +50,7 @@ describe('Test Role Controller', () => {
         const role = await buildRoleUser();
         const mistakeRoleId = String(role._id).slice(0, -1) + '1';
         const token = await getToken();
-        const response = await agent.get('/roles/' + mistakeRoleId)
+        const response = await agent.get('/roles/' + mistakeRoleId + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 
@@ -60,7 +60,7 @@ describe('Test Role Controller', () => {
 
     it('Create role', async () => {
         const token = await getToken();
-        const response = await agent.post('/roles')
+        const response = await agent.post('/roles?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 name: roleUserDto.name,
@@ -77,7 +77,7 @@ describe('Test Role Controller', () => {
     it('Edit role', async () => {
         const role = await buildRoleUser();
         const token = await getToken();
-        const response = await agent.put('/roles/' + role._id)
+        const response = await agent.put('/roles/' + role._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 name: roleUserDto.name + 'edited',
@@ -94,7 +94,7 @@ describe('Test Role Controller', () => {
     it('Delete role', async () => {
         const role = await buildRoleUser();
         const token = await getToken();
-        const response = await agent.delete('/roles/' + role._id)
+        const response = await agent.delete('/roles/' + role._id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
 

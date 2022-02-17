@@ -25,7 +25,7 @@ afterAll(async () => await db.close());
 
 describe('Test auth User', () => {
     it('Signin user', async () => {
-        const response = await agent.post('/auth/signin').send({
+        const response = await agent.post('/auth/signin?lang=en').send({
             email: userDtoAdmin.email,
             password: userDtoAdmin.password,
             type: 'Admin'
@@ -36,7 +36,7 @@ describe('Test auth User', () => {
     });
 
     it('Signin user permission error', async () => {
-        const response = await agent.post('/auth/signin').send({
+        const response = await agent.post('/auth/signin?lang=en').send({
             email: userDtoUser.email,
             password: userDtoUser.password,
             type: 'Admin'
@@ -47,7 +47,7 @@ describe('Test auth User', () => {
     });
 
     it('Signin user wrong email', async () => {
-        const response = await agent.post('/auth/signin').send({
+        const response = await agent.post('/auth/signin?lang=en').send({
             email: 'wrong' + userDtoUser.email,
             password: userDtoUser.password,
             type: 'Admin'
@@ -58,7 +58,7 @@ describe('Test auth User', () => {
     });
 
     it('Signin user wrong password', async () => {
-        const response = await agent.post('/auth/signin').send({
+        const response = await agent.post('/auth/signin?lang=en').send({
             email: userDtoUser.email,
             password: 'wrong' + userDtoUser.password,
             type: 'Admin'
@@ -69,7 +69,7 @@ describe('Test auth User', () => {
     });
 
     it('Login with social network', async () => {
-        const response = await agent.post('/auth/social').send({
+        const response = await agent.post('/auth/social?lang=en').send({
             socialUser: socialUserDto,
             type: 'Admin'
         });

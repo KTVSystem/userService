@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../../services/token/token.service';
 import { Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -10,9 +12,39 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private tokenService: TokenService, private router: Router) { }
+  public languageForm = new FormGroup({
+    language: new FormControl(''),
+  });
 
-  ngOnInit(): void {}
+  public languages = [
+    {
+      label: 'UA',
+      key: 'ua'
+    },
+    {
+      label: 'RU',
+      key: 'ru'
+    },
+    {
+      label: 'EN',
+      key: 'en'
+    },
+  ]
+
+  constructor(
+    private tokenService: TokenService,
+    private router: Router,
+    private translateService: TranslateService
+  ) { }
+
+  ngOnInit(): void {
+    this.translateService.setDefaultLang('ua');
+    this.languageForm.patchValue({language: 'ua'});
+    this.languageForm.valueChanges.subscribe((value) => {
+      this.translateService.use(value.language);
+      this.translateService.setDefaultLang(value.language);
+    });
+  }
 
   public logout() {
     this.tokenService.deleteToken();

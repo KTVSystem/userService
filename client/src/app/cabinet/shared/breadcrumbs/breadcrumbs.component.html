@@ -1,15 +1,15 @@
 <nav>
   <ul class="breadcrumb" fxLayout="row">
     <li class="breadcrumb-item">
-      <a routerLink="/cabinet">Home</a>
+      <a routerLink="/cabinet">{{ 'home' | translate }}</a>
       <span class="breadcrumb-divider" *ngIf="parentLinks && parentLinks.length || currentLinkLabel"> / </span>
     </li>
     <ng-container *ngIf="!isHomePage && isData">
       <li class="breadcrumb-item" *ngFor="let parent of parentLinks">
-        <a routerLink="{{ parent.link }}">{{ parent.label }}</a>
+        <a routerLink="{{ parent.link }}">{{ parent.label | translate }}</a>
         <span class="breadcrumb-divider" *ngIf="parentLinks && parentLinks.length > 1 || currentLinkLabel"> / </span>
       </li>
-      <li class="breadcrumb-item active" aria-current="page">{{ currentLinkLabel }}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ currentLinkLabel | translate }}</li>
     </ng-container>
   </ul>
 </nav>

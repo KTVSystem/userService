@@ -7,6 +7,7 @@ import { PermissionCreateDto } from '../../../models/cabinet/users/dtos/permissi
 import { PermissionService } from '../../../services/cabinet/permissions/permission.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class PermissionEditComponent implements OnInit {
     private permissionService: PermissionService,
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
-    private redirectService: RedirectService
+    private redirectService: RedirectService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -56,20 +58,22 @@ export class PermissionEditComponent implements OnInit {
   }
 
   private handleMessage(response: any): void {
-    if (response.error) {
-      this.snackbar.open(response.error, 'Close', {
-        duration: 3000,
-        verticalPosition: 'top',
-        panelClass: 'snack-danger'
-      });
-    } else {
-      this.snackbar.open(response.message, 'Close', {
-        duration: 2000,
-        verticalPosition: 'top',
-        panelClass: 'snack-success'
-      });
-      this.redirectService.redirect('/cabinet/permissions', 2000);
-    }
+    this.translateService.get('close').subscribe((closeText) => {
+      if (response.error) {
+        this.snackbar.open(response.error, closeText, {
+          duration: 3000,
+          verticalPosition: 'top',
+          panelClass: 'snack-danger'
+        });
+      } else {
+        this.snackbar.open(response.message, closeText, {
+          duration: 2000,
+          verticalPosition: 'top',
+          panelClass: 'snack-success'
+        });
+        this.redirectService.redirect('/cabinet/permissions', 2000);
+      }
+    });
   }
 
 }

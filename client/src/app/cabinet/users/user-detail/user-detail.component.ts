@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { WarningConfirmationComponent } from '../../shared/warning-confirmation/warning-confirmation.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-detail',
@@ -22,7 +23,8 @@ export class UserDetailComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private snackbar: MatSnackBar,
-    private redirectService: RedirectService
+    private redirectService: RedirectService,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -46,11 +48,13 @@ export class UserDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
         this.userService.removeUser(id).subscribe((response) => {
-          this.snackbar.open(response.message, 'Close', {
-            duration: 2000,
-            verticalPosition: 'top'
+          this.translateService.get('close').subscribe((closeText) => {
+            this.snackbar.open(response.message, closeText, {
+              duration: 2000,
+              verticalPosition: 'top'
+            });
+            this.redirectService.redirect('/cabinet/users', 2000);
           });
-          this.redirectService.redirect('/cabinet/users', 2000);
         });
       }
     });
@@ -65,9 +69,11 @@ export class UserDetailComponent implements OnInit {
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
         this.userService.unbindSocial(id, socialId).subscribe((response) => {
-          this.snackbar.open(response.message, 'Close', {
-            duration: 2000,
-            verticalPosition: 'top'
+          this.translateService.get('close').subscribe((closeText) => {
+            this.snackbar.open(response.message, closeText, {
+              duration: 2000,
+              verticalPosition: 'top'
+            });
           });
           if (this.user.socials.length === 1) {
             this.redirectService.redirect('/cabinet/users', 3000);

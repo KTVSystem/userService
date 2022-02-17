@@ -1,23 +1,23 @@
 <div fxLayout="row" *ngIf="role">
   <div class="content-block info">
-    <h1 class="display-5 title">Role Information</h1>
+    <h1 class="display-5 title">{{ 'roleInformation' | translate }}</h1>
     <mat-card>
-      <mat-card-title>ID</mat-card-title>
+      <mat-card-title>{{ 'id' | translate }}</mat-card-title>
       <mat-card-subtitle>{{role._id}}</mat-card-subtitle>
     </mat-card>
     <mat-card>
-      <mat-card-title>Name</mat-card-title>
+      <mat-card-title>{{ 'name' | translate }}</mat-card-title>
       <mat-card-subtitle>{{role.name}}</mat-card-subtitle>
     </mat-card>
     <mat-card>
-      <mat-card-title>Status</mat-card-title>
+      <mat-card-title>{{ 'status' | translate }}</mat-card-title>
       <mat-card-subtitle>{{role.status}}</mat-card-subtitle>
     </mat-card>
-    <button mat-raised-button color="primary" [routerLink]="['/cabinet/roles/edit/' + role._id]">Edit</button>
-    <button mat-raised-button color="warn" (click)="removeRole(role._id)">Delete</button>
+    <button mat-raised-button color="primary" [routerLink]="['/cabinet/roles/edit/' + role._id]">{{ 'edit' | translate }}</button>
+    <button mat-raised-button color="warn" (click)="removeRole(role._id)">{{ 'delete' | translate }}</button>
   </div>
   <div class="content-block permissions">
-    <h1 class="display-5 title">Permissions</h1>
+    <h1 class="display-5 title">{{ 'permissions' | translate }}</h1>
     <mat-list *ngIf="role.permissions">
       <mat-list-item *ngFor="let permission of role.permissions">{{ permission.name }}</mat-list-item>
     </mat-list>

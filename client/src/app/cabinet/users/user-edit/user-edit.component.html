@@ -1,20 +1,20 @@
 <div class="content-block">
   <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
-    <h1 class="display-5 title">Create User</h1>
+    <h1 class="display-5 title">{{ 'editUser' | translate }}</h1>
 
     <div class="form-line">
       <mat-form-field class="example-full-width" appearance="legacy">
-        <mat-label>Email</mat-label>
+        <mat-label>{{ 'email' | translate }}</mat-label>
         <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
         <mat-error *ngIf="editUserForm.controls.email.invalid">
-          Please enter a valid email address
+          {{ 'emailValidation' | translate }}
         </mat-error>
       </mat-form-field>
     </div>
 
     <div class="form-line">
       <mat-form-field appearance="legacy">
-        <mat-label>Role</mat-label>
+        <mat-label>{{ 'role' | translate }}</mat-label>
         <mat-select matNativeControl formControlName="role">
           <mat-option *ngFor="let role of roles" [value]="role.key">{{role.title}}</mat-option>
         </mat-select>
@@ -23,7 +23,7 @@
 
     <div class="form-line">
       <mat-form-field appearance="legacy">
-        <mat-label>Status</mat-label>
+        <mat-label>{{ 'status' | translate }}</mat-label>
         <mat-select matNativeControl formControlName="status">
           <mat-option *ngFor="let status of statuses" [value]="status.key">{{status.title}}</mat-option>
         </mat-select>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="form-line">
-      <button mat-raised-button color="primary" [disabled]="!editUserForm.valid">Submit</button>
+      <button mat-raised-button color="primary" [disabled]="!editUserForm.valid">{{ 'submit' | translate }}</button>
     </div>
   </form>
 </div>
