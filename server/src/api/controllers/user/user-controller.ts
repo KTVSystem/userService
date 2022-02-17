@@ -15,8 +15,8 @@ export const getUsers = async (params: never, lang: string) => {
     return await allByQuery(params, lang);
 }
 
-export const getUser = async (id: string): Promise<User> => {
-    return await findUserById(id);
+export const getUser = async (id: string, lang: string): Promise<User> => {
+    return await findUserById(id, lang);
 }
 
 export const createUser = async (userDto: UserCreateDto, lang: string): Promise<User> => {
@@ -56,7 +56,7 @@ export const unbindSocial = async (id: string, social: string, lang: string): Pr
     await removeSocialById(social);
     if (user.socials.length < Number(socialCount)) {
         await removeUserById(id);
-        return await translate(lang, 'userDeleted');
+        return await translate(lang, 'deletedSuccess');
     } else {
         return await translate(lang, 'socialDeleted');
     }

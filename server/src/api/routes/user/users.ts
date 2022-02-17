@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const user = await UserController.getUser(req.params.id);
+        const user = await UserController.getUser(req.params.id, String(req.query.lang));
         res.status(200).json({
             user
         });

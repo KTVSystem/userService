@@ -17,7 +17,7 @@ import { translate } from '../../services/translate/translateService';
 export const loginUser = async (email: string, password: string, type: string, lang: string): Promise<User> => {
     const user = await findUserByEmail(email, lang);
     if (user && await PasswordService.comparePassword(password, user.password)) {
-        await checkAdminAccess(type, user.role.name);
+        await checkAdminAccess(type, user.role.name, lang);
         const tokenHash = await JwtService.createToken(user);
         if (typeof user.token !== 'undefined') {
             await removeTokenEntry(user.token.hash);
