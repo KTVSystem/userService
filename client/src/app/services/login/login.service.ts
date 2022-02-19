@@ -20,7 +20,8 @@ export class LoginService {
   }
 
   public signIn(login: Login): Observable<any> {
-    return this.http.post(this.baseUrl + 'signin' + `?lang=${this.translateService.defaultLang}`,
+    const defaultLang = (typeof this.translateService.defaultLang !== 'undefined') ? this.translateService.defaultLang : 'ua';
+    return this.http.post(this.baseUrl + 'signin' + `?lang=${defaultLang}`,
       {email: login.email, password: login.password, type: 'Admin'},
       { headers: this.headers })
       .pipe(catchError(this.error));

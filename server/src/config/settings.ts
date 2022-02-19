@@ -9,3 +9,4 @@ export const saltRound = process.env.SALT_ROUND;
 export const secret = process.env.SECRET;
 export const perPage = process.env.PER_PAGE;
 export const socialCount = process.env.SOCIAL_COUNT;
+export const blockAccountTime = process.env.BLOCK_ACCOUNT_TIME;

@@ -4,6 +4,8 @@ import { User } from '../../interfaces/user/user';
 const schema = new Schema<User>({
     email: { type: String, required: true, unique: true, max: 100},
     password: { type: String, max: 255 },
+    wrong: { type: Number, default: 0 },
+    blockTime: { type: Date, required: false},
     status: { type: String, required: true, max: 20 },
     role: { type: Schema.Types.ObjectId, ref: 'Role' },
     token: { type: Schema.Types.ObjectId, ref: 'Token' },

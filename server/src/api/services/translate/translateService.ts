@@ -11,6 +11,9 @@ export const translate = async (lang: string, key: string) => {
             word = en.get(key);
             break;
     }
+    console.log(lang);
+    console.log(key);
+    console.log(word);
     return word;
 };
 
@@ -25,6 +28,7 @@ en.set('dontHavePermissions', 'User does not have permission level!');
 en.set('userNotExist', 'User doesn\'t exist');
 en.set('roleNotExist', 'Role doesn\'t exist');
 en.set('permissionNotExist', 'Permission doesn\'t exist');
+en.set('blockUser', 'User was blocked on 5 min');
 
 const ua: Map<string, string> = new Map();
 ua.set('createdSuccess', 'Успішно створено');
@@ -37,6 +41,7 @@ ua.set('dontHavePermissions', 'Заборонено в доступі');
 ua.set('userNotExist', 'Користувача не існує');
 ua.set('roleNotExist', 'Ролі не існує');
 ua.set('permissionNotExist', 'Дозволу не існує');
+ua.set('blockUser', 'Користувача було заблоковано на 5 хв');
 
 const ru: Map<string, string> = new Map();
 ru.set('createdSuccess', 'Успешно создано');
@@ -49,3 +54,4 @@ ru.set('dontHavePermissions', 'Запрещено в доступе');
 ru.set('userNotExist', 'Пользователя не существует');
 ru.set('roleNotExist', 'Роли не существует');
 ru.set('permissionNotExist', 'Разрешение не существует');
+ru.set('blockUser', 'Пользователь бил заблокирован на 5 мин');

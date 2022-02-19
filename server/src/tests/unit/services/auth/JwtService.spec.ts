@@ -14,6 +14,8 @@ describe('Test JWT service', () => {
         _id: 'test_string',
         email: 'test@gmail.com',
         status: Status.ACTIVE,
+        wrong: 0,
+        blockTime: null,
         role,
         created: new Date(),
         updated: new Date(),
