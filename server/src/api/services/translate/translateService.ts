@@ -11,9 +11,6 @@ export const translate = async (lang: string, key: string) => {
             word = en.get(key);
             break;
     }
-    console.log(lang);
-    console.log(key);
-    console.log(word);
     return word;
 };
 

@@ -17,6 +17,9 @@ import { translate } from '../../services/translate/translateService';
 
 export const loginUser = async (email: string, password: string, type: string, lang: string): Promise<User> => {
     const user = await findUserByEmail(email, lang);
+    if (typeof user === 'undefined') {
+        throw new Error(await translate(lang, 'wrongEmailOrPassword'));
+    }
     if (user.blockTime && await checkBlockTime(user.blockTime)) {
         throw new Error(await translate(lang, 'blockUser'));
     }
@@ -78,7 +81,6 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string, lang
         user.socials = [...user.socials, social];
     }
 
-    console.log(type);
     // await checkAdminAccess(type, user.role.name);
     const tokenHash = await JwtService.createToken(user);
     if (typeof user.token !== 'undefined') {
@@ -112,3 +114,4 @@ const checkBlockTime = async (blockTime: Date): Promise<boolean> => {
     const currentTime = new Date().getTime();
     return !(currentTime > blockTime.getTime());
 };
+
