@@ -3,7 +3,7 @@ import { findRoleByName } from './role-repository';
 import { translate } from '../../services/translate/translateService';
 import { blockAccountTime } from '../../../config/settings';
 
-export const findUserByEmail = async (email: string, lang?: string) => {
+export const findUserByEmail = async (email: string) => {
     return (await UserModel.find({ email }).populate('role').populate('socials')
         .limit(1))[0];
 }
@@ -17,7 +17,7 @@ export const all = async () => {
     return UserModel.find({}).populate('role').populate('token').populate('socials');
 }
 
-export const allByQuery = async (params: never, lang: string) => {
+export const allByQuery = async (params: any, lang: string) => {
     const {email, role, status} = params;
 
     const query = UserModel.find({});

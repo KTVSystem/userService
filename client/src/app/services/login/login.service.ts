@@ -33,6 +33,16 @@ export class LoginService {
       .pipe(catchError(this.error));
   }
 
+  storeWrongAttemp() {
+    let wrong = localStorage.getItem('wrong');
+    if (wrong) {
+      const newWrong = Number(wrong) + 1;
+      localStorage.setItem('wrong', String(newWrong));
+    } else {
+      localStorage.setItem('wrong', '1');
+    }
+  }
+
   error(error: HttpErrorResponse): Observable<any> {
     return new Observable<any>(observer => {
       observer.next(error.error);

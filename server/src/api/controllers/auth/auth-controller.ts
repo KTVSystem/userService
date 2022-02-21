@@ -15,8 +15,9 @@ import { UserModel } from '../../models/user/user-model';
 import { SocialUserModel } from '../../models/user/social-user-model';
 import { translate } from '../../services/translate/translateService';
 
+
 export const loginUser = async (email: string, password: string, type: string, lang: string): Promise<User> => {
-    const user = await findUserByEmail(email, lang);
+    const user = await findUserByEmail(email);
     if (typeof user === 'undefined') {
         throw new Error(await translate(lang, 'wrongEmailOrPassword'));
     }
@@ -91,7 +92,7 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string, lang
     return user;
 };
 
-const checkAdminAccess = async (type: string, role: string, lang: string) => {
+const checkAdminAccess = async (type: string, role: string, lang: string): Promise<void> => {
     if (type === AuthTypes.ADMIN && role !== AuthTypes.ADMIN) {
         throw new Error(await translate(lang, 'dontHavePermissions'));
     }
@@ -105,7 +106,7 @@ export const checkToken = async (token: string, lang?: string): Promise<boolean>
     return !(!user && user.token !== tokenDecoded.id && !result);
 }
 
-const checkTokenExpiredDate = async (loginDate: number) => {
+const checkTokenExpiredDate = async (loginDate: number): Promise<boolean> => {
     const currentDate = Date.now();
     return ((currentDate - loginDate) < 86400000);
 }
@@ -114,4 +115,3 @@ const checkBlockTime = async (blockTime: Date): Promise<boolean> => {
     const currentTime = new Date().getTime();
     return !(currentTime > blockTime.getTime());
 };
-

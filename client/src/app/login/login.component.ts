@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
   public onSubmit() {
     const login: Login = {email: this.loginForm.value.email, password: this.loginForm.value.password};
     this.loginService.signIn(login).subscribe((response) => {
+      console.log(response);
       if (response) {
         this.handleResponse(response);
       }
@@ -67,6 +68,7 @@ export class LoginComponent implements OnInit {
 
   private handleResponse(response: any): void {
     if (response.error) {
+      this.loginService.storeWrongAttemp();
       this.snackbar.open(response.error, 'Close', {
         duration: 3000,
         verticalPosition: 'top'
