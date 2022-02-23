@@ -10,3 +10,8 @@ export const roleUserDto: RoleDto = {
     name: 'User',
     status: Status.ACTIVE
 }
+
+export const roleModeratorDto: RoleDto = {
+    name: 'Moderator',
+    status: Status.ACTIVE
+}

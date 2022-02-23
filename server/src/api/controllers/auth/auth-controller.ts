@@ -1,6 +1,7 @@
 import * as PasswordService from '../../services/password-service';
 import * as JwtService from '../../services/auth/jwt-service';
-import { findUserByEmail, findUserByEmailWithoutExc, findUserById } from '../../repositories/user/user-repository';
+import { findUserByEmail, findUserByEmailWithoutExc, findUserById, encreaseAttemp, blockUser, unBlock }
+    from '../../repositories/user/user-repository';
 import { Status } from '../../interfaces/base/enums/status';
 import { Roles } from '../../interfaces/base/enums/roles';
 import { TokenModel } from '../../models/user/token-model';
@@ -14,9 +15,19 @@ import { UserModel } from '../../models/user/user-model';
 import { SocialUserModel } from '../../models/user/social-user-model';
 import { translate } from '../../services/translate/translateService';
 
+
 export const loginUser = async (email: string, password: string, type: string, lang: string): Promise<User> => {
-    const user = await findUserByEmail(email, lang);
+    const user = await findUserByEmail(email);
+    if (typeof user === 'undefined') {
+        throw new Error(await translate(lang, 'wrongEmailOrPassword'));
+    }
+    if (user.blockTime && await checkBlockTime(user.blockTime)) {
+        throw new Error(await translate(lang, 'blockUser'));
+    }
     if (user && await PasswordService.comparePassword(password, user.password)) {
+        if (user.wrong > 0) {
+            await unBlock(user);
+        }
         await checkAdminAccess(type, user.role.name, lang);
         const tokenHash = await JwtService.createToken(user);
         if (typeof user.token !== 'undefined') {
@@ -26,7 +37,14 @@ export const loginUser = async (email: string, password: string, type: string, l
         await user.updateOne(user);
         return user;
     }
-    throw new Error(await translate(lang, 'wrongEmailOrPassword'));
+
+    if (user.wrong === 4) {
+        await blockUser(user);
+        throw new Error(await translate(lang, 'blockUser'));
+    } else {
+        await encreaseAttemp(user);
+        throw new Error(await translate(lang, 'wrongEmailOrPassword'));
+    }
 };
 
 export const loginSocialUser = async (socialUser: SocialUser, type: string, lang: string): Promise<User> => {
@@ -64,7 +82,6 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string, lang
         user.socials = [...user.socials, social];
     }
 
-    console.log(type);
     // await checkAdminAccess(type, user.role.name);
     const tokenHash = await JwtService.createToken(user);
     if (typeof user.token !== 'undefined') {
@@ -75,7 +92,7 @@ export const loginSocialUser = async (socialUser: SocialUser, type: string, lang
     return user;
 };
 
-const checkAdminAccess = async (type: string, role: string, lang: string) => {
+const checkAdminAccess = async (type: string, role: string, lang: string): Promise<void> => {
     if (type === AuthTypes.ADMIN && role !== AuthTypes.ADMIN) {
         throw new Error(await translate(lang, 'dontHavePermissions'));
     }
@@ -89,7 +106,12 @@ export const checkToken = async (token: string, lang?: string): Promise<boolean>
     return !(!user && user.token !== tokenDecoded.id && !result);
 }
 
-const checkTokenExpiredDate = async (loginDate: number) => {
+const checkTokenExpiredDate = async (loginDate: number): Promise<boolean> => {
     const currentDate = Date.now();
     return ((currentDate - loginDate) < 86400000);
 }
+
+const checkBlockTime = async (blockTime: Date): Promise<boolean> => {
+    const currentTime = new Date().getTime();
+    return !(currentTime > blockTime.getTime());
+};

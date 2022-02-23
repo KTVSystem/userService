@@ -1,7 +1,7 @@
 import { RoleModel } from '../../models/user/role-model';
 import { translate } from '../../services/translate/translateService';
 
-export const allByQuery = async (params: never) => {
+export const allByQuery = async (params: any) => {
     const {name, status} = params;
 
     const query = RoleModel.find({});

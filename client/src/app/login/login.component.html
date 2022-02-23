@@ -1,6 +1,6 @@
 <div class="main">
   <div class="name">User CRM</div>
-  <div class="login-block">
+  <div class="login-block" *ngIf="!isBlock;else blocked">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <h1 class="title">Login</h1>
       <mat-form-field class="example-full-width" appearance="legacy">
@@ -25,4 +25,9 @@
       <img src="/assets/images/google.svg" (click)="loginGoogle()" title="Google"/>
     </div>
   </div>
+  <ng-template #blocked>
+    <div class="blocked">
+      User was blocked on 5 minutes!
+    </div>
+  </ng-template>
 </div>
