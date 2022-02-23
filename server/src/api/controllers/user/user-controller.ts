@@ -11,7 +11,7 @@ import { removeSocialById } from '../../repositories/user/social-user-repository
 import { socialCount } from '../../../config/settings';
 import { translate } from '../../services/translate/translateService';
 
-export const getUsers = async (params: never, lang: string) => {
+export const getUsers = async (params: any, lang: string) => {
     return await allByQuery(params, lang);
 }
 

@@ -1,4 +1,4 @@
-import { userDtoAdmin, userDtoUser } from '../dtos/userDto';
+import { userDtoAdmin, userDtoModerator, userDtoUser } from '../dtos/userDto';
 import * as PasswordService from '../../../../api/services/password-service';
 import { UserModel } from '../../../../api/models/user/user-model';
 import { Status } from '../../../../api/interfaces/base/enums/status';
@@ -9,7 +9,9 @@ export const buildUserAdmin = async (role) => {
         email: userDtoAdmin.email,
         password: passwordHashAdmin,
         status: Status.ACTIVE,
-        role: role,
+        role,
+        wrong: 0,
+        blockTime: null,
         created: new Date(),
         updated: new Date(),
     });
@@ -21,8 +23,24 @@ export const buildUserUser = async (role, socials = []) => {
         email: userDtoUser.email,
         password: passwordHashUser,
         status: Status.ACTIVE,
-        role: role,
-        socials: socials,
+        role,
+        socials,
+        wrong: 0,
+        blockTime: null,
+        created: new Date(),
+        updated: new Date(),
+    });
+}
+
+export const buildUserModerator = async (role) => {
+    const passwordHashAdmin = await PasswordService.hashPassword(userDtoModerator.password);
+    return await UserModel.create({
+        email: userDtoModerator.email,
+        password: passwordHashAdmin,
+        status: Status.ACTIVE,
+        role,
+        wrong: 0,
+        blockTime: null,
         created: new Date(),
         updated: new Date(),
     });

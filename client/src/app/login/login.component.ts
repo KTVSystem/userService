@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
     ]),
     password: new FormControl('', [Validators.required]),
   });
+  public isBlock: boolean;
 
   constructor(
     private loginService: LoginService,
@@ -33,6 +34,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (this.tokenService.isAuth) {
       this.router.navigate(['/cabinet']).then();
+    }
+    this.isBlock = this.loginService.isBlockUser();
+    if (!this.isBlock) {
+      this.loginService.clearBlockData();
     }
   }
 
@@ -67,6 +72,11 @@ export class LoginComponent implements OnInit {
 
   private handleResponse(response: any): void {
     if (response.error) {
+      const wrong = Number(this.loginService.storeWrongAttemp());
+      if (wrong === 5) {
+        this.loginService.blockUser()
+        this.isBlock = true;
+      }
       this.snackbar.open(response.error, 'Close', {
         duration: 3000,
         verticalPosition: 'top'

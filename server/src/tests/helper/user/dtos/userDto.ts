@@ -14,3 +14,10 @@ export const userDtoUser: UserCreateDto = {
     role: 'User',
     status: Status.ACTIVE
 }
+
+export const userDtoModerator: UserCreateDto = {
+    email: 'user-moderator@gmail.com',
+    password: '123',
+    role: 'Moderator',
+    status: Status.ACTIVE
+}

@@ -6,6 +6,8 @@ export interface User {
     _id?: string,
     email: string;
     password?: string;
+    wrong: number;
+    blockTime: Date;
     status: string;
     role?: Role;
     token?: Token;

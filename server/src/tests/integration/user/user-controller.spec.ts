@@ -140,9 +140,6 @@ describe('Test User Controller', () => {
         const response = await agent.get('/users/' + user._id + '/unbind-social/' + social.id + '?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send();
-
-        console.log(response.status);
-        console.log(JSON.parse(response.res.text));
         expect(response.status).toBe(200);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'message')).toBeTruthy();
         expect(JSON.parse(response.res.text).message).toBe('Deleted successful');
