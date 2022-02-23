@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
     ]),
     password: new FormControl('', [Validators.required]),
   });
+  public isBlock: boolean;
 
   constructor(
     private loginService: LoginService,
@@ -34,12 +35,15 @@ export class LoginComponent implements OnInit {
     if (this.tokenService.isAuth) {
       this.router.navigate(['/cabinet']).then();
     }
+    this.isBlock = this.loginService.isBlockUser();
+    if (!this.isBlock) {
+      this.loginService.clearBlockData();
+    }
   }
 
   public onSubmit() {
     const login: Login = {email: this.loginForm.value.email, password: this.loginForm.value.password};
     this.loginService.signIn(login).subscribe((response) => {
-      console.log(response);
       if (response) {
         this.handleResponse(response);
       }
@@ -68,7 +72,11 @@ export class LoginComponent implements OnInit {
 
   private handleResponse(response: any): void {
     if (response.error) {
-      this.loginService.storeWrongAttemp();
+      const wrong = Number(this.loginService.storeWrongAttemp());
+      if (wrong === 5) {
+        this.loginService.blockUser()
+        this.isBlock = true;
+      }
       this.snackbar.open(response.error, 'Close', {
         duration: 3000,
         verticalPosition: 'top'

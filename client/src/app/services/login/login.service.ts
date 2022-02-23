@@ -33,7 +33,7 @@ export class LoginService {
       .pipe(catchError(this.error));
   }
 
-  storeWrongAttemp() {
+  storeWrongAttemp(): string | null {
     let wrong = localStorage.getItem('wrong');
     if (wrong) {
       const newWrong = Number(wrong) + 1;
@@ -41,6 +41,26 @@ export class LoginService {
     } else {
       localStorage.setItem('wrong', '1');
     }
+    return localStorage.getItem('wrong');
+  }
+
+  blockUser(): void {
+    const time = new Date().getTime() + 1 * 60000;
+    localStorage.setItem('block', String(time));
+  }
+
+  isBlockUser() : boolean {
+    let blockTime = localStorage.getItem('block');
+    if (blockTime) {
+      const currentTime = new Date().getTime();
+      return !(Number(currentTime) > Number(blockTime));
+    }
+    return false;
+  }
+
+  clearBlockData(): void {
+    localStorage.removeItem('wrong');
+    localStorage.removeItem('block');
   }
 
   error(error: HttpErrorResponse): Observable<any> {
