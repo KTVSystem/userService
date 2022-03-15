@@ -26,7 +26,7 @@
       <mat-form-field appearance="legacy">
         <mat-label>{{ 'role' | translate }}</mat-label>
         <mat-select matNativeControl formControlName="role">
-          <mat-option *ngFor="let role of roles" [value]="role.key">{{role.title}}</mat-option>
+          <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

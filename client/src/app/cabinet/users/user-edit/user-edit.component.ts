@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/cabinet/users/user.servise';
-import { roles } from '../../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Status } from '../../../models/common/status/status';
@@ -10,6 +9,7 @@ import { RolesListDto } from '../../../models/cabinet/users/dtos/roles-list-dto'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
+import { RolesService } from '../../../services/cabinet/roles/roles.service';
 
 
 @Component({
@@ -34,6 +34,7 @@ export class UserEditComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private rolesService: RolesService,
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
     private redirectService: RedirectService,
@@ -41,7 +42,9 @@ export class UserEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.roles = roles;
+    this.rolesService.getActiveRoles().subscribe((response) => {
+      this.roles = response;
+    });
     this.statuses = statuses;
     this.id = this.route.snapshot.params['id'];
     this.userService.getUserById(this.id).subscribe((response) => {
@@ -56,7 +59,7 @@ export class UserEditComponent implements OnInit {
   public onSubmit(): void {
     const user: UserEditDto = {
       email: this.editUserForm.value.email,
-      role: (this.editUserForm.value.role === '0') ? this.roles[0].key :
+      role: (this.editUserForm.value.role === '0') ? this.roles[0].id :
         Array.isArray(this.editUserForm.value.role) ? this.editUserForm.value.role[0] : this.editUserForm.value.role,
       status: (this.editUserForm.value.status === '0') ? this.statuses[0].key : this.editUserForm.value.status
     };

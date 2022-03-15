@@ -46,8 +46,8 @@ export class RoleEditComponent implements OnInit {
         this.fillEditPermissionForm(response.role);
       }
     });
-    this.permissionService.getPermissionsAll().subscribe((response) => {
-      this.permissions = response.permissions;
+    this.permissionService.getActivePermissions().subscribe((response) => {
+      this.permissions = response;
     });
   }
 

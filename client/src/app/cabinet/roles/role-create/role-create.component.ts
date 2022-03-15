@@ -35,8 +35,8 @@ export class RoleCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.statuses = statuses;
-    this.permissionService.getPermissionsAll().subscribe((response) => {
-      this.permissions = response.permissions;
+    this.permissionService.getActivePermissions().subscribe((response) => {
+      this.permissions = response;
     });
   }
 

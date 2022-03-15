@@ -4,11 +4,11 @@ import { User} from '../../models/cabinet/users/user';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RolesListDto } from '../../models/cabinet/users/dtos/roles-list-dto';
 import { Status } from '../../models/common/status/status';
-import { roles } from '../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../models/common/status/lists/statuses-list';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
+import { RolesService } from '../../services/cabinet/roles/roles.service';
 
 @Component({
   selector: 'app-users',
@@ -28,11 +28,17 @@ export class UsersComponent implements OnInit {
   displayedColumns: string[] = ['email', 'role', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(public paginationService: PaginationService, private userService: UserService) { }
+  constructor(
+    public paginationService: PaginationService,
+    private userService: UserService,
+    private rolesService: RolesService,
+  ) { }
 
   ngOnInit(): void {
     this.getUsers();
-    this.roles = roles;
+    this.rolesService.getActiveRoles().subscribe((response) => {
+      this.roles = response;
+    });
     this.statuses = statuses;
   }
 
