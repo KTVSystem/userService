@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Status } from '../../../models/common/status/status';
@@ -7,6 +7,8 @@ import { PermissionCreateDto } from '../../../models/cabinet/users/dtos/permissi
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -14,12 +16,13 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './permission-create.component.html',
   styleUrls: ['./permission-create.component.scss']
 })
-export class PermissionCreateComponent implements OnInit {
+export class PermissionCreateComponent implements OnInit, OnDestroy {
   public createPermissionForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     status: new FormControl('0'),
   });
   public statuses: Array<Status>;
+  public unsubscribe$ = new Subject();
 
   constructor(
     private permissionService: PermissionService,
@@ -37,13 +40,13 @@ export class PermissionCreateComponent implements OnInit {
       name: this.createPermissionForm.value.name,
       status: (this.createPermissionForm.value.status === '0') ? this.statuses[0].key : this.createPermissionForm.value.status
     };
-    this.permissionService.createPermission(permission).subscribe((response) => {
+    this.permissionService.createPermission(permission).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.handleMessage(response);
     });
   }
 
   private handleMessage(response: any): void {
-    this.translateService.get('close').subscribe((closeText) => {
+    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
       if (response.error) {
         this.snackbar.open(response.error, closeText, {
           duration: 3000,
@@ -59,6 +62,11 @@ export class PermissionCreateComponent implements OnInit {
         this.redirectService.redirect('/cabinet/permissions', 2000);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

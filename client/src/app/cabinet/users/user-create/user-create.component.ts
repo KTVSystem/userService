@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../../services/cabinet/users/user.servise';
 import { UserCreateDto } from '../../../models/cabinet/users/dtos/user/user-create-dto';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RolesService } from '../../../services/cabinet/roles/roles.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -16,7 +18,7 @@ import { RolesService } from '../../../services/cabinet/roles/roles.service';
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.scss']
 })
-export class UserCreateComponent implements OnInit {
+export class UserCreateComponent implements OnInit, OnDestroy {
 
   public createUserForm = new FormGroup({
     email: new FormControl('', [
@@ -29,6 +31,7 @@ export class UserCreateComponent implements OnInit {
   });
   public roles: Array<RolesListDto>;
   public statuses: Array<Status>;
+  public unsubscribe$ = new Subject();
 
   constructor(
     private userService: UserService,
@@ -39,7 +42,7 @@ export class UserCreateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.rolesService.getActiveRoles().subscribe((response) => {
+    this.rolesService.getActiveRoles().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.roles = response;
     });
     this.statuses = statuses;
@@ -52,13 +55,13 @@ export class UserCreateComponent implements OnInit {
       role: (this.createUserForm.value.role === '0') ? this.roles[0].id : this.createUserForm.value.role,
       status: (this.createUserForm.value.status === '0') ? this.statuses[0].key : this.createUserForm.value.status
     };
-    this.userService.createUser(user).subscribe((response) => {
+    this.userService.createUser(user).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.handleMessage(response);
     });
   }
 
   private handleMessage(response: any): void {
-    this.translateService.get('close').subscribe((closeText) => {
+    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
       if (response.error) {
         this.snackbar.open(response.error, closeText, {
           duration: 3000,
@@ -74,6 +77,11 @@ export class UserCreateComponent implements OnInit {
         this.redirectService.redirect('/cabinet/users', 2000);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

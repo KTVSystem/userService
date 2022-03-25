@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { UserService } from '../../../services/cabinet/users/user.servise';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
@@ -10,6 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RolesService } from '../../../services/cabinet/roles/roles.service';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 
 @Component({
@@ -17,7 +19,7 @@ import { RolesService } from '../../../services/cabinet/roles/roles.service';
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.scss']
 })
-export class UserEditComponent implements OnInit {
+export class UserEditComponent implements OnInit, OnDestroy {
 
   public editUserForm = new FormGroup({
     email: new FormControl('', [
@@ -31,6 +33,7 @@ export class UserEditComponent implements OnInit {
   public statuses: Array<Status>;
   public user: UserEditDto;
   public id: number;
+  public unsubscribe$ = new Subject();
 
   constructor(
     private userService: UserService,
@@ -42,12 +45,12 @@ export class UserEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.rolesService.getActiveRoles().subscribe((response) => {
+    this.rolesService.getActiveRoles().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.roles = response;
     });
     this.statuses = statuses;
     this.id = this.route.snapshot.params['id'];
-    this.userService.getUserById(this.id).subscribe((response) => {
+    this.userService.getUserById(this.id).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       if (response) {
         this.user = response.user;
         this.fillEditUserForm(response.user);
@@ -63,7 +66,7 @@ export class UserEditComponent implements OnInit {
         Array.isArray(this.editUserForm.value.role) ? this.editUserForm.value.role[0] : this.editUserForm.value.role,
       status: (this.editUserForm.value.status === '0') ? this.statuses[0].key : this.editUserForm.value.status
     };
-    this.userService.editUser(this.id, user).subscribe((response) => {
+    this.userService.editUser(this.id, user).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.handleMessage(response);
     });
   }
@@ -73,7 +76,7 @@ export class UserEditComponent implements OnInit {
   }
 
   private handleMessage(response: any): void {
-    this.translateService.get('close').subscribe((closeText) => {
+    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
       if (response.error) {
         this.snackbar.open(response.error, closeText, {
           duration: 3000,
@@ -89,6 +92,11 @@ export class UserEditComponent implements OnInit {
         this.redirectService.redirect('/cabinet/users', 2000);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/cabinet/users/user.servise';
 import { UserDetailDto } from "../../../models/cabinet/users/dtos/user/user-detail-dto";
@@ -7,15 +7,18 @@ import { WarningConfirmationComponent } from '../../shared/warning-confirmation/
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-detail',
   templateUrl: './user-detail.component.html',
   styleUrls: ['./user-detail.component.scss']
 })
-export class UserDetailComponent implements OnInit {
+export class UserDetailComponent implements OnInit, OnDestroy {
   public user: UserDetailDto;
   private id: number;
+  public unsubscribe$ = new Subject();
 
   constructor(
     private userService: UserService,
@@ -33,7 +36,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   public getUser(): void {
-    this.userService.getUserById(this.id).subscribe((response) => {
+    this.userService.getUserById(this.id).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.user = response.user;
       console.log(this.user);
     });
@@ -45,10 +48,10 @@ export class UserDetailComponent implements OnInit {
       height: '210px',
       data: { message: this.generateWarningMessage() }
     });
-    dialogRef.afterClosed().subscribe((dialogResult) => {
+    dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((dialogResult) => {
       if (dialogResult) {
-        this.userService.removeUser(id).subscribe((response) => {
-          this.translateService.get('close').subscribe((closeText) => {
+        this.userService.removeUser(id).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+          this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
             this.snackbar.open(response.message, closeText, {
               duration: 2000,
               verticalPosition: 'top'
@@ -66,10 +69,10 @@ export class UserDetailComponent implements OnInit {
       height: '210px',
       data: { message: this.generateWarningMessage('social') }
     });
-    dialogRef.afterClosed().subscribe((dialogResult) => {
+    dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((dialogResult) => {
       if (dialogResult) {
-        this.userService.unbindSocial(id, socialId).subscribe((response) => {
-          this.translateService.get('close').subscribe((closeText) => {
+        this.userService.unbindSocial(id, socialId).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+          this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
             this.snackbar.open(response.message, closeText, {
               duration: 2000,
               verticalPosition: 'top'
@@ -102,6 +105,11 @@ export class UserDetailComponent implements OnInit {
         break;
     }
     return message;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

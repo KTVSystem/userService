@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../../services/cabinet/users/user.servise';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserChangePasswordDto } from '../../../models/cabinet/users/dtos/user/user-change-password-dto';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -14,13 +15,14 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './user-change-password.component.html',
   styleUrls: ['./user-change-password.component.scss']
 })
-export class UserChangePasswordComponent implements OnInit {
+export class UserChangePasswordComponent implements OnInit, OnDestroy {
 
   public changePasswordUserForm = new FormGroup({
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required], [this.comparePassword()]),
   });
   public id: number;
+  public unsubscribe$ = new Subject();
 
   constructor(
     private userService: UserService,
@@ -38,7 +40,7 @@ export class UserChangePasswordComponent implements OnInit {
     const password: UserChangePasswordDto = {
       password: this.changePasswordUserForm.value.password
     }
-    this.userService.changePasswordUser(this.id, password).subscribe((response) => {
+    this.userService.changePasswordUser(this.id, password).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.handleMessage(response);
     });
   }
@@ -53,7 +55,7 @@ export class UserChangePasswordComponent implements OnInit {
   }
 
   private handleMessage(response: any): void {
-    this.translateService.get('close').subscribe((closeText) => {
+    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
       if (response.error) {
         this.snackbar.open(response.error, closeText, {
           duration: 3000,
@@ -69,6 +71,11 @@ export class UserChangePasswordComponent implements OnInit {
         this.redirectService.redirect('/cabinet/users', 2000);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

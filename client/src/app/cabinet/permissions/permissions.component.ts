@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
 import { Status } from '../../models/common/status/status';
@@ -7,13 +7,15 @@ import { PermissionService } from '../../services/cabinet/permissions/permission
 import { Permission } from '../../models/cabinet/users/permission';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss']
 })
-export class PermissionsComponent implements OnInit {
+export class PermissionsComponent implements OnInit, OnDestroy {
   public permissions: Array<Permission> = [];
   public statuses: Array<Status>;
   public permissionsFilterForm = new FormGroup({
@@ -23,6 +25,7 @@ export class PermissionsComponent implements OnInit {
   public filterQueryString: string = '';
   displayedColumns: string[] = ['name', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  public unsubscribe$ = new Subject();
 
   constructor(public paginationService: PaginationService, private permissionService: PermissionService) { }
 
@@ -32,7 +35,7 @@ export class PermissionsComponent implements OnInit {
   }
 
   private getPermissions(): void {
-    this.permissionService.getPermissions(this.filterQueryString).subscribe((response) => {
+    this.permissionService.getPermissions(this.filterQueryString).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.permissions = response.permissions;
       this.paginationService.dataSource = new MatTableDataSource<any>(response.permissions);
       this.paginationService.dataSource.paginator = this.paginator;
@@ -62,6 +65,11 @@ export class PermissionsComponent implements OnInit {
     filterString = (filterString !== '') ? '?' + filterString : filterString;
     filterString = (filterString !== '') ? filterString.substr(0, filterString.length - 1) : filterString;
     return filterString;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
