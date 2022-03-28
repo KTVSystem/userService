@@ -1,0 +1,19 @@
+@import 'src/assets/scss/base';
+
+.status-code-block {
+  text-align: center;
+  h1 {
+    font-size: 300px;
+    margin-top: 100px;
+    margin-bottom: 0;
+    color: $status-not-found-color;
+  }
+
+  p {
+    font-size: 50px;
+    color: $base-grey-light;
+    font-weight: bold;
+    margin-top: 0;
+  }
+}
+
