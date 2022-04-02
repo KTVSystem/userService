@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../../services/cabinet/users/user.servise';
 import { UserCreateDto } from '../../../models/cabinet/users/dtos/user/user-create-dto';
-import { roles } from '../../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Status } from '../../../models/common/status/status';
@@ -9,6 +8,9 @@ import { RolesListDto } from '../../../models/cabinet/users/dtos/roles-list-dto'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
+import { RolesService } from '../../../services/cabinet/roles/roles.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -16,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './user-create.component.html',
   styleUrls: ['./user-create.component.scss']
 })
-export class UserCreateComponent implements OnInit {
+export class UserCreateComponent implements OnInit, OnDestroy {
 
   public createUserForm = new FormGroup({
     email: new FormControl('', [
@@ -29,16 +31,20 @@ export class UserCreateComponent implements OnInit {
   });
   public roles: Array<RolesListDto>;
   public statuses: Array<Status>;
+  public unsubscribe$ = new Subject();
 
   constructor(
     private userService: UserService,
+    private rolesService: RolesService,
     private snackbar: MatSnackBar,
     private redirectService: RedirectService,
     private translateService: TranslateService
   ) { }
 
   ngOnInit(): void {
-    this.roles = roles;
+    this.rolesService.getActiveRoles().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      this.roles = response;
+    });
     this.statuses = statuses;
   }
 
@@ -46,16 +52,16 @@ export class UserCreateComponent implements OnInit {
     const user: UserCreateDto = {
       email: this.createUserForm.value.email,
       password: this.createUserForm.value.password,
-      role: (this.createUserForm.value.role === '0') ? this.roles[0].key : this.createUserForm.value.role,
+      role: (this.createUserForm.value.role === '0') ? this.roles[0].id : this.createUserForm.value.role,
       status: (this.createUserForm.value.status === '0') ? this.statuses[0].key : this.createUserForm.value.status
     };
-    this.userService.createUser(user).subscribe((response) => {
+    this.userService.createUser(user).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.handleMessage(response);
     });
   }
 
   private handleMessage(response: any): void {
-    this.translateService.get('close').subscribe((closeText) => {
+    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
       if (response.error) {
         this.snackbar.open(response.error, closeText, {
           duration: 3000,
@@ -71,6 +77,11 @@ export class UserCreateComponent implements OnInit {
         this.redirectService.redirect('/cabinet/users', 2000);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

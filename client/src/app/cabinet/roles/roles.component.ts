@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
 import { Status } from '../../models/common/status/status';
@@ -7,13 +7,15 @@ import { Role } from '../../models/cabinet/users/role';
 import { RolesService } from '../../services/cabinet/roles/roles.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.scss']
 })
-export class RolesComponent implements OnInit {
+export class RolesComponent implements OnInit, OnDestroy {
   public roles: Array<Role> = [];
   public statuses: Array<Status>;
   public rolesFilterForm = new FormGroup({
@@ -23,6 +25,7 @@ export class RolesComponent implements OnInit {
   public filterQueryString: string = '';
   displayedColumns: string[] = ['name', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  public unsubscribe$ = new Subject();
 
   constructor(public paginationService: PaginationService, private rolesService: RolesService) { }
 
@@ -32,7 +35,7 @@ export class RolesComponent implements OnInit {
   }
 
   private getRoles(): void {
-    this.rolesService.getRoles(this.filterQueryString).subscribe((response) => {
+    this.rolesService.getRoles(this.filterQueryString).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.roles = response.roles;
       this.paginationService.dataSource = new MatTableDataSource<any>(response.roles);
       this.paginationService.dataSource.paginator = this.paginator;
@@ -62,6 +65,11 @@ export class RolesComponent implements OnInit {
     filterString = (filterString !== '') ? '?' + filterString : filterString;
     filterString = (filterString !== '') ? filterString.substr(0, filterString.length - 1) : filterString;
     return filterString;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

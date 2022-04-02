@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TokenService } from '../../../services/token/token.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   public languageForm = new FormGroup({
     language: new FormControl(''),
@@ -29,7 +30,8 @@ export class HeaderComponent implements OnInit {
       label: 'EN',
       key: 'en'
     },
-  ]
+  ];
+  public unsubscribe$ = new Subject();
 
   constructor(
     private tokenService: TokenService,
@@ -40,7 +42,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.translateService.setDefaultLang('ua');
     this.languageForm.patchValue({language: 'ua'});
-    this.languageForm.valueChanges.subscribe((value) => {
+    this.languageForm.valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((value) => {
       this.translateService.use(value.language);
       this.translateService.setDefaultLang(value.language);
     });
@@ -49,6 +51,11 @@ export class HeaderComponent implements OnInit {
   public logout() {
     this.tokenService.deleteToken();
     this.router.navigate(['/']).then();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

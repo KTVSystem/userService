@@ -1,21 +1,23 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/cabinet/users/user.servise';
 import { User} from '../../models/cabinet/users/user';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RolesListDto } from '../../models/cabinet/users/dtos/roles-list-dto';
 import { Status } from '../../models/common/status/status';
-import { roles } from '../../models/cabinet/users/lists/roles-list';
 import { statuses } from '../../models/common/status/lists/statuses-list';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PaginationService } from '../../services/cabinet/shared/pagination/pagination.service';
+import { RolesService } from '../../services/cabinet/roles/roles.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
   public users: Array<User> = [];
   public roles: Array<RolesListDto>;
   public statuses: Array<Status>;
@@ -27,17 +29,24 @@ export class UsersComponent implements OnInit {
   public filterQueryString: string = '';
   displayedColumns: string[] = ['email', 'role', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  public unsubscribe$ = new Subject();
 
-  constructor(public paginationService: PaginationService, private userService: UserService) { }
+  constructor(
+    public paginationService: PaginationService,
+    private userService: UserService,
+    private rolesService: RolesService,
+  ) { }
 
   ngOnInit(): void {
     this.getUsers();
-    this.roles = roles;
+    this.rolesService.getActiveRoles().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      this.roles = response;
+    });
     this.statuses = statuses;
   }
 
   private getUsers(): void {
-    this.userService.getUsers(this.filterQueryString).subscribe((response) => {
+    this.userService.getUsers(this.filterQueryString).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.users = response.users;
       this.paginationService.dataSource = new MatTableDataSource<any>(response.users);
       this.paginationService.dataSource.paginator = this.paginator;
@@ -70,6 +79,11 @@ export class UsersComponent implements OnInit {
     filterString = (filterString !== '') ? '?' + filterString : filterString;
     filterString = (filterString !== '') ? filterString.substr(0, filterString.length - 1) : filterString;
     return filterString;
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

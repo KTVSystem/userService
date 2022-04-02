@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Status } from '../../../models/common/status/status';
@@ -9,6 +9,8 @@ import { Permission } from '../../../models/cabinet/users/permission';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -16,7 +18,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './role-create.component.html',
   styleUrls: ['./role-create.component.scss']
 })
-export class RoleCreateComponent implements OnInit {
+export class RoleCreateComponent implements OnInit, OnDestroy {
   public createRoleForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     status: new FormControl('0'),
@@ -24,6 +26,7 @@ export class RoleCreateComponent implements OnInit {
   });
   public statuses: Array<Status>;
   public permissions: Array<Permission> = [];
+  public unsubscribe$ = new Subject();
 
   constructor(
     private rolesService: RolesService,
@@ -35,8 +38,8 @@ export class RoleCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.statuses = statuses;
-    this.permissionService.getPermissionsAll().subscribe((response) => {
-      this.permissions = response.permissions;
+    this.permissionService.getActivePermissions().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      this.permissions = response;
     });
   }
 
@@ -47,13 +50,13 @@ export class RoleCreateComponent implements OnInit {
       permissions: this.createRoleForm.value.permissions,
     };
 
-    this.rolesService.createRole(role).subscribe((response) => {
+    this.rolesService.createRole(role).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.handleMessage(response);
     });
   }
 
   private handleMessage(response: any): void {
-    this.translateService.get('close').subscribe((closeText) => {
+    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
       if (response.error) {
         this.snackbar.open(response.error, closeText, {
           duration: 3000,
@@ -69,6 +72,11 @@ export class RoleCreateComponent implements OnInit {
         this.redirectService.redirect('/cabinet/roles', 2000);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

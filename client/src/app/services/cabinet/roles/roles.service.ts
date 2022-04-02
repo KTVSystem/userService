@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { RoleCreateDto } from '../../../models/cabinet/users/dtos/role/role-create-dto';
 import { TranslateService } from '@ngx-translate/core';
+import { Role } from '../../../models/cabinet/users/role';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,11 @@ export class RolesService {
     const url = (filterString) ? (this.baseUrl + filterString) : this.baseUrl;
     return this.http.get(url)
       .pipe(catchError(this.error));
+  }
+
+  public getActiveRoles() {
+    return this.http.get(this.baseUrl)
+      .pipe(map((res: any) => res.roles.filter((item: Role) => item.status === 'active')));
   }
 
   public getRoleById(id: number): Observable<any> {
