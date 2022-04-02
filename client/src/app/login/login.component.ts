@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Login } from '../models/login/login';
 import { LoginService } from '../services/login/login.service';
@@ -7,13 +7,15 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { SocialUser } from '../models/login/social-user';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   public loginForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
@@ -22,6 +24,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required]),
   });
   public isBlock: boolean;
+  public unsubscribe$ = new Subject();
 
   constructor(
     private loginService: LoginService,
@@ -43,7 +46,7 @@ export class LoginComponent implements OnInit {
 
   public onSubmit() {
     const login: Login = {email: this.loginForm.value.email, password: this.loginForm.value.password};
-    this.loginService.signIn(login).subscribe((response) => {
+    this.loginService.signIn(login).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       if (response) {
         this.handleResponse(response);
       }
@@ -52,7 +55,7 @@ export class LoginComponent implements OnInit {
 
   public loginFacebook(): void {
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then((socialUser: SocialUser) => {
-      this.loginService.signInSocial(socialUser).subscribe((response) => {
+      this.loginService.signInSocial(socialUser).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
         if (response) {
           this.handleResponse(response);
         }
@@ -62,7 +65,7 @@ export class LoginComponent implements OnInit {
 
   public loginGoogle(): void {
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((socialUser: SocialUser) => {
-      this.loginService.signInSocial(socialUser).subscribe((response) => {
+      this.loginService.signInSocial(socialUser).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
         if (response) {
           this.handleResponse(response);
         }
@@ -85,6 +88,11 @@ export class LoginComponent implements OnInit {
       this.tokenService.writeToken(response.token);
       this.router.navigate(['/cabinet']).then();
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

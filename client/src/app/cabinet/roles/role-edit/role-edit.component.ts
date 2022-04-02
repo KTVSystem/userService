@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Status } from '../../../models/common/status/status';
@@ -10,6 +10,8 @@ import { Permission } from '../../../models/cabinet/users/permission';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -17,7 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './role-edit.component.html',
   styleUrls: ['./role-edit.component.scss']
 })
-export class RoleEditComponent implements OnInit {
+export class RoleEditComponent implements OnInit, OnDestroy {
   public editRoleForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     status: new FormControl('0'),
@@ -27,6 +29,7 @@ export class RoleEditComponent implements OnInit {
   public role: RoleCreateDto;
   public id: number;
   public permissions: Array<Permission> = [];
+  public unsubscribe$ = new Subject();
 
   constructor(
     private rolesService: RolesService,
@@ -40,14 +43,14 @@ export class RoleEditComponent implements OnInit {
   ngOnInit(): void {
     this.statuses = statuses;
     this.id = this.route.snapshot.params['id'];
-    this.rolesService.getRoleById(this.id).subscribe((response) => {
+    this.rolesService.getRoleById(this.id).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       if (response) {
         this.role = response.role;
         this.fillEditPermissionForm(response.role);
       }
     });
-    this.permissionService.getPermissionsAll().subscribe((response) => {
-      this.permissions = response.permissions;
+    this.permissionService.getActivePermissions().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      this.permissions = response;
     });
   }
 
@@ -57,7 +60,7 @@ export class RoleEditComponent implements OnInit {
       status: (this.editRoleForm.value.status === '0') ? this.statuses[0].key : this.editRoleForm.value.status,
       permissions: this.editRoleForm.value.permissions,
     };
-    this.rolesService.editRole(this.id, role).subscribe((response) => {
+    this.rolesService.editRole(this.id, role).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.handleMessage(response);
     });
   }
@@ -68,7 +71,7 @@ export class RoleEditComponent implements OnInit {
   }
 
   private handleMessage(response: any): void {
-    this.translateService.get('close').subscribe((closeText) => {
+    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
       if (response.error) {
         this.snackbar.open(response.error, closeText, {
           duration: 3000,
@@ -84,6 +87,11 @@ export class RoleEditComponent implements OnInit {
         this.redirectService.redirect('/cabinet/roles', 2000);
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }
