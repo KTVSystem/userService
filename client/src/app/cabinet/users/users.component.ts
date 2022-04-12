@@ -11,6 +11,10 @@ import { PaginationService } from '../../services/cabinet/shared/pagination/pagi
 import { RolesService } from '../../services/cabinet/roles/roles.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../store/core.state';
+import * as fromUser from '../../store/users/users.actions';
+import { selectUserItems } from '../../store/users';
 
 @Component({
   selector: 'app-users',
@@ -35,9 +39,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     public paginationService: PaginationService,
     private userService: UserService,
     private rolesService: RolesService,
+    private store: Store<fromRoot.State>,
   ) { }
 
   ngOnInit(): void {
+    this.store.select(selectUserItems).subscribe(res => console.log(res));
     this.getUsers();
     this.rolesService.getActiveRoles().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.roles = response;

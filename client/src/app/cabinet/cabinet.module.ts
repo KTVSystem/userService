@@ -84,7 +84,7 @@ export function httpTranslateLoader(http: HttpClient) {
         useFactory: httpTranslateLoader,
         deps: [HttpClient]
       }
-    })
+    }),
   ],
   exports: [CabinetComponent],
   providers: [

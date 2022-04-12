@@ -24,6 +24,13 @@ import {
   SocialLoginModule
 } from 'angularx-social-login';
 import { MatIconModule } from '@angular/material/icon';
+import { environment } from '../environments/environment';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './store';
+import { EffectsModule } from '@ngrx/effects';
+import { UsersEffects } from './store/users/';
+
 
 @NgModule({
   declarations: [
@@ -42,7 +49,15 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatSnackBarModule,
     MatIconModule,
-    SocialLoginModule
+    SocialLoginModule,
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+    }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
+    EffectsModule.forRoot([UsersEffects]),
   ],
   providers: [
     LoginService,
