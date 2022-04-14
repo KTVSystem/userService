@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const users = await UserController.getUsers(req.query, String(req.query.lang));
+        const users = await UserController.getUsers();
         res.status(200).json({
             users
         });

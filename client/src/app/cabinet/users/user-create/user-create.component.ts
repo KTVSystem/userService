@@ -11,6 +11,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { RolesService } from '../../../services/cabinet/roles/roles.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import * as fromRoot from '../../../store/core.state';
+import {addUser, deleteUser, selectApiMessageItem} from '../../../store/users';
+import * as fromUser from '../../../store/users/users.actions';
 
 
 @Component({
@@ -38,7 +42,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     private rolesService: RolesService,
     private snackbar: MatSnackBar,
     private redirectService: RedirectService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private store: Store<fromRoot.State>,
   ) { }
 
   ngOnInit(): void {
@@ -55,8 +60,12 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       role: (this.createUserForm.value.role === '0') ? this.roles[0].id : this.createUserForm.value.role,
       status: (this.createUserForm.value.status === '0') ? this.statuses[0].key : this.createUserForm.value.status
     };
-    this.userService.createUser(user).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
-      this.handleMessage(response);
+    this.store.dispatch(addUser({ user: user }));
+    //this.store.dispatch(new fromUser.LoadUsers());
+    this.store.select(selectApiMessageItem).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      if (response) {
+        this.handleMessage(response);
+      }
     });
   }
 

@@ -32,7 +32,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   public roles: Array<RolesListDto>;
   public statuses: Array<Status>;
   public user: UserEditDto;
-  public id: number;
+  public id: string;
   public unsubscribe$ = new Subject();
 
   constructor(

@@ -21,7 +21,7 @@ export class UserChangePasswordComponent implements OnInit, OnDestroy {
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required], [this.comparePassword()]),
   });
-  public id: number;
+  public id: string;
   public unsubscribe$ = new Subject();
 
   constructor(

@@ -13,8 +13,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store/core.state';
-import * as fromUser from '../../store/users/users.actions';
 import { selectUserItems } from '../../store/users';
+import * as fromUser from '../../store/users/users.actions';
 
 @Component({
   selector: 'app-users',
@@ -30,7 +30,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     role: new FormControl('0'),
     status: new FormControl('0'),
   });
-  public filterQueryString: string = '';
   displayedColumns: string[] = ['email', 'role', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public unsubscribe$ = new Subject();
@@ -43,7 +42,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.store.select(selectUserItems).subscribe(res => console.log(res));
     this.getUsers();
     this.rolesService.getActiveRoles().pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.roles = response;
@@ -52,7 +50,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   private getUsers(): void {
-    this.userService.getUsers(this.filterQueryString).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+    this.store.select(selectUserItems).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.users = response.users;
       this.paginationService.dataSource = new MatTableDataSource<any>(response.users);
       this.paginationService.dataSource.paginator = this.paginator;
@@ -61,30 +59,11 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    const email = (this.usersFilterForm.value.email !== '') ? this.usersFilterForm.value.email : null;
-    const role = (this.usersFilterForm.value.role !== '0') ? this.usersFilterForm.value.role : null;
-    const status = (this.usersFilterForm.value.status !== '0') ? this.usersFilterForm.value.status : null;
-    this.filterQueryString = this.createFilterQueryParam(email, role, status);
     this.getUsers();
   }
 
   public clearFilters(): void {
-    this.usersFilterForm.patchValue({
-      email: '',
-      role: '0',
-      status: '0'
-    });
     this.getUsers();
-  }
-
-  private createFilterQueryParam(email: string, role: string, status: string): string {
-    let filterString = '';
-    filterString = (email) ? filterString + 'email=' + email + '&' : filterString;
-    filterString = (role) ? filterString + 'role=' + role + '&' : filterString;
-    filterString = (status) ? filterString + 'status=' + status + '&' : filterString;
-    filterString = (filterString !== '') ? '?' + filterString : filterString;
-    filterString = (filterString !== '') ? filterString.substr(0, filterString.length - 1) : filterString;
-    return filterString;
   }
 
   ngOnDestroy() {
