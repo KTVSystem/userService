@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import {map, switchMap, catchError, tap} from 'rxjs/operators';
+import { map, switchMap, catchError } from 'rxjs/operators';
 import * as UsersActions from './users.actions';
 import { UserService } from '../../services/cabinet/users/user.servise';
 import { Observable, of } from 'rxjs';
@@ -27,8 +27,47 @@ export class UsersEffects {
       ofType(UsersActions.UsersActionTypes.ADD_USER),
       switchMap((action) =>
         this.userService.createUser(action.user).pipe(
-          map((apiMessage) => UsersActions.addUserSuccess({apiMessage: apiMessage.message})),
-          catchError((error) => of(UsersActions.addUserFailed({ error: error })))
+          map((response) => {
+            if (response.error) {
+              return UsersActions.addUserFailed({ apiMessage: response.error, typeMessage: 'error' });
+            } else {
+              return UsersActions.addUserSuccess({user: response.user, apiMessage: response.message, typeMessage: 'success'});
+            }
+          }),
+        )
+      )
+    )
+  );
+
+  editUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.UsersActionTypes.EDIT_USER),
+      switchMap((action) =>
+        this.userService.editUser(action.id, action.user).pipe(
+          map((response) => {
+            if (response.error) {
+              return UsersActions.editUserFailed({ apiMessage: response.error, typeMessage: 'error' });
+            } else {
+              return UsersActions.editUserSuccess({id: action.id, user: response.user, apiMessage: response.message, typeMessage: 'success'});
+            }
+          }),
+        )
+      )
+    )
+  );
+
+  changePasswordUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UsersActions.UsersActionTypes.CHANGE_PASSWORD_USER),
+      switchMap((action) =>
+        this.userService.changePasswordUser(action.id, action.password).pipe(
+          map((response) => {
+            if (response.error) {
+              return UsersActions.changePasswordUserFailed({ apiMessage: response.error, typeMessage: 'error' });
+            } else {
+              return UsersActions.changePasswordUserSuccess({id: action.id, user: response.user, apiMessage: response.message, typeMessage: 'success'});
+            }
+          }),
         )
       )
     )

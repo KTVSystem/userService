@@ -1,8 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { initialState, UsersState } from './users.state';
 import * as UserActions from './users.actions';
-import {User} from '../../models/cabinet/users/user';
-import {UserCreateDto} from '../../models/cabinet/users/dtos/user/user-create-dto';
 
 
 const usersReducer = createReducer(
@@ -12,10 +10,41 @@ const usersReducer = createReducer(
     ...state,
     users: users,
   })),
-  on(UserActions.addUserSuccess, (state, { apiMessage }) => ({
-    ...state,
-    apiMessage: apiMessage,
-  })),
+  on(UserActions.addUserSuccess, (state, { user, apiMessage }) => {
+    const updatedUsers = [...state.users];
+    updatedUsers.push(user);
+    return {
+      ...state,
+      users: updatedUsers,
+      apiMessage: apiMessage
+    };
+  }),
+  on(UserActions.editUserSuccess, (state, { id, user, apiMessage }) => {
+    const userItemIndex = state.users.findIndex(
+      (item) => item._id === id
+    );
+    const updatedUsers = [...state.users];
+    updatedUsers.splice(userItemIndex, 1);
+    updatedUsers.push(user);
+    return {
+      ...state,
+      users: updatedUsers,
+      apiMessage: apiMessage
+    };
+  }),
+  on(UserActions.changePasswordUserSuccess, (state, { id, user, apiMessage }) => {
+    const userItemIndex = state.users.findIndex(
+      (item) => item._id === id
+    );
+    const updatedUsers = [...state.users];
+    updatedUsers.splice(userItemIndex, 1);
+    updatedUsers.push(user);
+    return {
+      ...state,
+      users: updatedUsers,
+      apiMessage: apiMessage
+    };
+  }),
   on(UserActions.deleteUserSuccess, (state, { userId, apiMessage }) => {
     const userItemIndex = state.users.findIndex(
       (item) => item._id === userId
@@ -39,6 +68,7 @@ export const getUsersReducer = (state: UsersState) => {
 export const getApiMessageReducer = (state: UsersState) => {
   return {
     apiMessage: state.apiMessage,
+    typeMessage: state.typeMessage
   };
 };
 

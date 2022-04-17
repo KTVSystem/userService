@@ -5,16 +5,14 @@ import { statuses } from '../../../models/common/status/lists/statuses-list';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Status } from '../../../models/common/status/status';
 import { RolesListDto } from '../../../models/cabinet/users/dtos/roles-list-dto';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
-import { TranslateService } from '@ngx-translate/core';
 import { RolesService } from '../../../services/cabinet/roles/roles.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {Store} from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store/core.state';
-import {addUser, deleteUser, selectApiMessageItem} from '../../../store/users';
-import * as fromUser from '../../../store/users/users.actions';
+import { addUser } from '../../../store/users';
+import { Actions } from '@ngrx/effects';
+import { NotificationService } from '../../../services/cabinet/shared/notification/notification.service';
 
 
 @Component({
@@ -40,10 +38,9 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private rolesService: RolesService,
-    private snackbar: MatSnackBar,
-    private redirectService: RedirectService,
-    private translateService: TranslateService,
     private store: Store<fromRoot.State>,
+    private actions$: Actions<any>,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -57,33 +54,13 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     const user: UserCreateDto = {
       email: this.createUserForm.value.email,
       password: this.createUserForm.value.password,
-      role: (this.createUserForm.value.role === '0') ? this.roles[0].id : this.createUserForm.value.role,
+      role: (this.createUserForm.value.role === '0') ? this.roles[0] : this.createUserForm.value.role,
       status: (this.createUserForm.value.status === '0') ? this.statuses[0].key : this.createUserForm.value.status
     };
     this.store.dispatch(addUser({ user: user }));
-    //this.store.dispatch(new fromUser.LoadUsers());
-    this.store.select(selectApiMessageItem).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
-      if (response) {
-        this.handleMessage(response);
-      }
-    });
-  }
-
-  private handleMessage(response: any): void {
-    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
-      if (response.error) {
-        this.snackbar.open(response.error, closeText, {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: 'snack-danger'
-        });
-      } else {
-        this.snackbar.open(response.message, closeText, {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'snack-success'
-        });
-        this.redirectService.redirect('/cabinet/users', 2000);
+    this.actions$.pipe(takeUntil(this.unsubscribe$)).subscribe((action) => {
+      if (this.notificationService.isInitialized(action.apiMessage)) {
+        this.notificationService.handleMessage(action.apiMessage, action.typeMessage, '/cabinet/users');
       }
     });
   }

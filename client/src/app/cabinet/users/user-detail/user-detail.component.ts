@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store/core.state';
-import { deleteUser, selectApiMessageItem, selectMenuItem } from '../../../store/users';
+import { deleteUser, selectApiMessageItem, selectUserItem } from '../../../store/users';
 import { User } from '../../../models/cabinet/users/user';
 import { UserDetailDto } from '../../../models/cabinet/users/dtos/user/user-detail-dto';
 
@@ -41,7 +41,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   public getUser(): void {
-    this.store.select(selectMenuItem({id: this.id})).pipe(takeUntil(this.unsubscribe$)).subscribe((response: User | undefined) => {
+    this.store.select(selectUserItem({id: this.id})).pipe(takeUntil(this.unsubscribe$)).subscribe((response: User | undefined) => {
       this.user = response as UserDetailDto;
     });
   }

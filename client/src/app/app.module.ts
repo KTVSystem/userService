@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RedirectService } from './services/cabinet/shared/redirect/redirect.service';
+import { NotificationService } from './services/cabinet/shared/notification/notification.service';
 import {
   FacebookLoginProvider,
   GoogleLoginProvider,
@@ -30,6 +31,7 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { UsersEffects } from './store/users/';
+
 
 
 @NgModule({
@@ -66,6 +68,7 @@ import { UsersEffects } from './store/users/';
     PermissionService,
     RolesService,
     RedirectService,
+    NotificationService,
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {

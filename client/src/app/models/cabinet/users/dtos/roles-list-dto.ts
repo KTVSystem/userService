@@ -1,4 +1,4 @@
 export interface RolesListDto {
-  id: string,
-  name: string
+  _id: string,
+  name: string,
 }

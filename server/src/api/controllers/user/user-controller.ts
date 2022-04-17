@@ -21,7 +21,7 @@ export const getUser = async (id: string, lang: string): Promise<User> => {
 
 export const createUser = async (userDto: UserCreateDto, lang: string): Promise<User> => {
     const passwordHash = await PasswordService.hashPassword(userDto.password);
-    const role = await findRoleByName(userDto.role, lang);
+    const role = await findRoleByName(userDto.role.name, lang);
     return await UserModel.create({
         email: userDto.email,
         password: passwordHash,
@@ -34,7 +34,7 @@ export const createUser = async (userDto: UserCreateDto, lang: string): Promise<
 
 export const editUser = async (id: string, userDto: UserEditDto, lang: string): Promise<User> => {
     const user = await findUserById(id);
-    const role = await findRoleByName(userDto.role, lang);
+    const role = await findRoleByName(userDto.role.name, lang);
     user.email = userDto.email;
     user.status = userDto.status;
     user.role = role;

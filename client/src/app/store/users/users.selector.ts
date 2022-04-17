@@ -10,7 +10,7 @@ export const selectUserItems = createSelector(
   fromUsers.getUsersReducer
 );
 
-export const selectMenuItem = (props: { id: string }) =>
+export const selectUserItem = (props: { id: string }) =>
   createSelector(selectUserItems, (users) =>
     users.users.find((user: User) => user._id === props.id)
   );

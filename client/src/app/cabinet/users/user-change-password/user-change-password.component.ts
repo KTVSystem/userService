@@ -4,10 +4,12 @@ import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationEr
 import { ActivatedRoute } from '@angular/router';
 import { UserChangePasswordDto } from '../../../models/cabinet/users/dtos/user/user-change-password-dto';
 import { Observable, of, Subject } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
-import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../store/core.state';
+import { Actions } from '@ngrx/effects';
+import { NotificationService } from '../../../services/cabinet/shared/notification/notification.service';
+import { changePasswordUser } from '../../../store/users';
 
 
 @Component({
@@ -27,9 +29,9 @@ export class UserChangePasswordComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
-    private snackbar: MatSnackBar,
-    private redirectService: RedirectService,
-    private translateService: TranslateService
+    private store: Store<fromRoot.State>,
+    private actions$: Actions<any>,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -40,8 +42,11 @@ export class UserChangePasswordComponent implements OnInit, OnDestroy {
     const password: UserChangePasswordDto = {
       password: this.changePasswordUserForm.value.password
     }
-    this.userService.changePasswordUser(this.id, password).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
-      this.handleMessage(response);
+    this.store.dispatch(changePasswordUser({ id: this.id, password: password }));
+    this.actions$.pipe(takeUntil(this.unsubscribe$)).subscribe((action) => {
+      if (this.notificationService.isInitialized(action.apiMessage)) {
+        this.notificationService.handleMessage(action.apiMessage, action.typeMessage, '/cabinet/users');
+      }
     });
   }
 
@@ -52,25 +57,6 @@ export class UserChangePasswordComponent implements OnInit, OnDestroy {
       }
       return of(null);
     };
-  }
-
-  private handleMessage(response: any): void {
-    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
-      if (response.error) {
-        this.snackbar.open(response.error, closeText, {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: 'snack-danger'
-        });
-      } else {
-        this.snackbar.open(response.message, closeText, {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'snack-success'
-        });
-        this.redirectService.redirect('/cabinet/users', 2000);
-      }
-    });
   }
 
   ngOnDestroy() {

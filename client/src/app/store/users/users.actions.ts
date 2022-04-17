@@ -1,6 +1,8 @@
 import { Action, createAction, props } from '@ngrx/store';
 import { User } from '../../models/cabinet/users/user';
-import {UserCreateDto} from '../../models/cabinet/users/dtos/user/user-create-dto';
+import { UserCreateDto } from '../../models/cabinet/users/dtos/user/user-create-dto';
+import { UserEditDto } from '../../models/cabinet/users/dtos/user/user-edit-dto';
+import { UserChangePasswordDto } from '../../models/cabinet/users/dtos/user/user-change-password-dto';
 
 export enum UsersActionTypes {
   GET_USERS = '[User] Get Users',
@@ -12,6 +14,12 @@ export enum UsersActionTypes {
   ADD_USER = '[User] Add User',
   ADD_USER_SUCCESS = '[User] Add User Success',
   ADD_USER_FAILURE = '[User] Add User Failure',
+  EDIT_USER = '[User] Edit User',
+  EDIT_USER_SUCCESS = '[User] Edit User Success',
+  EDIT_USER_FAILURE = '[User] Edit User Failure',
+  CHANGE_PASSWORD_USER = '[User] Change User',
+  CHANGE_PASSWORD_USER_SUCCESS = '[User] Change User Success',
+  CHANGE_PASSWORD_USER_FAILURE = '[User] Change User Failure',
 }
 
 // Get
@@ -30,9 +38,8 @@ export const getUsersSuccess = createAction(
 
 export const getUsersFailed = createAction(
   UsersActionTypes.GET_USERS_FAILURE,
-  props<{ error: any }>()
+  props<{ error: string }>()
 );
-
 
 // Create
 export const addUser = createAction(
@@ -42,14 +49,45 @@ export const addUser = createAction(
 
 export const addUserSuccess = createAction(
   UsersActionTypes.ADD_USER_SUCCESS,
-  props<{ apiMessage: string }>()
+  props<{ user: UserCreateDto, apiMessage: string, typeMessage: string }>()
 );
 
 export const addUserFailed = createAction(
   UsersActionTypes.ADD_USER_FAILURE,
-  props<{ error: any }>()
+  props<{ apiMessage: string, typeMessage: string }>()
 );
 
+// Edit
+export const editUser = createAction(
+  UsersActionTypes.EDIT_USER,
+  props<{ id: string, user: UserEditDto }>()
+);
+
+export const editUserSuccess = createAction(
+  UsersActionTypes.EDIT_USER_SUCCESS,
+  props<{ id: string, user: UserEditDto, apiMessage: string, typeMessage: string }>()
+);
+
+export const editUserFailed = createAction(
+  UsersActionTypes.EDIT_USER_FAILURE,
+  props<{ apiMessage: string, typeMessage: string }>()
+);
+
+// Change Password
+export const changePasswordUser = createAction(
+  UsersActionTypes.CHANGE_PASSWORD_USER,
+  props<{ id: string, password: UserChangePasswordDto }>()
+);
+
+export const changePasswordUserSuccess = createAction(
+  UsersActionTypes.CHANGE_PASSWORD_USER_SUCCESS,
+  props<{ id: string, user: User, apiMessage: string, typeMessage: string }>()
+);
+
+export const changePasswordUserFailed = createAction(
+  UsersActionTypes.CHANGE_PASSWORD_USER_FAILURE,
+  props<{ apiMessage: string, typeMessage: string }>()
+);
 
 // Delete
 export const deleteUser = createAction(
