@@ -14,7 +14,6 @@ import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../store/core.state';
 import { selectUserItems } from '../../store/users';
-import * as fromUser from '../../store/users/users.actions';
 
 @Component({
   selector: 'app-users',
@@ -26,9 +25,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   public roles: Array<RolesListDto>;
   public statuses: Array<Status>;
   public usersFilterForm = new FormGroup({
-    email: new FormControl(''),
-    role: new FormControl('0'),
-    status: new FormControl('0'),
+    email: new FormControl(null),
+    role: new FormControl(null),
+    status: new FormControl(null),
   });
   displayedColumns: string[] = ['email', 'role', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -47,22 +46,36 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.roles = response;
     });
     this.statuses = statuses;
+    this.filterForm();
+
+  }
+
+  private filterForm(): void {
+    this.usersFilterForm.valueChanges.subscribe((form) => {
+      const filteredUsers = this.users.filter((user) => {
+        return (form.email ? user.email.includes(form.email) : true)
+          && (form.role ? user.role.name === form.role : true)
+          && (form.status ? user.status === form.status : true);
+      });
+      this.setPaginationSource(filteredUsers);
+    });
   }
 
   private getUsers(): void {
     this.store.select(selectUserItems).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.users = response.users;
-      this.paginationService.dataSource = new MatTableDataSource<any>(response.users);
-      this.paginationService.dataSource.paginator = this.paginator;
-      this.paginationService.iterator(this.users);
+      this.setPaginationSource(response.users);
     });
   }
 
-  public onSubmit(): void {
-    this.getUsers();
+  public setPaginationSource(users: User[]): void {
+    this.paginationService.dataSource = new MatTableDataSource<any>(users);
+    this.paginationService.dataSource.paginator = this.paginator;
+    this.paginationService.iterator(users);
   }
 
   public clearFilters(): void {
+    this.usersFilterForm.reset();
     this.getUsers();
   }
 
