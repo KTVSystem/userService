@@ -47,24 +47,23 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
     this.statuses = statuses;
     this.filterForm();
-
-  }
-
-  private filterForm(): void {
-    this.usersFilterForm.valueChanges.subscribe((form) => {
-      const filteredUsers = this.users.filter((user) => {
-        return (form.email ? user.email.includes(form.email) : true)
-          && (form.role ? user.role.name === form.role : true)
-          && (form.status ? user.status === form.status : true);
-      });
-      this.setPaginationSource(filteredUsers);
-    });
   }
 
   private getUsers(): void {
     this.store.select(selectUserItems).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.users = response.users;
       this.setPaginationSource(response.users);
+    });
+  }
+
+  private filterForm(): void {
+    this.usersFilterForm.valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((form) => {
+      const filteredUsers = this.users.filter((user) => {
+        return (form.email ? user.email.includes(form.email) : true)
+          && (form.role ? user.role.name === form.role : true)
+          && (form.status ? user.status === form.status : true);
+      });
+      this.setPaginationSource(filteredUsers);
     });
   }
 

@@ -1,17 +1,9 @@
-import {
-    allByQuery, allByQueryFilter,
-    findPermissionById,
-    removePermissionById
-} from '../../repositories/user/permission-repository';
+import { allByQuery, findPermissionById, removePermissionById } from '../../repositories/user/permission-repository';
 import { Permission } from '../../interfaces/user/permission';
 import { PermissionDto } from '../../interfaces/user/dtos/permission/permission-dto';
 import { PermissionModel } from '../../models/user/permission-model';
 
-export const getPermissions = async (params: any) => {
-    return await allByQueryFilter(params);
-}
-
-export const getPermissionsAll = async () => {
+export const getPermissions = async () => {
     return await allByQuery();
 }
 

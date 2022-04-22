@@ -1,18 +1,6 @@
 import { PermissionModel } from '../../models/user/permission-model';
 import { translate } from '../../services/translate/translateService';
 
-export const allByQueryFilter = async (params: any) => {
-    const {name, status} = params;
-    const query = PermissionModel.find({});
-    if (typeof name !== 'undefined') {
-        query.find({name: { $regex: '.*' + name + '.*' } });
-    }
-    if (typeof status !== 'undefined') {
-        query.find({ status });
-    }
-    return query;
-}
-
 export const allByQuery = async () => {
     return PermissionModel.find({});
 }

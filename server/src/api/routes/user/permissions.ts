@@ -5,22 +5,9 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const permissions = await PermissionController.getPermissions(req.query);
+        const permissions = await PermissionController.getPermissions();
         res.status(200).json({
             permissions
-        });
-    } catch (error) {
-        res.status(400).json({
-            error: error.message,
-        });
-    }
-});
-
-router.get('/all', async (req, res) => {
-    try {
-        const permissions = await PermissionController.getPermissionsAll();
-        res.status(200).json({
-            permissions,
         });
     } catch (error) {
         res.status(400).json({

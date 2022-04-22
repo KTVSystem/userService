@@ -31,6 +31,7 @@ import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { UsersEffects } from './store/users/';
+import { PermissionsEffects } from './store/permissions';
 
 
 
@@ -59,7 +60,7 @@ import { UsersEffects } from './store/users/';
       maxAge: 25,
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot([UsersEffects]),
+    EffectsModule.forRoot([UsersEffects, PermissionsEffects]),
   ],
   providers: [
     LoginService,

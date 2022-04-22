@@ -9,6 +9,10 @@ import { RedirectService } from '../../../services/cabinet/shared/redirect/redir
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../store/core.state';
+import { deletePermission, selectPermissionItem, selectApiMessageItem } from '../../../store/permissions';
+import { PermissionDetailDto } from '../../../models/cabinet/users/dtos/permission/permission-detail-dto';
 
 @Component({
   selector: 'app-permission-detail',
@@ -16,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./permission-detail.component.scss']
 })
 export class PermissionDetailComponent implements OnInit, OnDestroy {
-  public permission: Permission;
+  public permission: PermissionDetailDto;
   private message: string  = 'Are you sure you want to delete this permission?';
   public unsubscribe$ = new Subject();
 
@@ -27,17 +31,18 @@ export class PermissionDetailComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackbar: MatSnackBar,
     private redirectService: RedirectService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private store: Store<fromRoot.State>,
   ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
-    this.permissionService.getPermissionById(id).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
-      this.permission = response.permission;
+    this.store.select(selectPermissionItem({id: id})).pipe(takeUntil(this.unsubscribe$)).subscribe((response: Permission | undefined) => {
+      this.permission = response as PermissionDetailDto;
     });
   }
 
-  public removePermission(id: number): void {
+  public removePermission(id: string): void {
     const dialogRef = this.dialog.open(WarningConfirmationComponent, {
       width: '400px',
       height: '200px',
@@ -45,9 +50,10 @@ export class PermissionDetailComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((dialogResult) => {
       if (dialogResult) {
-        this.permissionService.removePermission(id).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+        this.store.dispatch(deletePermission({ permissionId: id }));
+        this.store.select(selectApiMessageItem).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
           this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
-            this.snackbar.open(response.message, closeText, {
+            this.snackbar.open(response.apiMessage, closeText, {
               duration: 2000,
               verticalPosition: 'top'
             });

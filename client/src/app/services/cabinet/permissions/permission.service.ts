@@ -17,14 +17,8 @@ export class PermissionService {
     this.baseUrl = 'http://localhost:9999/permissions/';
   }
 
-  public getPermissions(filterString?: string): Observable<any> {
-    const url = (filterString) ? (this.baseUrl + filterString) : this.baseUrl;
-    return this.http.get(url)
-      .pipe(catchError(this.error));
-  }
-
-  public getPermissionsAll(): Observable<any> {
-    return this.http.get(this.baseUrl + 'all')
+  public getPermissions(): Observable<any> {
+    return this.http.get(this.baseUrl)
       .pipe(catchError(this.error));
   }
 
