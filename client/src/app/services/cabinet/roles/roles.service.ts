@@ -17,9 +17,8 @@ export class RolesService {
     this.baseUrl = 'http://localhost:9999/roles/';
   }
 
-  public getRoles(filterString?: string): Observable<any> {
-    const url = (filterString) ? (this.baseUrl + filterString) : this.baseUrl;
-    return this.http.get(url)
+  public getRoles(): Observable<any> {
+    return this.http.get(this.baseUrl)
       .pipe(catchError(this.error));
   }
 
@@ -28,7 +27,7 @@ export class RolesService {
       .pipe(map((res: any) => res.roles.filter((item: Role) => item.status === 'active')));
   }
 
-  public getRoleById(id: number): Observable<any> {
+  public getRoleById(id: string): Observable<any> {
     return this.http.get(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`)
       .pipe(catchError(this.error));
   }
@@ -38,12 +37,12 @@ export class RolesService {
       .pipe(catchError(this.error));
   }
 
-  public editRole(id: number, role: RoleCreateDto): Observable<any> {
+  public editRole(id: string, role: RoleCreateDto): Observable<any> {
     return this.http.put(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`, role)
       .pipe(catchError(this.error));
   }
 
-  public removeRole(id: number): Observable<any> {
+  public removeRole(id: string): Observable<any> {
     return this.http.delete(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`)
       .pipe(catchError(this.error));
   }

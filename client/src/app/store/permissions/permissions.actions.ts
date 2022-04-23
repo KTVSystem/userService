@@ -6,9 +6,9 @@ export enum PermissionActionTypes {
   GET_PERMISSIONS = '[Permission] Get Permissions',
   GET_PERMISSIONS_SUCCESS = '[Permission] Get Permissions Success',
   GET_PERMISSIONS_FAILURE = '[Permission] Get Permissions Failure',
-  CREATE_PERMISSIONS = '[Permission] Add Permission',
-  CREATE_PERMISSIONS_SUCCESS = '[Permission] Add Permission Success',
-  CREATE_PERMISSIONS_FAILURE = '[Permission] Add Permission Failure',
+  CREATE_PERMISSIONS = '[Permission] Create Permission',
+  CREATE_PERMISSIONS_SUCCESS = '[Permission] Create Permission Success',
+  CREATE_PERMISSIONS_FAILURE = '[Permission] Create Permission Failure',
   EDIT_PERMISSIONS = '[Permission] Edit Permission',
   EDIT_PERMISSIONS_SUCCESS = '[Permission] Edit Permission Success',
   EDIT_PERMISSIONS_FAILURE = '[Permission] Edit Permission Failure',
@@ -18,7 +18,7 @@ export enum PermissionActionTypes {
 }
 
 // GET
-export class LoadPermission implements Action {
+export class LoadPermissions implements Action {
   readonly type = PermissionActionTypes.GET_PERMISSIONS;
 }
 

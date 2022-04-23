@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store/core.state';
-import { addUser } from '../../../store/users';
+import { createUser } from '../../../store/users';
 import { Actions } from '@ngrx/effects';
 import { NotificationService } from '../../../services/cabinet/shared/notification/notification.service';
 
@@ -57,7 +57,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       role: (this.createUserForm.value.role === '0') ? this.roles[0] : this.createUserForm.value.role,
       status: (this.createUserForm.value.status === '0') ? this.statuses[0].key : this.createUserForm.value.status
     };
-    this.store.dispatch(addUser({ user: user }));
+    this.store.dispatch(createUser({ user: user }));
     this.actions$.pipe(takeUntil(this.unsubscribe$)).subscribe((action) => {
       if (this.notificationService.isInitialized(action.apiMessage)) {
         this.notificationService.handleMessage(action.apiMessage, action.typeMessage, '/cabinet/users');

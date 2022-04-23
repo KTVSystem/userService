@@ -6,6 +6,7 @@ import { UserService } from '../../services/cabinet/users/user.servise';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 
+
 @Injectable()
 export class UsersEffects {
   constructor(private actions$: Actions<any>, private userService: UserService) {}
@@ -24,14 +25,14 @@ export class UsersEffects {
 
   addUser$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(UsersActions.UsersActionTypes.ADD_USER),
+      ofType(UsersActions.UsersActionTypes.CREATE_USER),
       switchMap((action) =>
         this.userService.createUser(action.user).pipe(
           map((response) => {
             if (response.error) {
-              return UsersActions.addUserFailed({ apiMessage: response.error, typeMessage: 'error' });
+              return UsersActions.createUserFailed({ apiMessage: response.error, typeMessage: 'error' });
             } else {
-              return UsersActions.addUserSuccess({user: response.user, apiMessage: response.message, typeMessage: 'success'});
+              return UsersActions.createUserSuccess({user: response.user, apiMessage: response.message, typeMessage: 'success'});
             }
           }),
         )

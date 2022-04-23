@@ -4,8 +4,8 @@ import { Role } from '../../interfaces/user/role';
 import { RoleDto } from '../../interfaces/user/dtos/role/role-dto';
 import { RoleModel } from '../../models/user/role-model';
 
-export const getRoles = async (params: any) => {
-    return await allByQuery(params);
+export const getRoles = async () => {
+    return await allByQuery();
 }
 
 export const getPermission = async (id: string, lang: string): Promise<Role> => {

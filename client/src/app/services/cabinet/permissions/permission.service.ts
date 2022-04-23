@@ -27,7 +27,7 @@ export class PermissionService {
       .pipe(map((res: any) => res.permissions.filter((item: Permission) => item.status === 'active')));
   }
 
-  public getPermissionById(id: number): Observable<any> {
+  public getPermissionById(id: string): Observable<any> {
     return this.http.get(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`)
       .pipe(catchError(this.error));
   }
@@ -37,12 +37,12 @@ export class PermissionService {
       .pipe(catchError(this.error));
   }
 
-  public editPermission(id: number, permission: PermissionCreateDto): Observable<any> {
+  public editPermission(id: string, permission: PermissionCreateDto): Observable<any> {
     return this.http.put(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`, permission)
       .pipe(catchError(this.error));
   }
 
-  public removePermission(id: number): Observable<any> {
+  public removePermission(id: string): Observable<any> {
     return this.http.delete(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`)
       .pipe(catchError(this.error));
   }

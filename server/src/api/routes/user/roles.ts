@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const roles = await RoleController.getRoles(req.query);
+        const roles = await RoleController.getRoles();
         res.status(200).json({
             roles,
         });

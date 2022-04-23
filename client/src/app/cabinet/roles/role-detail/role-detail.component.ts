@@ -9,6 +9,11 @@ import { RedirectService } from '../../../services/cabinet/shared/redirect/redir
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { selectRoleItem } from '../../../store/roles';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../store/core.state';
+import { removeRole, selectApiMessageItem } from '../../../store/roles';
+import { RoleDetailDto } from '../../../models/cabinet/users/dtos/role/role-detail-dto';
 
 @Component({
   selector: 'app-role-detail',
@@ -16,7 +21,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./role-detail.component.scss']
 })
 export class RoleDetailComponent implements OnInit, OnDestroy {
-  public role: Role;
+  public role: RoleDetailDto | undefined;
   private message: string  = 'Are you sure you want to delete this role?';
   public unsubscribe$ = new Subject();
 
@@ -27,17 +32,18 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackbar: MatSnackBar,
     private redirectService: RedirectService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private store: Store<fromRoot.State>,
   ) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
-    this.rolesService.getRoleById(id).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
-      this.role = response.role;
+    this.store.select(selectRoleItem({id: id})).pipe(takeUntil(this.unsubscribe$)).subscribe((response: Role | undefined) => {
+      this.role = response as RoleDetailDto;
     });
   }
 
-  public removeRole(id: number): void {
+  public removeRole(id: string): void {
     const dialogRef = this.dialog.open(WarningConfirmationComponent, {
       width: '400px',
       height: '200px',
@@ -45,9 +51,10 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((dialogResult) => {
       if (dialogResult) {
-        this.rolesService.removeRole(id).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+        this.store.dispatch(removeRole({ roleId: id }));
+        this.store.select(selectApiMessageItem).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
           this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
-            this.snackbar.open(response.message, closeText, {
+            this.snackbar.open(response.apiMessage, closeText, {
               duration: 2000,
               verticalPosition: 'top'
             });

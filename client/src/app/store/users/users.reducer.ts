@@ -10,7 +10,7 @@ const usersReducer = createReducer(
     ...state,
     users: users,
   })),
-  on(UserActions.addUserSuccess, (state, { user, apiMessage }) => {
+  on(UserActions.createUserSuccess, (state, { user, apiMessage }) => {
     const updatedUsers = [...state.users];
     updatedUsers.push(user);
     return {

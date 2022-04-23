@@ -22,7 +22,7 @@ export class PermissionsEffects {
     )
   );
 
-  addPermission$ = createEffect(() =>
+  createPermission$ = createEffect(() =>
     this.actions$.pipe(
       ofType(PermissionsActions.PermissionActionTypes.CREATE_PERMISSIONS),
       switchMap((action) =>

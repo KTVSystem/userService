@@ -8,18 +8,18 @@ export enum UsersActionTypes {
   GET_USERS = '[User] Get Users',
   GET_USERS_SUCCESS = '[User] Get Users Success',
   GET_USERS_FAILURE = '[User] Get Users Failure',
-  REMOVE_USER = '[User] Remove User',
-  REMOVE_USER_SUCCESS = '[User] Remove User Success',
-  REMOVE_USER_FAILURE = '[User] Remove User Failure',
-  ADD_USER = '[User] Add User',
-  ADD_USER_SUCCESS = '[User] Add User Success',
-  ADD_USER_FAILURE = '[User] Add User Failure',
+  CREATE_USER = '[User] Create User',
+  CREATE_USER_SUCCESS = '[User] Create User Success',
+  CREATE_USER_FAILURE = '[User] Create User Failure',
   EDIT_USER = '[User] Edit User',
   EDIT_USER_SUCCESS = '[User] Edit User Success',
   EDIT_USER_FAILURE = '[User] Edit User Failure',
   CHANGE_PASSWORD_USER = '[User] Change User',
   CHANGE_PASSWORD_USER_SUCCESS = '[User] Change User Success',
   CHANGE_PASSWORD_USER_FAILURE = '[User] Change User Failure',
+  REMOVE_USER = '[User] Remove User',
+  REMOVE_USER_SUCCESS = '[User] Remove User Success',
+  REMOVE_USER_FAILURE = '[User] Remove User Failure',
 }
 
 // Get
@@ -42,18 +42,18 @@ export const getUsersFailed = createAction(
 );
 
 // Create
-export const addUser = createAction(
-  UsersActionTypes.ADD_USER,
+export const createUser = createAction(
+  UsersActionTypes.CREATE_USER,
   props<{ user: UserCreateDto }>()
 );
 
-export const addUserSuccess = createAction(
-  UsersActionTypes.ADD_USER_SUCCESS,
+export const createUserSuccess = createAction(
+  UsersActionTypes.CREATE_USER_SUCCESS,
   props<{ user: UserCreateDto, apiMessage: string, typeMessage: string }>()
 );
 
-export const addUserFailed = createAction(
-  UsersActionTypes.ADD_USER_FAILURE,
+export const createUserFailed = createAction(
+  UsersActionTypes.CREATE_USER_FAILURE,
   props<{ apiMessage: string, typeMessage: string }>()
 );
 

@@ -50,11 +50,11 @@ export class PermissionsComponent implements OnInit, OnDestroy {
 
   private filterForm(): void {
     this.permissionsFilterForm.valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((form) => {
-      const filteredUsers = this.permissions.filter((permission) => {
+      const filteredPermissions = this.permissions.filter((permission) => {
         return (form.name ? permission.name.includes(form.name) : true)
           && (form.status ? permission.status === form.status : true);
       });
-      this.setPaginationSource(filteredUsers);
+      this.setPaginationSource(filteredPermissions);
     });
   }
 
