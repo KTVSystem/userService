@@ -33,18 +33,6 @@ describe('Test Permission Controller', () => {
         expect(JSON.parse(response.res.text).permissions.length > 0).toBeTruthy();
     });
 
-    it('Get permissions all', async () => {
-        await buildPermission();
-        const token = await getToken();
-        const response = await agent.get('/permissions/all')
-            .set('Authorization', `Bearer ${token}`)
-            .send();
-
-        expect(response.status).toBe(200);
-        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permissions')).toBeTruthy();
-        expect(JSON.parse(response.res.text).permissions.length > 0).toBeTruthy();
-    });
-
     it('Get permission by id', async () => {
         const permission = await buildPermission();
         const token = await getToken();

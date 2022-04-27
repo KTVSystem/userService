@@ -13,6 +13,7 @@ import * as fromRoot from '../../../store/core.state';
 import { createUser } from '../../../store/users';
 import { Actions } from '@ngrx/effects';
 import { NotificationService } from '../../../services/cabinet/shared/notification/notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     private rolesService: RolesService,
     private store: Store<fromRoot.State>,
     private actions$: Actions<any>,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit(): void {
@@ -57,7 +59,10 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       role: (this.createUserForm.value.role === '0') ? this.roles[0] : this.createUserForm.value.role,
       status: (this.createUserForm.value.status === '0') ? this.statuses[0].key : this.createUserForm.value.status
     };
-    this.store.dispatch(createUser({ user: user }));
+    this.translateService.get('createdUserSuccess').pipe(takeUntil(this.unsubscribe$)).subscribe((text) => {
+      this.store.dispatch(createUser({ user: user, apiMessage:  text }));
+    });
+
     this.actions$.pipe(takeUntil(this.unsubscribe$)).subscribe((action) => {
       if (this.notificationService.isInitialized(action.apiMessage)) {
         this.notificationService.handleMessage(action.apiMessage, action.typeMessage, '/cabinet/users');

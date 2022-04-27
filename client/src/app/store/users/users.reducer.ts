@@ -45,6 +45,13 @@ const usersReducer = createReducer(
       apiMessage: apiMessage
     };
   }),
+  on(UserActions.unbindSocialUserSuccess, (state, { apiMessage }) => {
+    return {
+      ...state,
+      users: state.users,
+      apiMessage: apiMessage
+    };
+  }),
   on(UserActions.deleteUserSuccess, (state, { userId, apiMessage }) => {
     const userItemIndex = state.users.findIndex(
       (item) => item._id === userId

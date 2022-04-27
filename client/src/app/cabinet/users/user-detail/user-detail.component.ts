@@ -10,9 +10,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../../store/core.state';
-import { deleteUser, selectApiMessageItem, selectUserItem } from '../../../store/users';
+import { deleteUser, selectApiMessageItem, selectUserItem, unbindSocialUser } from '../../../store/users';
 import { User } from '../../../models/cabinet/users/user';
 import { UserDetailDto } from '../../../models/cabinet/users/dtos/user/user-detail-dto';
+import * as fromUser from '../../../store/users/users.actions';
 
 @Component({
   selector: 'app-user-detail',
@@ -54,7 +55,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((dialogResult) => {
       if (dialogResult) {
-        this.store.dispatch(deleteUser({ userId: id }));
+        this.translateService.get('removedUserSuccess').pipe(takeUntil(this.unsubscribe$)).subscribe((text) => {
+          this.store.dispatch(deleteUser({ userId: id, apiMessage: text }));
+        });
         this.store.select(selectApiMessageItem).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
           this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
             this.snackbar.open(response.apiMessage, closeText, {
@@ -76,9 +79,12 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe$)).subscribe((dialogResult) => {
       if (dialogResult) {
-        this.userService.unbindSocial(id, socialId).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+        this.translateService.get('unbindUserSocialSuccess').pipe(takeUntil(this.unsubscribe$)).subscribe((text) => {
+          this.store.dispatch(unbindSocialUser({ id: id, socialId: socialId, apiMessage: text}));
+        });
+        this.store.select(selectApiMessageItem).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
           this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
-            this.snackbar.open(response.message, closeText, {
+            this.snackbar.open(response.apiMessage, closeText, {
               duration: 2000,
               verticalPosition: 'top'
             });
@@ -89,6 +95,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             this.getUser();
           }
         });
+        this.store.dispatch(new fromUser.LoadUsers());
       }
     });
   }

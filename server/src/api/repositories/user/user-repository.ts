@@ -1,5 +1,4 @@
 import { UserModel } from '../../models/user/user-model';
-import { translate } from '../../services/translate/translateService';
 import { blockAccountTime } from '../../../config/settings';
 
 export const findUserByEmail = async (email: string) => {
@@ -20,13 +19,13 @@ export const allByQuery = async () => {
     return UserModel.find({}).populate('role').populate('token').populate('socials');
 }
 
-export const findUserById = async (id: string, lang?: string) => {
+export const findUserById = async (id: string) => {
     const user = (await UserModel.find({ _id: id }).populate('role').populate('token').populate('socials')
         .limit(1))[0];
     if (typeof user !== 'undefined') {
         return user;
     }
-    throw new Error(await translate(lang, 'userNotExist'));
+    throw new Error('User doesn\'t exist');
 }
 
 export const removeUserById = async (id: string) => {

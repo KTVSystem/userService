@@ -31,7 +31,8 @@ export class PermissionsEffects {
             if (response.error) {
               return PermissionsActions.createPermissionFailed({apiMessage: response.error, typeMessage: 'error' });
             } else {
-              return PermissionsActions.createPermissionSuccess({permission: response.permission, apiMessage: response.message, typeMessage: 'success'});
+              return PermissionsActions.createPermissionSuccess({permission: response.permission,
+                apiMessage: 'Permission was created', typeMessage: 'success'});
             }
           }),
         )
@@ -48,7 +49,8 @@ export class PermissionsEffects {
             if (response.error) {
               return PermissionsActions.editPermissionFailed({ apiMessage: response.error, typeMessage: 'error' });
             } else {
-              return PermissionsActions.editPermissionSuccess({permissionId: action.id, permission: response.permission, apiMessage: response.message, typeMessage: 'success'});
+              return PermissionsActions.editPermissionSuccess({permissionId: action.id, permission: response.permission,
+                apiMessage: 'Permission was edited', typeMessage: 'success'});
             }
           }),
         )
@@ -61,7 +63,8 @@ export class PermissionsEffects {
       ofType(PermissionsActions.PermissionActionTypes.REMOVE_PERMISSIONS),
       switchMap((action) =>
         this.permissionService.removePermission(action.permissionId).pipe(
-          map((apiMessage) => PermissionsActions.deletePermissionSuccess({ permissionId: action.permissionId, apiMessage: apiMessage.message })),
+          map((apiMessage) => PermissionsActions.deletePermissionSuccess({ permissionId: action.permissionId,
+            apiMessage: 'Permission was removed' })),
           catchError((error) => of(PermissionsActions.deletePermissionFailed({ error: error })))
         )
       )

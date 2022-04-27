@@ -37,5 +37,11 @@
   "createPermission": "Створити дозвіл",
   "permissionInformation": "Дозвіл детально",
   "editPermission": "Редагувати дозвіл",
-  "close": "Закрити"
+  "close": "Закрити",
+  "createdUserSuccess": "Користувач був створений",
+  "editedUserSuccess": "Користувач був відредагований",
+  "removedUserSuccess": "Користувача було видалено",
+  "changedUserPasswordSuccess": "Змінено пароль",
+  "unbindUserSocialSuccess": "Соціальна мережа відв'язана",
+  "serverError": "Помилка сервера"
 }

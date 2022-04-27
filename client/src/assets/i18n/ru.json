@@ -37,5 +37,11 @@
   "createPermission": "Создать разрешение",
   "permissionInformation": "Разрешение подробно",
   "editPermission": "Редактировать разрешение",
-  "close": "Закрить"
+  "close": "Закрить",
+  "createdUserSuccess": "Пользователь был создан",
+  "editedUserSuccess": "Пользователь был отредактирован",
+  "removedUserSuccess": "Пользователя было удалено",
+  "changedUserPasswordSuccess": "Изменен пароль",
+  "unbindUserSocialSuccess": "Социальная сеть отвязана",
+  "serverError": "Ошибка сервера"
 }

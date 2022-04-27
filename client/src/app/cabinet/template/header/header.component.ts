@@ -1,20 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokenService } from '../../../services/token/token.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
 
   public languageForm = new FormGroup({
-    language: new FormControl(''),
+    language: new FormControl('ua'),
   });
 
   public languages = [
@@ -31,7 +29,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       key: 'en'
     },
   ];
-  public unsubscribe$ = new Subject();
 
   constructor(
     private tokenService: TokenService,
@@ -40,22 +37,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.translateService.setDefaultLang('ua');
-    this.languageForm.patchValue({language: 'ua'});
-    this.languageForm.valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((value) => {
-      this.translateService.use(value.language);
-      this.translateService.setDefaultLang(value.language);
-    });
+    this.languageForm.patchValue({language: this.translateService.getDefaultLang()});
+  }
+
+  public changeLanguage($event: any) {
+    this.translateService.use($event.value);
+    this.translateService.setDefaultLang($event.value);
   }
 
   public logout() {
     this.tokenService.deleteToken();
     this.router.navigate(['/']).then();
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
 }

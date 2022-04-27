@@ -1,6 +1,5 @@
 import express from 'express';
 import * as UserController from '../../controllers/user/user-controller';
-import { translate } from '../../services/translate/translateService';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -18,7 +17,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const user = await UserController.getUser(req.params.id, String(req.query.lang));
+        const user = await UserController.getUser(req.params.id);
         res.status(200).json({
             user
         });
@@ -31,9 +30,9 @@ router.get('/:id', async (req, res) => {
 
 router.get('/:id/unbind-social/:social', async (req, res) => {
     try {
-        const message = await UserController.unbindSocial(req.params.id, req.params.social, String(req.query.lang));
+        const status = await UserController.unbindSocial(req.params.id, req.params.social);
         res.status(200).json({
-            message,
+            status
         });
     } catch (error) {
         res.status(400).json({
@@ -44,11 +43,10 @@ router.get('/:id/unbind-social/:social', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const user = await UserController.createUser(req.body, String(req.query.lang));
-        const message = await translate(String(req.query.lang), 'createdSuccess');
+        const user = await UserController.createUser(req.body);
         res.status(201).json({
             user,
-            message,
+            status: 'ok'
         });
     } catch (error) {
         res.status(400).json({
@@ -59,11 +57,10 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        const user = await UserController.editUser(req.params.id, req.body, String(req.query.lang));
-        const message = await translate(String(req.query.lang), 'updatedSuccess');
+        const user = await UserController.editUser(req.params.id, req.body);
         res.status(200).json({
             user,
-            message,
+            status: 'ok'
         });
     } catch (error) {
         res.status(400).json({
@@ -75,10 +72,9 @@ router.put('/:id', async (req, res) => {
 router.put('/:id/change-password', async (req, res) => {
     try {
         const user = await UserController.changePassword(req.params.id, req.body);
-        const message = await translate(String(req.query.lang), 'passwordChangedSuccess');
         res.status(200).json({
             user,
-            message,
+            status: 'ok'
         });
     } catch (error) {
         res.status(400).json({
@@ -90,9 +86,8 @@ router.put('/:id/change-password', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         await UserController.deleteUser(req.params.id);
-        const message = await translate(String(req.query.lang), 'deletedSuccess');
         res.status(200).json({
-            message,
+            status: 'ok'
         });
     } catch (error) {
         res.status(400).json({

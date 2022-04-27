@@ -37,5 +37,11 @@
   "createPermission": "Create Permission",
   "permissionInformation": "Permission Information",
   "editPermission": "Edit Permission",
-  "close": "Close"
+  "close": "Close",
+  "createdUserSuccess": "User was created",
+  "editedUserSuccess": "User was edited",
+  "removedUserSuccess": "User was removed",
+  "changedUserPasswordSuccess": "Password was changed",
+  "unbindUserSocialSuccess": "Social was unbind",
+  "serverError": "Server Error"
 }

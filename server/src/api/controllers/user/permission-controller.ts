@@ -7,8 +7,8 @@ export const getPermissions = async () => {
     return await allByQuery();
 }
 
-export const getPermission = async (id: string, lang: string): Promise<Permission> => {
-    return await findPermissionById(id, lang);
+export const getPermission = async (id: string): Promise<Permission> => {
+    return await findPermissionById(id);
 }
 
 export const createPermission = async (permissionDto: PermissionDto): Promise<Permission> => {
@@ -20,8 +20,8 @@ export const createPermission = async (permissionDto: PermissionDto): Promise<Pe
     });
 }
 
-export const editPermission = async (id: string, permissionDto: PermissionDto, lang: string): Promise<Permission> => {
-    const permission = await findPermissionById(id, lang);
+export const editPermission = async (id: string, permissionDto: PermissionDto): Promise<Permission> => {
+    const permission = await findPermissionById(id);
     permission.name = permissionDto.name;
     permission.status = permissionDto.status;
     permission.updated = new Date();

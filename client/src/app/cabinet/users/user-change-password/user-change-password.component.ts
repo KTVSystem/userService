@@ -10,6 +10,7 @@ import * as fromRoot from '../../../store/core.state';
 import { Actions } from '@ngrx/effects';
 import { NotificationService } from '../../../services/cabinet/shared/notification/notification.service';
 import { changePasswordUser } from '../../../store/users';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class UserChangePasswordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<fromRoot.State>,
     private actions$: Actions<any>,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +44,9 @@ export class UserChangePasswordComponent implements OnInit, OnDestroy {
     const password: UserChangePasswordDto = {
       password: this.changePasswordUserForm.value.password
     }
-    this.store.dispatch(changePasswordUser({ id: this.id, password: password }));
+    this.translateService.get('changedUserPasswordSuccess').pipe(takeUntil(this.unsubscribe$)).subscribe((text) => {
+      this.store.dispatch(changePasswordUser({ id: this.id, password: password, apiMessage:  text }));
+    });
     this.actions$.pipe(takeUntil(this.unsubscribe$)).subscribe((action) => {
       if (this.notificationService.isInitialized(action.apiMessage)) {
         this.notificationService.handleMessage(action.apiMessage, action.typeMessage, '/cabinet/users');

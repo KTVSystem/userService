@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Login } from '../../models/login/login';
 import { SocialUser } from '../../models/login/social-user';
-import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -14,21 +13,20 @@ export class LoginService {
   private baseUrl: string;
   private headers: HttpHeaders;
 
-  constructor(private http: HttpClient, private translateService: TranslateService) {
+  constructor(private http: HttpClient) {
     this.baseUrl = 'http://localhost:9999/auth/';
     this.headers = new HttpHeaders({'Content-Type': 'application/json'});
   }
 
   public signIn(login: Login): Observable<any> {
-    const defaultLang = (typeof this.translateService.defaultLang !== 'undefined') ? this.translateService.defaultLang : 'ua';
-    return this.http.post(this.baseUrl + 'signin' + `?lang=${defaultLang}`,
+    return this.http.post(this.baseUrl + 'signin',
       {email: login.email, password: login.password, type: 'Admin'},
       { headers: this.headers })
       .pipe(catchError(this.error));
   }
 
   public signInSocial(socialUser: SocialUser): Observable<any> {
-    return this.http.post(this.baseUrl + 'social' + `?lang=${this.translateService.defaultLang}`, {socialUser, type: 'Admin'},
+    return this.http.post(this.baseUrl + 'social', {socialUser, type: 'Admin'},
       { headers: this.headers })
       .pipe(catchError(this.error));
   }
@@ -45,7 +43,7 @@ export class LoginService {
   }
 
   blockUser(): void {
-    const time = new Date().getTime() + 1 * 60000;
+    const time = new Date().getTime() + 5 * 60000;
     localStorage.setItem('block', String(time));
   }
 

@@ -63,14 +63,14 @@ describe('Test User Controller', () => {
     });
 
     it('Create user', async () => {
-        await buildRoleUser();
+        const roleUser = await buildRoleUser();
         const token = await getToken();
         const response = await agent.post('/users?lang=en')
             .set('Authorization', `Bearer ${token}`)
             .send({
                 email: userDtoUser.email,
                 password: userDtoUser.password,
-                role: userDtoUser.role,
+                role: roleUser,
                 status: userDtoUser.status
             });
 
@@ -89,7 +89,7 @@ describe('Test User Controller', () => {
             .send({
                 email: 'edited' + userDtoUser.email,
                 password: userDtoUser.password,
-                role: userDtoUser.role,
+                role: roleUser,
                 status: userDtoUser.status
             });
 

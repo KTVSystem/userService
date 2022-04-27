@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RoleCreateDto } from '../../../models/cabinet/users/dtos/role/role-create-dto';
-import { TranslateService } from '@ngx-translate/core';
 import { Role } from '../../../models/cabinet/users/role';
 
 @Injectable({
@@ -13,7 +12,7 @@ import { Role } from '../../../models/cabinet/users/role';
 export class RolesService {
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private translateService: TranslateService) {
+  constructor(private http: HttpClient) {
     this.baseUrl = 'http://localhost:9999/roles/';
   }
 
@@ -28,22 +27,22 @@ export class RolesService {
   }
 
   public getRoleById(id: string): Observable<any> {
-    return this.http.get(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`)
+    return this.http.get(this.baseUrl + id)
       .pipe(catchError(this.error));
   }
 
   public createRole(role: RoleCreateDto): Observable<any> {
-    return this.http.post(this.baseUrl + `?lang=${this.translateService.defaultLang}`, role)
+    return this.http.post(this.baseUrl, role)
       .pipe(catchError(this.error));
   }
 
   public editRole(id: string, role: RoleCreateDto): Observable<any> {
-    return this.http.put(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`, role)
+    return this.http.put(this.baseUrl + id, role)
       .pipe(catchError(this.error));
   }
 
   public removeRole(id: string): Observable<any> {
-    return this.http.delete(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`)
+    return this.http.delete(this.baseUrl + id)
       .pipe(catchError(this.error));
   }
 

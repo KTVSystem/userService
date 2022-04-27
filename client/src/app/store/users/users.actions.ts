@@ -17,6 +17,9 @@ export enum UsersActionTypes {
   CHANGE_PASSWORD_USER = '[User] Change User',
   CHANGE_PASSWORD_USER_SUCCESS = '[User] Change User Success',
   CHANGE_PASSWORD_USER_FAILURE = '[User] Change User Failure',
+  UNBIND_SOCIAL_USER = '[User] Unbind User',
+  UNBIND_SOCIAL_USER_SUCCESS = '[User] Unbind User Success',
+  UNBIND_SOCIAL_USER_FAILURE = '[User] Unbind User Failure',
   REMOVE_USER = '[User] Remove User',
   REMOVE_USER_SUCCESS = '[User] Remove User Success',
   REMOVE_USER_FAILURE = '[User] Remove User Failure',
@@ -44,7 +47,7 @@ export const getUsersFailed = createAction(
 // Create
 export const createUser = createAction(
   UsersActionTypes.CREATE_USER,
-  props<{ user: UserCreateDto }>()
+  props<{ user: UserCreateDto, apiMessage: string }>()
 );
 
 export const createUserSuccess = createAction(
@@ -60,7 +63,7 @@ export const createUserFailed = createAction(
 // Edit
 export const editUser = createAction(
   UsersActionTypes.EDIT_USER,
-  props<{ id: string, user: UserEditDto }>()
+  props<{ id: string, user: UserEditDto, apiMessage: string }>()
 );
 
 export const editUserSuccess = createAction(
@@ -76,7 +79,7 @@ export const editUserFailed = createAction(
 // Change Password
 export const changePasswordUser = createAction(
   UsersActionTypes.CHANGE_PASSWORD_USER,
-  props<{ id: string, password: UserChangePasswordDto }>()
+  props<{ id: string, password: UserChangePasswordDto, apiMessage: string }>()
 );
 
 export const changePasswordUserSuccess = createAction(
@@ -89,15 +92,31 @@ export const changePasswordUserFailed = createAction(
   props<{ apiMessage: string, typeMessage: string }>()
 );
 
+// Unbind Social
+export const unbindSocialUser = createAction(
+  UsersActionTypes.UNBIND_SOCIAL_USER,
+  props<{ id: string, socialId: string, apiMessage: string }>()
+);
+
+export const unbindSocialUserSuccess = createAction(
+  UsersActionTypes.UNBIND_SOCIAL_USER_SUCCESS,
+  props<{ apiMessage: string, typeMessage: string }>()
+);
+
+export const unbindSocialUserFailed = createAction(
+  UsersActionTypes.UNBIND_SOCIAL_USER_FAILURE,
+  props<{ apiMessage: string, typeMessage: string }>()
+);
+
 // Delete
 export const deleteUser = createAction(
   UsersActionTypes.REMOVE_USER,
-  props<{ userId: string }>()
+  props<{ userId: string, apiMessage: string }>()
 );
 
 export const deleteUserSuccess = createAction(
   UsersActionTypes.REMOVE_USER_SUCCESS,
-  props<{ userId: string, apiMessage: string }>()
+  props<{ userId: string, apiMessage: string, typeMessage: string }>()
 );
 
 export const deleteUserFailed = createAction(
