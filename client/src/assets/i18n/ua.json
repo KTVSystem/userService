@@ -43,5 +43,10 @@
   "removedUserSuccess": "Користувача було видалено",
   "changedUserPasswordSuccess": "Змінено пароль",
   "unbindUserSocialSuccess": "Соціальна мережа відв'язана",
-  "serverError": "Помилка сервера"
+  "serverError": "Помилка сервера",
+  "areYouSureToDelete": "Ви впевнені, що хочете видалаити це",
+  "thisUserContain": " Цей користувач містить соціальні мережі.",
+  "socialConnection": " соціальні мережі?",
+  "userWillBeDeleted": " Користувача буде видалено.",
+  "userPlus": " користувача?"
 }

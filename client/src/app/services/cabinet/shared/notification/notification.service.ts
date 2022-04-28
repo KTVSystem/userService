@@ -21,7 +21,7 @@ export class NotificationService {
     private redirectService: RedirectService,
   ) {}
 
-  public handleMessage(message: any, type: string, redirectLink: string): void {
+  public handleMessage(message: any, type: string, redirectLink: string, redirect = true): void {
     this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
       if (type === 'error') {
         this.snackbar.open(message, closeText, {
@@ -36,7 +36,9 @@ export class NotificationService {
           verticalPosition: this.position,
           panelClass: 'snack-success'
         });
-        this.redirectService.redirect(redirectLink, this.timeDurationSuccess);
+        if (redirect) {
+          this.redirectService.redirect(redirectLink, this.timeDurationSuccess);
+        }
       }
     });
   }

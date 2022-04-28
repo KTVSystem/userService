@@ -94,8 +94,10 @@ export class UsersEffects {
             if (response.error) {
               return UsersActions.unbindSocialUserFailed({ apiMessage: response.error, typeMessage: 'error' });
             } else {
+              console.log(action.apiMessage)
               return UsersActions.unbindSocialUserSuccess({
-                apiMessage:  response.status === 'ok' ? action.apiMessage : 'Server Error',
+                apiMessage:  response.status === 'ok' ? action.apiMessage.unbindUserSocialSuccess :
+                  response.status === 'removed' ? action.apiMessage.removedUserSuccess : 'Server Error',
                 typeMessage: response.status === 'ok' ? 'success' : 'error'
               });
             }

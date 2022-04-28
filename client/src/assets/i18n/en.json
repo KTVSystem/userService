@@ -43,5 +43,10 @@
   "removedUserSuccess": "User was removed",
   "changedUserPasswordSuccess": "Password was changed",
   "unbindUserSocialSuccess": "Social was unbind",
-  "serverError": "Server Error"
+  "serverError": "Server Error",
+  "areYouSureToDelete": "Are you sure you want to delete this",
+  "thisUserContain": " This user contain social connection.",
+  "socialConnection": " social connection?",
+  "userWillBeDeleted": " User will be deleted.",
+  "userPlus": " user?"
 }

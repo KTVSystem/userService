@@ -95,7 +95,7 @@ export const changePasswordUserFailed = createAction(
 // Unbind Social
 export const unbindSocialUser = createAction(
   UsersActionTypes.UNBIND_SOCIAL_USER,
-  props<{ id: string, socialId: string, apiMessage: string }>()
+  props<{ id: string, socialId: string, apiMessage: Array<string> }>()
 );
 
 export const unbindSocialUserSuccess = createAction(
