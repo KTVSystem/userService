@@ -33,18 +33,6 @@ describe('Test Permission Controller', () => {
         expect(JSON.parse(response.res.text).permissions.length > 0).toBeTruthy();
     });
 
-    it('Get permissions all', async () => {
-        await buildPermission();
-        const token = await getToken();
-        const response = await agent.get('/permissions/all')
-            .set('Authorization', `Bearer ${token}`)
-            .send();
-
-        expect(response.status).toBe(200);
-        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permissions')).toBeTruthy();
-        expect(JSON.parse(response.res.text).permissions.length > 0).toBeTruthy();
-    });
-
     it('Get permission by id', async () => {
         const permission = await buildPermission();
         const token = await getToken();
@@ -80,7 +68,7 @@ describe('Test Permission Controller', () => {
 
         expect(response.status).toBe(201);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permission')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Created successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
         expect(JSON.parse(response.res.text).permission.name).toBe(permissionDto.name);
     });
 
@@ -96,7 +84,7 @@ describe('Test Permission Controller', () => {
 
         expect(response.status).toBe(200);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permission')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Updated successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
         expect(JSON.parse(response.res.text).permission.name).toBe(permissionDto.name + 'edited');
     });
 
@@ -108,6 +96,6 @@ describe('Test Permission Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).message).toBe('Deleted successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
     });
 });

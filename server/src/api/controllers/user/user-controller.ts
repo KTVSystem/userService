@@ -9,19 +9,18 @@ import { UserEditDto } from '../../interfaces/user/dtos/user/user-edit-dto';
 import { UserChangePasswordDto } from '../../interfaces/user/dtos/user/user-change-password-dto';
 import { removeSocialById } from '../../repositories/user/social-user-repository';
 import { socialCount } from '../../../config/settings';
-import { translate } from '../../services/translate/translateService';
 
-export const getUsers = async (params: any, lang: string) => {
-    return await allByQuery(params, lang);
+export const getUsers = async () => {
+    return await allByQuery();
 }
 
-export const getUser = async (id: string, lang: string): Promise<User> => {
-    return await findUserById(id, lang);
+export const getUser = async (id: string): Promise<User> => {
+    return await findUserById(id);
 }
 
-export const createUser = async (userDto: UserCreateDto, lang: string): Promise<User> => {
+export const createUser = async (userDto: UserCreateDto): Promise<User> => {
     const passwordHash = await PasswordService.hashPassword(userDto.password);
-    const role = await findRoleByName(userDto.role, lang);
+    const role = await findRoleByName(userDto.role.name);
     return await UserModel.create({
         email: userDto.email,
         password: passwordHash,
@@ -32,9 +31,9 @@ export const createUser = async (userDto: UserCreateDto, lang: string): Promise<
     });
 }
 
-export const editUser = async (id: string, userDto: UserEditDto, lang: string): Promise<User> => {
+export const editUser = async (id: string, userDto: UserEditDto): Promise<User> => {
     const user = await findUserById(id);
-    const role = await findRoleByName(userDto.role, lang);
+    const role = await findRoleByName(userDto.role.name);
     user.email = userDto.email;
     user.status = userDto.status;
     user.role = role;
@@ -51,15 +50,14 @@ export const changePassword = async (id: string, userDto: UserChangePasswordDto)
     return user;
 }
 
-export const unbindSocial = async (id: string, social: string, lang: string): Promise<string> => {
+export const unbindSocial = async (id: string, social: string): Promise<string> => {
     const user = await findUserById(id);
     await removeSocialById(social);
     if (user.socials.length < Number(socialCount)) {
         await removeUserById(id);
-        return await translate(lang, 'deletedSuccess');
-    } else {
-        return await translate(lang, 'socialDeleted');
+        return 'removed';
     }
+    return 'ok';
 };
 
 export const deleteUser = async (id: string): Promise<void> => {

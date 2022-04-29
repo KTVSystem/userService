@@ -9,6 +9,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../store/core.state';
+import { selectRolesItems } from '../../store/roles';
 
 @Component({
   selector: 'app-roles',
@@ -22,49 +25,48 @@ export class RolesComponent implements OnInit, OnDestroy {
     name: new FormControl(''),
     status: new FormControl('0'),
   });
-  public filterQueryString: string = '';
   displayedColumns: string[] = ['name', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public unsubscribe$ = new Subject();
 
-  constructor(public paginationService: PaginationService, private rolesService: RolesService) { }
+  constructor(
+    public paginationService: PaginationService,
+    private rolesService: RolesService,
+    private store: Store<fromRoot.State>,
+  ) { }
 
   ngOnInit(): void {
     this.getRoles();
     this.statuses = statuses;
+    this.filterForm();
   }
 
   private getRoles(): void {
-    this.rolesService.getRoles(this.filterQueryString).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+    this.store.select(selectRolesItems).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.roles = response.roles;
-      this.paginationService.dataSource = new MatTableDataSource<any>(response.roles);
-      this.paginationService.dataSource.paginator = this.paginator;
-      this.paginationService.iterator(this.roles);
+      this.setPaginationSource(response.roles);
     });
   }
 
-  public onSubmit(): void {
-    const name = (this.rolesFilterForm.value.name !== '') ? this.rolesFilterForm.value.name : null;
-    const status = (this.rolesFilterForm.value.status !== '0') ? this.rolesFilterForm.value.status : null;
-    this.filterQueryString = this.createFilterQueryParam(name, status);
-    this.getRoles();
+  private filterForm(): void {
+    this.rolesFilterForm.valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((form) => {
+      const filteredRoles = this.roles.filter((role) => {
+        return (form.name ? role.name.includes(form.name) : true)
+          && (form.status ? role.status === form.status : true);
+      });
+      this.setPaginationSource(filteredRoles);
+    });
+  }
+
+  public setPaginationSource(roles: Role[]): void {
+    this.paginationService.dataSource = new MatTableDataSource<any>(roles);
+    this.paginationService.dataSource.paginator = this.paginator;
+    this.paginationService.iterator(roles);
   }
 
   public clearFilters(): void {
-    this.rolesFilterForm.patchValue({
-      name: '',
-      status: '0'
-    });
+    this.rolesFilterForm.reset();
     this.getRoles();
-  }
-
-  private createFilterQueryParam(name: string, status: string): string {
-    let filterString = '';
-    filterString = (name) ? filterString + 'name=' + name + '&' : filterString;
-    filterString = (status) ? filterString + 'status=' + status + '&' : filterString;
-    filterString = (filterString !== '') ? '?' + filterString : filterString;
-    filterString = (filterString !== '') ? filterString.substr(0, filterString.length - 1) : filterString;
-    return filterString;
   }
 
   ngOnDestroy() {

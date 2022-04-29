@@ -83,8 +83,9 @@ export function httpTranslateLoader(http: HttpClient) {
         provide: TranslateLoader,
         useFactory: httpTranslateLoader,
         deps: [HttpClient]
-      }
-    })
+      },
+      defaultLanguage: 'ua'
+    }),
   ],
   exports: [CabinetComponent],
   providers: [

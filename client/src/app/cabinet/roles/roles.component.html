@@ -1,7 +1,7 @@
 <div class="content-block">
   <h1 class="title">{{ 'filter' | translate }}</h1>
   <div class="filter" fxLayout="row">
-    <form [formGroup]="rolesFilterForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="rolesFilterForm">
       <mat-form-field class="example-full-width" appearance="legacy">
         <mat-label>{{ 'name' | translate }}</mat-label>
         <input type="text" matInput formControlName="name" placeholder="Name">
@@ -13,7 +13,6 @@
           <mat-option *ngFor="let status of statuses" [value]="status.key">{{status.title}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button color="primary">{{ 'filter' | translate }}</button>
       <button mat-raised-button color="warn" (click)="clearFilters()">{{ 'clear' | translate }}</button>
     </form>
   </div>

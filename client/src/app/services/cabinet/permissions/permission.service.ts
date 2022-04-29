@@ -3,7 +3,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { PermissionCreateDto } from '../../../models/cabinet/users/dtos/permission/permission-create-dto';
-import { TranslateService } from '@ngx-translate/core';
 import { Permission } from '../../../models/cabinet/users/permission';
 
 @Injectable({
@@ -13,18 +12,12 @@ import { Permission } from '../../../models/cabinet/users/permission';
 export class PermissionService {
   private baseUrl: string;
 
-  constructor(private http: HttpClient, private translateService: TranslateService) {
+  constructor(private http: HttpClient) {
     this.baseUrl = 'http://localhost:9999/permissions/';
   }
 
-  public getPermissions(filterString?: string): Observable<any> {
-    const url = (filterString) ? (this.baseUrl + filterString) : this.baseUrl;
-    return this.http.get(url)
-      .pipe(catchError(this.error));
-  }
-
-  public getPermissionsAll(): Observable<any> {
-    return this.http.get(this.baseUrl + 'all')
+  public getPermissions(): Observable<any> {
+    return this.http.get(this.baseUrl)
       .pipe(catchError(this.error));
   }
 
@@ -33,23 +26,23 @@ export class PermissionService {
       .pipe(map((res: any) => res.permissions.filter((item: Permission) => item.status === 'active')));
   }
 
-  public getPermissionById(id: number): Observable<any> {
-    return this.http.get(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`)
+  public getPermissionById(id: string): Observable<any> {
+    return this.http.get(this.baseUrl + id)
       .pipe(catchError(this.error));
   }
 
   public createPermission(permission: PermissionCreateDto): Observable<any> {
-    return this.http.post(this.baseUrl + `?lang=${this.translateService.defaultLang}`, permission)
+    return this.http.post(this.baseUrl, permission)
       .pipe(catchError(this.error));
   }
 
-  public editPermission(id: number, permission: PermissionCreateDto): Observable<any> {
-    return this.http.put(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`, permission)
+  public editPermission(id: string, permission: PermissionCreateDto): Observable<any> {
+    return this.http.put(this.baseUrl + id, permission)
       .pipe(catchError(this.error));
   }
 
-  public removePermission(id: number): Observable<any> {
-    return this.http.delete(this.baseUrl + id + `?lang=${this.translateService.defaultLang}`)
+  public removePermission(id: string): Observable<any> {
+    return this.http.delete(this.baseUrl + id)
       .pipe(catchError(this.error));
   }
 

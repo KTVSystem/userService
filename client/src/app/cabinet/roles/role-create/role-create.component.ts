@@ -6,11 +6,14 @@ import { RolesService } from '../../../services/cabinet/roles/roles.service';
 import { RoleCreateDto } from '../../../models/cabinet/users/dtos/role/role-create-dto';
 import { PermissionService } from '../../../services/cabinet/permissions/permission.service';
 import { Permission } from '../../../models/cabinet/users/permission';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { RedirectService } from '../../../services/cabinet/shared/redirect/redirect.service';
-import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../../store/core.state';
+import { Actions } from '@ngrx/effects';
+import { NotificationService } from '../../../services/cabinet/shared/notification/notification.service';
+import { createRole } from '../../../store/roles';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -31,9 +34,10 @@ export class RoleCreateComponent implements OnInit, OnDestroy {
   constructor(
     private rolesService: RolesService,
     private permissionService: PermissionService,
-    private snackbar: MatSnackBar,
-    private redirectService: RedirectService,
-    private translateService: TranslateService
+    private store: Store<fromRoot.State>,
+    private actions$: Actions<any>,
+    private notificationService: NotificationService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit(): void {
@@ -49,27 +53,12 @@ export class RoleCreateComponent implements OnInit, OnDestroy {
       status: (this.createRoleForm.value.status === '0') ? this.statuses[0].key : this.createRoleForm.value.status,
       permissions: this.createRoleForm.value.permissions,
     };
-
-    this.rolesService.createRole(role).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
-      this.handleMessage(response);
+    this.translateService.get('createdRoleSuccess').pipe(takeUntil(this.unsubscribe$)).subscribe((text) => {
+      this.store.dispatch(createRole({ role: role, apiMessage:  text }));
     });
-  }
-
-  private handleMessage(response: any): void {
-    this.translateService.get('close').pipe(takeUntil(this.unsubscribe$)).subscribe((closeText) => {
-      if (response.error) {
-        this.snackbar.open(response.error, closeText, {
-          duration: 3000,
-          verticalPosition: 'top',
-          panelClass: 'snack-danger'
-        });
-      } else {
-        this.snackbar.open(response.message, closeText, {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'snack-success'
-        });
-        this.redirectService.redirect('/cabinet/roles', 2000);
+    this.actions$.pipe(takeUntil(this.unsubscribe$)).subscribe((action) => {
+      if (this.notificationService.isInitialized(action.apiMessage)) {
+        this.notificationService.handleMessage(action.apiMessage, action.typeMessage, '/cabinet/roles');
       }
     });
   }

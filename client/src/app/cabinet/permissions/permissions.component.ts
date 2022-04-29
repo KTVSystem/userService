@@ -9,6 +9,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../store/core.state';
+import { selectPermissionItems } from '../../store/permissions';
 
 @Component({
   selector: 'app-permissions',
@@ -19,52 +22,51 @@ export class PermissionsComponent implements OnInit, OnDestroy {
   public permissions: Array<Permission> = [];
   public statuses: Array<Status>;
   public permissionsFilterForm = new FormGroup({
-    name: new FormControl(''),
-    status: new FormControl('0'),
+    name: new FormControl(null),
+    status: new FormControl(null),
   });
-  public filterQueryString: string = '';
   displayedColumns: string[] = ['name', 'status', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   public unsubscribe$ = new Subject();
 
-  constructor(public paginationService: PaginationService, private permissionService: PermissionService) { }
+  constructor(
+    public paginationService: PaginationService,
+    private permissionService: PermissionService,
+    private store: Store<fromRoot.State>,
+  ) { }
 
   ngOnInit(): void {
     this.getPermissions();
     this.statuses = statuses;
+    this.filterForm();
   }
 
   private getPermissions(): void {
-    this.permissionService.getPermissions(this.filterQueryString).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+    this.store.select(selectPermissionItems).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       this.permissions = response.permissions;
-      this.paginationService.dataSource = new MatTableDataSource<any>(response.permissions);
-      this.paginationService.dataSource.paginator = this.paginator;
-      this.paginationService.iterator(this.permissions);
+      this.setPaginationSource(response.permissions);
     });
   }
 
-  public onSubmit(): void {
-    const name = (this.permissionsFilterForm.value.name !== '') ? this.permissionsFilterForm.value.name : null;
-    const status = (this.permissionsFilterForm.value.status !== '0') ? this.permissionsFilterForm.value.status : null;
-    this.filterQueryString = this.createFilterQueryParam(name, status);
-    this.getPermissions();
+  private filterForm(): void {
+    this.permissionsFilterForm.valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((form) => {
+      const filteredPermissions = this.permissions.filter((permission) => {
+        return (form.name ? permission.name.includes(form.name) : true)
+          && (form.status ? permission.status === form.status : true);
+      });
+      this.setPaginationSource(filteredPermissions);
+    });
+  }
+
+  public setPaginationSource(permissions: Permission[]): void {
+    this.paginationService.dataSource = new MatTableDataSource<any>(permissions);
+    this.paginationService.dataSource.paginator = this.paginator;
+    this.paginationService.iterator(permissions);
   }
 
   public clearFilters(): void {
-    this.permissionsFilterForm.patchValue({
-      name: '',
-      status: '0'
-    });
+    this.permissionsFilterForm.reset();
     this.getPermissions();
-  }
-
-  private createFilterQueryParam(name: string, status: string): string {
-    let filterString = '';
-    filterString = (name) ? filterString + 'name=' + name + '&' : filterString;
-    filterString = (status) ? filterString + 'status=' + status + '&' : filterString;
-    filterString = (filterString !== '') ? '?' + filterString : filterString;
-    filterString = (filterString !== '') ? filterString.substr(0, filterString.length - 1) : filterString;
-    return filterString;
   }
 
   ngOnDestroy() {

@@ -1,5 +1,5 @@
 export interface Permission {
-  _id: number;
+  _id?: string;
   name: string;
   status: string;
   created?: string;
