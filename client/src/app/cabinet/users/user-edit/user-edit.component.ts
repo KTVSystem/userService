@@ -24,7 +24,6 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit, OnDestroy {
-
   public editUserForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,

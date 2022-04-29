@@ -39,7 +39,7 @@ export const getPermissionsFailed = createAction(
 // CREATE
 export const createPermission = createAction(
   PermissionActionTypes.CREATE_PERMISSIONS,
-  props<{ permission: PermissionCreateDto }>()
+  props<{ permission: PermissionCreateDto, apiMessage: string }>()
 );
 
 export const createPermissionSuccess = createAction(
@@ -55,7 +55,7 @@ export const createPermissionFailed = createAction(
 // EDIT
 export const editPermission = createAction(
   PermissionActionTypes.EDIT_PERMISSIONS,
-  props<{ permissionId: string, permission: PermissionCreateDto }>()
+  props<{ permissionId: string, permission: PermissionCreateDto, apiMessage: string }>()
 );
 
 export const editPermissionSuccess = createAction(
@@ -71,12 +71,12 @@ export const editPermissionFailed = createAction(
 // REMOVE
 export const deletePermission = createAction(
   PermissionActionTypes.REMOVE_PERMISSIONS,
-  props<{ permissionId: string }>()
+  props<{ permissionId: string, apiMessage: string }>()
 );
 
 export const deletePermissionSuccess = createAction(
   PermissionActionTypes.REMOVE_PERMISSIONS_SUCCESS,
-  props<{ permissionId: string, apiMessage: string }>()
+  props<{ permissionId: string, apiMessage: string, typeMessage: string }>()
 );
 
 export const deletePermissionFailed = createAction(

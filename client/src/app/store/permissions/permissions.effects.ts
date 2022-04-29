@@ -32,7 +32,9 @@ export class PermissionsEffects {
               return PermissionsActions.createPermissionFailed({apiMessage: response.error, typeMessage: 'error' });
             } else {
               return PermissionsActions.createPermissionSuccess({permission: response.permission,
-                apiMessage: 'Permission was created', typeMessage: 'success'});
+                apiMessage:  response.status === 'ok' ? action.apiMessage : 'Server Error',
+                typeMessage: response.status === 'ok' ? 'success' : 'error'
+              });
             }
           }),
         )
@@ -50,7 +52,9 @@ export class PermissionsEffects {
               return PermissionsActions.editPermissionFailed({ apiMessage: response.error, typeMessage: 'error' });
             } else {
               return PermissionsActions.editPermissionSuccess({permissionId: action.id, permission: response.permission,
-                apiMessage: 'Permission was edited', typeMessage: 'success'});
+                apiMessage:  response.status === 'ok' ? action.apiMessage : 'Server Error',
+                typeMessage: response.status === 'ok' ? 'success' : 'error'
+              });
             }
           }),
         )
@@ -63,8 +67,10 @@ export class PermissionsEffects {
       ofType(PermissionsActions.PermissionActionTypes.REMOVE_PERMISSIONS),
       switchMap((action) =>
         this.permissionService.removePermission(action.permissionId).pipe(
-          map((apiMessage) => PermissionsActions.deletePermissionSuccess({ permissionId: action.permissionId,
-            apiMessage: 'Permission was removed' })),
+          map((response) => PermissionsActions.deletePermissionSuccess({ permissionId: action.permissionId,
+            apiMessage:  response.status === 'ok' ? action.apiMessage : 'Server Error',
+            typeMessage: response.status === 'ok' ? 'success' : 'error'
+          })),
           catchError((error) => of(PermissionsActions.deletePermissionFailed({ error: error })))
         )
       )

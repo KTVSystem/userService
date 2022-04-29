@@ -13,6 +13,7 @@ import * as fromRoot from '../../../store/core.state';
 import { Actions } from '@ngrx/effects';
 import { NotificationService } from '../../../services/cabinet/shared/notification/notification.service';
 import { createRole } from '../../../store/roles';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class RoleCreateComponent implements OnInit, OnDestroy {
     private permissionService: PermissionService,
     private store: Store<fromRoot.State>,
     private actions$: Actions<any>,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +53,9 @@ export class RoleCreateComponent implements OnInit, OnDestroy {
       status: (this.createRoleForm.value.status === '0') ? this.statuses[0].key : this.createRoleForm.value.status,
       permissions: this.createRoleForm.value.permissions,
     };
-    this.store.dispatch(createRole({ role: role }));
+    this.translateService.get('createdRoleSuccess').pipe(takeUntil(this.unsubscribe$)).subscribe((text) => {
+      this.store.dispatch(createRole({ role: role, apiMessage:  text }));
+    });
     this.actions$.pipe(takeUntil(this.unsubscribe$)).subscribe((action) => {
       if (this.notificationService.isInitialized(action.apiMessage)) {
         this.notificationService.handleMessage(action.apiMessage, action.typeMessage, '/cabinet/roles');

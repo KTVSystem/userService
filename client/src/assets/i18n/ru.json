@@ -48,5 +48,14 @@
   "thisUserContain": " Этот пользователь содержит социальные сети.",
   "socialConnection": " социальные сети?",
   "userWillBeDeleted": " Пользователя будет удалено.",
-  "userPlus": " пользователя?"
+  "userPlus": " пользователя?",
+  "confirmRemoveUser": "Вы уверены, что хотите удалить пользователя?",
+  "createdRoleSuccess": "Роль была создана",
+  "editedRoleSuccess": "Роль была отредактирована",
+  "removedRoleSuccess": "Роль была удалена",
+  "confirmRemoveRole": "Вы уверены, что хотите удалить роль?",
+  "createdPermissionSuccess": "Разрешение было создано",
+  "editedPermissionSuccess": "Разрешение было отредактировано",
+  "removedPermissionSuccess": "Разрешение было удалено",
+  "confirmRemovePermission": "Вы уверены, что хотите удалить разрешение?"
 }

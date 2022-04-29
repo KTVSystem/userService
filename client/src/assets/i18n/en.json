@@ -48,5 +48,14 @@
   "thisUserContain": " This user contain social connection.",
   "socialConnection": " social connection?",
   "userWillBeDeleted": " User will be deleted.",
-  "userPlus": " user?"
+  "userPlus": " user?",
+  "confirmRemoveUser": "Are you sure you want to delete this user?",
+  "createdRoleSuccess": "Role was created",
+  "editedRoleSuccess": "Role was edited",
+  "removedRoleSuccess": "Role was removed",
+  "confirmRemoveRole": "Are you sure you want to delete this role?",
+  "createdPermissionSuccess": "Permission was created",
+  "editedPermissionSuccess": "Permission was edited",
+  "removedPermissionSuccess": "Permission was removed",
+  "confirmRemovePermission": "Are you sure you want to delete this permission?"
 }

@@ -14,6 +14,7 @@ import { NotificationService } from '../../../services/cabinet/shared/notificati
 import { selectPermissionItem } from '../../../store/permissions';
 import { Permission } from '../../../models/cabinet/users/permission';
 import { editPermission } from '../../../store/permissions/';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class PermissionEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<fromRoot.State>,
     private actions$: Actions<any>,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit(): void {
@@ -55,8 +57,9 @@ export class PermissionEditComponent implements OnInit, OnDestroy {
       name: this.editPermissionForm.value.name,
       status: (this.editPermissionForm.value.status === '0') ? this.statuses[0].key : this.editPermissionForm.value.status
     };
-
-    this.store.dispatch(editPermission({ permissionId: this.id, permission: permission }));
+    this.translateService.get('editedPermissionSuccess').pipe(takeUntil(this.unsubscribe$)).subscribe((text) => {
+      this.store.dispatch(editPermission({ permissionId: this.id, permission: permission, apiMessage: text }));
+    });
     this.actions$.pipe(takeUntil(this.unsubscribe$)).subscribe((action) => {
       if (this.notificationService.isInitialized(action.apiMessage)) {
         this.notificationService.handleMessage(action.apiMessage, action.typeMessage, '/cabinet/permissions');

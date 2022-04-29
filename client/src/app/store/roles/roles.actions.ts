@@ -39,7 +39,7 @@ export const getRolesFailed = createAction(
 // CREATE
 export const createRole = createAction(
   RoleActionTypes.CREATE_ROLES,
-  props<{ role: RoleCreateDto }>()
+  props<{ role: RoleCreateDto, apiMessage: string }>()
 );
 
 export const createRoleSuccess = createAction(
@@ -55,7 +55,7 @@ export const createRoleFailed = createAction(
 // EDIT
 export const editRole = createAction(
   RoleActionTypes.EDIT_ROLES,
-  props<{ roleId: string, role: RoleCreateDto }>()
+  props<{ roleId: string, role: RoleCreateDto, apiMessage: string }>()
 );
 
 export const editRoleSuccess = createAction(
@@ -71,12 +71,12 @@ export const editRoleFailed = createAction(
 // REMOVE
 export const removeRole = createAction(
   RoleActionTypes.REMOVE_ROLES,
-  props<{ roleId: string }>()
+  props<{ roleId: string, apiMessage: string }>()
 );
 
 export const removeRoleSuccess = createAction(
   RoleActionTypes.REMOVE_ROLES_SUCCESS,
-  props<{ roleId: string, apiMessage: string }>()
+  props<{ roleId: string, apiMessage: string, typeMessage: string }>()
 );
 
 export const removeRoleFailed = createAction(

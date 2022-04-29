@@ -31,7 +31,10 @@ export class RolesEffects {
             if (response.error) {
               return RolesActions.createRoleFailed({apiMessage: response.error, typeMessage: 'error' });
             } else {
-              return RolesActions.createRoleSuccess({role: response.role, apiMessage: 'Role was created', typeMessage: 'success'});
+              return RolesActions.createRoleSuccess({role: response.role,
+                apiMessage:  response.status === 'ok' ? action.apiMessage : 'Server Error',
+                typeMessage: response.status === 'ok' ? 'success' : 'error'
+              });
             }
           }),
         )
@@ -48,7 +51,10 @@ export class RolesEffects {
             if (response.error) {
               return RolesActions.editRoleFailed({ apiMessage: response.error, typeMessage: 'error' });
             } else {
-              return RolesActions.editRoleSuccess({roleId: action.id, role: response.role, apiMessage: 'Role was edited', typeMessage: 'success'});
+              return RolesActions.editRoleSuccess({roleId: action.id, role: response.role,
+                apiMessage:  response.status === 'ok' ? action.apiMessage : 'Server Error',
+                typeMessage: response.status === 'ok' ? 'success' : 'error'
+              });
             }
           }),
         )
@@ -61,7 +67,10 @@ export class RolesEffects {
       ofType(RolesActions.RoleActionTypes.REMOVE_ROLES),
       switchMap((action) =>
         this.rolesService.removeRole(action.roleId).pipe(
-          map((apiMessage) => RolesActions.removeRoleSuccess({ roleId: action.roleId, apiMessage: 'Role was removed' })),
+          map((response) => RolesActions.removeRoleSuccess({ roleId: action.roleId,
+            apiMessage:  response.status === 'ok' ? action.apiMessage : 'Server Error',
+            typeMessage: response.status === 'ok' ? 'success' : 'error'
+          })),
           catchError((error) => of(RolesActions.removeRoleFailed({ error: error })))
         )
       )
