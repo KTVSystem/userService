@@ -76,7 +76,7 @@ describe('Test User Controller', () => {
 
         expect(response.status).toBe(201);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'user')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Created successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
         expect(JSON.parse(response.res.text).user.email).toBe(userDtoUser.email);
     });
 
@@ -95,7 +95,7 @@ describe('Test User Controller', () => {
 
         expect(response.status).toBe(200);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'user')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Updated successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
         expect(JSON.parse(response.res.text).user.email).toBe('edited' + userDtoUser.email);
     });
 
@@ -112,7 +112,7 @@ describe('Test User Controller', () => {
 
         expect(response.status).toBe(200);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'user')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Password changed successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
         expect(await PasswordService.comparePassword(newPassword, JSON.parse(response.res.text).user.password))
             .toBeTruthy();
     });
@@ -128,8 +128,8 @@ describe('Test User Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'message')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Social account was unbinded!');
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'status')).toBeTruthy();
+        expect(JSON.parse(response.res.text).status).toBe('ok');
     });
 
     it('Unbind social from user [one]', async () => {
@@ -141,8 +141,8 @@ describe('Test User Controller', () => {
             .set('Authorization', `Bearer ${token}`)
             .send();
         expect(response.status).toBe(200);
-        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'message')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Deleted successful');
+        expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'status')).toBeTruthy();
+        expect(JSON.parse(response.res.text).status).toBe('removed');
     });
 
     it('Delete user', async () => {
@@ -154,6 +154,6 @@ describe('Test User Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).message).toBe('Deleted successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
     });
 });

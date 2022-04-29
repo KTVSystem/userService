@@ -68,7 +68,7 @@ describe('Test Permission Controller', () => {
 
         expect(response.status).toBe(201);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permission')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Created successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
         expect(JSON.parse(response.res.text).permission.name).toBe(permissionDto.name);
     });
 
@@ -84,7 +84,7 @@ describe('Test Permission Controller', () => {
 
         expect(response.status).toBe(200);
         expect(Object.prototype.hasOwnProperty.call(JSON.parse(response.res.text), 'permission')).toBeTruthy();
-        expect(JSON.parse(response.res.text).message).toBe('Updated successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
         expect(JSON.parse(response.res.text).permission.name).toBe(permissionDto.name + 'edited');
     });
 
@@ -96,6 +96,6 @@ describe('Test Permission Controller', () => {
             .send();
 
         expect(response.status).toBe(200);
-        expect(JSON.parse(response.res.text).message).toBe('Deleted successful');
+        expect(JSON.parse(response.res.text).status).toBe('ok');
     });
 });
