@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     const login: Login = {email: this.loginForm.value.email, password: this.loginForm.value.password};
     this.loginService.signIn(login).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
       if (response) {

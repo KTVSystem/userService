@@ -4,12 +4,12 @@ import { Role } from '../../interfaces/user/role';
 import { RoleDto } from '../../interfaces/user/dtos/role/role-dto';
 import { RoleModel } from '../../models/user/role-model';
 
-export const getRoles = async (params: any) => {
-    return await allByQuery(params);
+export const getRoles = async () => {
+    return await allByQuery();
 }
 
-export const getPermission = async (id: string, lang: string): Promise<Role> => {
-    return await findRoleById(id, lang);
+export const getPermission = async (id: string): Promise<Role> => {
+    return await findRoleById(id);
 }
 
 export const createRole = async (roleDto: RoleDto) => {
@@ -23,9 +23,9 @@ export const createRole = async (roleDto: RoleDto) => {
     });
 }
 
-export const editRole = async (id: string, roleDto: RoleDto, lang: string): Promise<Role> => {
+export const editRole = async (id: string, roleDto: RoleDto): Promise<Role> => {
     const permissions = roleDto.permissions.length ? await getMultiplePermissionsByIds(roleDto.permissions) : [];
-    const role = await findRoleById(id, lang);
+    const role = await findRoleById(id);
     role.name = roleDto.name;
     role.status = roleDto.status;
     role.permissions = permissions;

@@ -4,9 +4,9 @@ import { SocialUser } from '../../login/social-user';
 
 export interface User {
   email: string;
-  _id?: number;
+  _id?: string;
   role: Role;
-  social?: Array<SocialUser>;
+  socials?: Array<SocialUser>;
   permission?: Array<Permission>;
   status: string;
   token?: string;

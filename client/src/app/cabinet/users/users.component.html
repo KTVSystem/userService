@@ -1,26 +1,25 @@
 <div class="content-block">
   <h1 class="title">{{ 'filter' | translate }}</h1>
   <div class="filter" fxLayout="row">
-    <form [formGroup]="usersFilterForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="usersFilterForm">
       <mat-form-field class="example-full-width" appearance="legacy">
         <mat-label>{{ 'email' | translate }}</mat-label>
-        <input type="email" matInput formControlName="email" placeholder="Email">
+        <input type="email" formControlName="email" matInput placeholder="{{ 'email' | translate }}">
       </mat-form-field>
 
       <mat-form-field appearance="legacy">
         <mat-label>{{ 'role' | translate }}</mat-label>
-        <mat-select matNativeControl formControlName="role">
+        <mat-select formControlName="role" matNativeControl>
           <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="legacy">
         <mat-label>{{ 'status' | translate }}</mat-label>
-        <mat-select matNativeControl formControlName="status">
+        <mat-select formControlName="status" matNativeControl>
           <mat-option *ngFor="let status of statuses" [value]="status.key">{{status.title}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button color="primary">{{ 'filter' | translate }}</button>
       <button mat-raised-button color="warn" (click)="clearFilters()">{{ 'clear' | translate }}</button>
     </form>
   </div>

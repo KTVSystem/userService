@@ -3,7 +3,7 @@
   <div class="log-out">
     <form [formGroup]="languageForm">
       <mat-form-field appearance="legacy">
-        <mat-select formControlName="language">
+        <mat-select formControlName="language" (selectionChange)="changeLanguage($event)">
           <mat-option *ngFor="let language of languages" [value]="language.key">
             {{ language.label }}
           </mat-option>

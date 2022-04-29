@@ -82,6 +82,17 @@ const seedData = async (): Promise<void> => {
         created: new Date(),
         updated: new Date(),
     });
+    const social2: SocialUser = await SocialUserModel.create({
+        id: '123456779',
+        email: 'user19@gmail.com',
+        firstName: 'user19',
+        lastName: 'user19_last',
+        photoUrl: 'url',
+        provider: SocialUserProviders.GOOGLE,
+        status: Status.ACTIVE,
+        created: new Date(),
+        updated: new Date(),
+    });
 
     const passwordHash = await PasswordService.hashPassword('123');
     await UserModel.create({
@@ -90,7 +101,7 @@ const seedData = async (): Promise<void> => {
         status: Status.ACTIVE,
         role: role3,
         token: token1,
-        socials: [social],
+        socials: [social, social2],
         created: new Date(),
         updated: new Date(),
     });

@@ -1,6 +1,4 @@
 import { UserModel } from '../../models/user/user-model';
-import { findRoleByName } from './role-repository';
-import { translate } from '../../services/translate/translateService';
 import { blockAccountTime } from '../../../config/settings';
 
 export const findUserByEmail = async (email: string) => {
@@ -17,30 +15,17 @@ export const all = async () => {
     return UserModel.find({}).populate('role').populate('token').populate('socials');
 }
 
-export const allByQuery = async (params: any, lang: string) => {
-    const {email, role, status} = params;
-
-    const query = UserModel.find({});
-    if (typeof email !== 'undefined') {
-        query.find({email: { $regex: '.*' + email + '.*' } });
-    }
-    if (typeof role !== 'undefined') {
-        const roleObj  = await findRoleByName(role, lang);
-        query.find({ role: roleObj._id });
-    }
-    if (typeof status !== 'undefined') {
-        query.find({ status });
-    }
-    return query.populate('role').populate('token');
+export const allByQuery = async () => {
+    return UserModel.find({}).populate('role').populate('token').populate('socials');
 }
 
-export const findUserById = async (id: string, lang?: string) => {
+export const findUserById = async (id: string) => {
     const user = (await UserModel.find({ _id: id }).populate('role').populate('token').populate('socials')
         .limit(1))[0];
     if (typeof user !== 'undefined') {
         return user;
     }
-    throw new Error(await translate(lang, 'userNotExist'));
+    throw new Error('User doesn\'t exist');
 }
 
 export const removeUserById = async (id: string) => {
