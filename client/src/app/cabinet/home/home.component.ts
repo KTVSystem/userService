@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '../../services/cabinet/users/user.servise';
 import { User } from '../../models/cabinet/users/user';
-import { RolesService } from '../../services/cabinet/roles/roles.service';
 import { Role } from '../../models/cabinet/users/role';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store} from '@ngrx/store';
+import * as fromRoot from '../../store/core.state';
+import { selectUserItems } from '../../store/users';
+import { selectRolesItems } from '../../store/roles';
 
 @Component({
   selector: 'app-home',
@@ -18,15 +20,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   public rolesCount: Map<string, number> = new Map();
   public unsubscribe$ = new Subject();
 
-  constructor(private userService: UserService, private rolesService: RolesService) { }
+  constructor(
+    private store: Store<fromRoot.State>,
+  ) { }
 
   ngOnInit(): void {
-    this.userService.getUsers().pipe(takeUntil(this.unsubscribe$)).subscribe((resUsers) => {
-      if (resUsers.users && resUsers.users.length) {
-        this.rolesService.getRoles().subscribe((resRoles) => {
-          this.users = resUsers.users;
-          this.roles = resRoles.roles;
-          this.userCount = resUsers.users.length;
+    this.store.select(selectUserItems).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+      if (response.users && response.users.length) {
+        this.users = response.users;
+        this.userCount = response.users.length;
+        this.store.select(selectRolesItems).pipe(takeUntil(this.unsubscribe$)).subscribe((response) => {
+          this.roles = response.roles;
           this.setRolesCount();
         });
       }

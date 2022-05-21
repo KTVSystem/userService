@@ -31,7 +31,7 @@ export class LoginService {
       .pipe(catchError(this.error));
   }
 
-  storeWrongAttemp(): string | null {
+  public storeWrongAttemp(): string | null {
     let wrong = localStorage.getItem('wrong');
     if (wrong) {
       const newWrong = Number(wrong) + 1;
@@ -42,12 +42,12 @@ export class LoginService {
     return localStorage.getItem('wrong');
   }
 
-  blockUser(): void {
+  public blockUser(): void {
     const time = new Date().getTime() + 5 * 60000;
     localStorage.setItem('block', String(time));
   }
 
-  isBlockUser() : boolean {
+  public isBlockUser() : boolean {
     let blockTime = localStorage.getItem('block');
     if (blockTime) {
       const currentTime = new Date().getTime();
@@ -56,7 +56,7 @@ export class LoginService {
     return false;
   }
 
-  clearBlockData(): void {
+  public clearBlockData(): void {
     localStorage.removeItem('wrong');
     localStorage.removeItem('block');
   }

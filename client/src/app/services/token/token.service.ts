@@ -8,10 +8,6 @@ import { Token } from '../../models/token/token';
 
 export class TokenService {
 
-  constructor() {
-
-  }
-
   public get isAuth(): boolean {
     let token = localStorage.getItem('token');
     let role = localStorage.getItem('role');
@@ -32,7 +28,6 @@ export class TokenService {
     localStorage.setItem('role', tokenData.role);
     localStorage.setItem('iat', tokenData.iat);
     localStorage.setItem('exp', tokenData.exp);
-    console.log(tokenData);
   }
 
   public deleteToken(): void {

@@ -16,7 +16,7 @@ export class PaginationService {
     this.iterator(data);
   }
 
-  public iterator(data: Array<any>) {
+  public iterator(data: Array<any>): void {
     const end = (this.currentPage + 1) * this.pageSize;
     const start = this.currentPage * this.pageSize;
     const dataPart = data.slice(start, end);
